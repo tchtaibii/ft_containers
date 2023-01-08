@@ -66,6 +66,13 @@ namespace ft
 		// Return the number of elements in the vector
 		size_type size() const { return size_; }
 
+		// Return size of allocated storage capacity r
+		size_type capacity() const { return capacity_; }
+
+		// Return max size of the vector
+		size_type max_size() const { return std::min(std::numeric_limits<size_type>::max() / sizeof(value_type),\
+		 std::allocator_traits<allocator_type>::max_size(alloc));}
+
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
@@ -77,9 +84,28 @@ namespace ft
 		// resize vector
 		void resize (size_type n, value_type val = value_type())
 		{
-			if (n < size_)
+			if (n <= size_ && n >= 0)
 			{
-
+				ft::vector<value_type> new_(n, val);
+				for (size_type i = 0; i < size_; i++)
+					new_.alloc.construct(new_.data_ + i, this->data_[i]);
+				*this = new_;
+				for (size_type i = 0; i < size_; i++)
+					new_.alloc.destroy(new_.data_ + i);
+				new_.alloc.deallocate(new_.data_, new_.size_);
+			}
+			else if (n > size_)
+			{
+				if (n > capacity_)
+					capacity_ = n;
+				ft::vector<value_type> new_(n, val);
+				size_type i = -1;
+				while ( ++i < size_)
+					new_.alloc.construct(new_.data_ + i, this->data_[i]);
+				*this = new_;
+				for (size_type i = 0; i < size_; i++)
+					new_.alloc.destroy(new_.data_ + i);
+				new_.alloc.deallocate(new_.data_, new_.size_);
 			}
 		}
 
