@@ -9,10 +9,14 @@ namespace ft
 	class vector
 	{
 		typedef T value_type;
-		typedef Alloc allocator_type;
-		typedef T &reference;
-		typedef T *pointer;
+		typedef T* pointer;
+		typedef const T* const_pointer;
+		typedef T& reference;
+		typedef const T& const_reference;
 		typedef size_t size_type;
+		typedef Alloc allocator_type;
+		typedef typename ft::iterator<value_type> iterator;
+		typedef typename ft::iterator<value_type>::difference_type difference_type;
 
 	public:
 		// Default constructor
@@ -54,9 +58,9 @@ namespace ft
 		// Destructor
 		~vector()
 		{
-		  for (size_t i = 0; i < size_; i++)
-		    alloc.destroy(data_ + i);
-		  alloc.deallocate(data_, size_);
+			for (size_t i = 0; i < size_; i++)
+				alloc.destroy(data_ + i);
+			alloc.deallocate(data_, size_);
 		}
 
 		// Return true if the vector is empty
@@ -66,21 +70,31 @@ namespace ft
 		size_type size() const { return size_; }
 
 		// Return size of allocated storage capacity r
-		size_type capacity() const { return capacity_;}
+		size_type capacity() const { return capacity_; }
 
 		// Return max size of the vector
-		size_type max_size() const { return alloc.max_size();}
+		size_type max_size() const { return alloc.max_size(); }
 
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
-		  if (size_ == capacity_)
-		    this->resize(size_ + 1);
-		  this->alloc.construct(data_ + size_+ 1, value);
+			if (size_ == capacity_)
+				this->resize(size_ + 1);
+			this->alloc.construct(data_ + size_ + 1, value);
 		}
 
-		// resize vector
-		void resize (size_type n, value_type val = value_type())
+		// Removes the last element in the vector, effectively reducing the container size by one.
+		void pop_back()
+		{
+			if (size_ != 0)
+			{
+				this->alloc.destroy(data_[size_ - 1]);
+				--size_;
+			}
+		}
+
+		// Resizes the container so that it contains n elements.
+		void resize(size_type n, value_type val = value_type())
 		{
 			if (n < size_)
 			{
@@ -104,29 +118,31 @@ namespace ft
 				ft::vector<value_type> new_(capacity_, val);
 				new_.size_ = n;
 				size_type i = -1;
-				while ( ++i < new_.size_)
+				while (++i < new_.size_)
 					new_.alloc.construct(new_.data_ + i, this->data_[i]);
 				*this = new_;
 			}
 		}
 
-		// Return a reference to the element at the given index, with bounds checking
-		value_type& at(size_t index) {
-		  if (index >= size_)
-		    throw std::out_of_range("Index out of range");
-		  return data_[index];
+		// Returns a reference to the element at position n in the vector.
+		value_type &at(size_t index)
+		{
+			if (index >= size_)
+				throw std::out_of_range("Index out of range");
+			return data_[index];
 		}
 
 		// Return a reference to the element at the given index, without bounds checking
 		value_type &operator[](size_t index) { return data_[index]; }
 
-		// front function
-		reference front() {return data_[0];}
-		// back function
-		reference back() {return data_[size_ - 1];}
+		// Returns a reference to the first element in the vector.
+		reference front() { return data_[0]; }
 
-		// reserve function 
-		void reserve (size_type n)
+		// Returns a reference to the last element in the vector.
+		reference back() { return data_[size_ - 1]; }
+
+		// Requests that the vector capacity be at least enough to contain n elements.
+		void reserve(size_type n)
 		{
 			if (capacity_ < n)
 			{
@@ -136,6 +152,48 @@ namespace ft
 				data_ = new_data_;
 				capacity_ = n;
 			}
+		}
+
+		// Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
+		void clear()
+		{
+			if (size_ != 0)
+			{
+				for (size_t i = 0; i < size_; i++)
+					alloc.destroy(data_ + i);
+				size_ = 0;
+			}
+		}
+
+		// Exchanges the content of the container by the content of x, which is another vector object of the same type. Sizes may differ.
+		void swap(vector &x)
+		{
+			pointer tmp1, tmp2;
+			size_type tmp_size1, tmp_size2;
+			size_type tmp_capacity1, tmp_capacity2;
+
+			tmp1 = this->alloc.allocate(size_);
+			tmp_size1 = size_;
+			tmp_capacity1 = capacity_;
+			for (size_type i = 0; i < size_; i++)
+				this->alloc.construct(tmp1 + i, data_[i]);
+
+			tmp2 = x.alloc.allocate(x.size_);
+			tmp_size2 = x.size_;
+			tmp_capacity2 = x.capacity_;
+			for (size_type i = 0; i < x.size_; i++)
+				x.alloc.construct(tmp2 + i, x.data_[i]);
+			size_ = tmp_size2;
+			capacity_ = tmp_capacity2;
+			data_ = tmp2;
+			x.size_ = tmp_size1;
+			x.capacity_ = tmp_capacity1;
+			x.data_ = tmp1;
+		}
+
+		iterator begin()
+		{
+			
 		}
 
 	private:
