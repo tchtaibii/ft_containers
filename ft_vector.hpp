@@ -27,7 +27,7 @@ namespace ft
 				this->alloc.construct(data_ + i, value);
 		}
 		// Copy constructor
-		vector(const vector &other) : data_(nullptr), size_(other.size_), capacity_(other.capacity_), alloc(alloc)
+		vector(const vector &other) : data_(nullptr), size_(other.size_), capacity_(other.capacity_), alloc(other.alloc)
 		{
 			data_ = this->alloc.allocate(size_);
 			for (size_type i = 0; i < size_; i++)
@@ -48,7 +48,6 @@ namespace ft
 				data_ = this->alloc.allocate(size_);
 				for (size_type i = 0; i < size_; i++)
 					this->alloc.construct(data_ + i, other.data_[i]);
-				std::cout << data_[--size_] << std::endl;
 			}
 			return *this;
 		}
@@ -70,42 +69,42 @@ namespace ft
 		size_type capacity() const { return capacity_; }
 
 		// Return max size of the vector
-		size_type max_size() const { return std::min(std::numeric_limits<size_type>::max() / sizeof(value_type),\
-		 std::allocator_traits<allocator_type>::max_size(alloc));}
+		size_type max_size() const { return alloc.max_size();}
 
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
 		  if (size_ == capacity_)
-		    this->resize();
-		  this->alloc.construct(data_ + size_++, value);
+		    this->resize(size_ + 1);
+		  this->alloc.construct(data_ + size_+ 1, value);
 		}
 
 		// resize vector
 		void resize (size_type n, value_type val = value_type())
 		{
-			if (n <= size_ && n >= 0)
+			if (n >= 0)
 			{
-				ft::vector<value_type> new_(n, val);
-				for (size_type i = 0; i < size_; i++)
-					new_.alloc.construct(new_.data_ + i, this->data_[i]);
-				*this = new_;
-				for (size_type i = 0; i < size_; i++)
-					new_.alloc.destroy(new_.data_ + i);
-				new_.alloc.deallocate(new_.data_, new_.size_);
-			}
-			else if (n > size_)
-			{
+				int tmp_capacity = this->capacity();
+				int tmp_size = this->size();
 				if (n > capacity_)
-					capacity_ = n;
-				ft::vector<value_type> new_(n, val);
+				{
+					if (capacity_ * 2 >= n)
+						capacity_ *= 2;
+					else
+						capacity_ = n;
+				}
+				ft::vector<value_type> new_(capacity_, val);
+				new_.size_ = n;
 				size_type i = -1;
-				while ( ++i < size_)
+				while ( ++i < new_.size_)
 					new_.alloc.construct(new_.data_ + i, this->data_[i]);
+				// for (size_type i = 0; i < tmp_size; i++)
+				// 	this->alloc.destroy(this->data_ + i);
+				// this->alloc.deallocate(this->data_, tmp_size);
 				*this = new_;
-				for (size_type i = 0; i < size_; i++)
-					new_.alloc.destroy(new_.data_ + i);
-				new_.alloc.deallocate(new_.data_, new_.size_);
+				// for (size_type i = 0; i < tmp_size; i++)
+				// 	new_.alloc.destroy(new_.data_ + i);
+				// new_.alloc.deallocate(new_.data_, new_.size_);
 			}
 		}
 

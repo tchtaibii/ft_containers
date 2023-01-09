@@ -4,19 +4,19 @@
 int main()
 {
     // Default constructor
-    ft::vector<int> v1;
+    std::vector<int> v1;
     std::cout << "v1 size: " << v1.size() << '\n';
     std::cout << "v1 capacity: " << v1.capacity() << '\n';
     std::cout << "v1 empty: " << std::boolalpha << v1.empty() << '\n';
 
     // Fill constructor
-    ft::vector<int> v2(10, 1);
+    std::vector<int> v2(10, 1);
     std::cout << "v2 size: " << v2.size() << '\n';
     std::cout << "v2 capacity: " << v2.capacity() << '\n';
     std::cout << "v2 empty: " << std::boolalpha << v2.empty() << '\n';
 
     // Copy constructor
-    ft::vector<int> v3(v2);
+    std::vector<int> v3(v2);
     std::cout << "v3 size: " << v3.size() << '\n';
     std::cout << "v3 capacity: " << v3.capacity() << '\n';
     std::cout << "v3 empty: " << std::boolalpha << v3.empty() << '\n';
