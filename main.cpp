@@ -1,7 +1,6 @@
 #include "ft_vector.hpp"
 #include <vector>
-
-int main()
+void ft_test()
 {
     // Default constructor
     ft::vector<int> v1;
@@ -47,6 +46,10 @@ int main()
     std::cout << "v1 [4]: " << v1[4] << '\n';
     v1[4] = 3;
     std::cout << "v1 [4]: " << v1[4] << '\n';
-
+    system("leaks a.out");
+}
+int main()
+{
+    ft_test();
     return 0;
 }

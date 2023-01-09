@@ -66,7 +66,7 @@ namespace ft
 		size_type size() const { return size_; }
 
 		// Return size of allocated storage capacity r
-		size_type capacity() const { return capacity_; }
+		size_type capacity() const { return capacity_;}
 
 		// Return max size of the vector
 		size_type max_size() const { return alloc.max_size();}
@@ -82,7 +82,15 @@ namespace ft
 		// resize vector
 		void resize (size_type n, value_type val = value_type())
 		{
-			if (n >= 0)
+			if (n < size_)
+			{
+				while (n < size_)
+				{
+					this->alloc.destroy(data_ + n);
+					--size_;
+				}
+			}
+			else
 			{
 				int tmp_capacity = this->capacity();
 				int tmp_size = this->size();
@@ -98,13 +106,7 @@ namespace ft
 				size_type i = -1;
 				while ( ++i < new_.size_)
 					new_.alloc.construct(new_.data_ + i, this->data_[i]);
-				// for (size_type i = 0; i < tmp_size; i++)
-				// 	this->alloc.destroy(this->data_ + i);
-				// this->alloc.deallocate(this->data_, tmp_size);
 				*this = new_;
-				// for (size_type i = 0; i < tmp_size; i++)
-				// 	new_.alloc.destroy(new_.data_ + i);
-				// new_.alloc.deallocate(new_.data_, new_.size_);
 			}
 		}
 
@@ -117,6 +119,24 @@ namespace ft
 
 		// Return a reference to the element at the given index, without bounds checking
 		value_type &operator[](size_t index) { return data_[index]; }
+
+		// front function
+		reference front() {return data_[0];}
+		// back function
+		reference back() {return data_[size_ - 1];}
+
+		// reserve function 
+		void reserve (size_type n)
+		{
+			if (capacity_ < n)
+			{
+				pointer new_data_ = this->alloc.allocate(n);
+				for (size_type i = 0; i < size_; i++)
+					this->alloc.construct(new_data_ + i, this->data_[i]);
+				data_ = new_data_;
+				capacity_ = n;
+			}
+		}
 
 	private:
 		pointer data_;
