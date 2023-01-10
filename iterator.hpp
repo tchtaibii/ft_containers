@@ -2,20 +2,20 @@
 #define ITERATOR_HPP
 
 #include <iostream>
+#include "iterator_traits.hpp"
 
 namespace ft
 {
-    template <typename T>
-    class booliterator
+    template <typename _Iter>
+    class iterator
     {
     public:
-        typedef T value_type;
-		typedef T* pointer;
-		typedef const T* const_pointer;
-		typedef T& reference;
-		typedef const T& const_reference;
-		typedef size_t size_type;
-        typedef std::random_access_iterator_tag iterator_category;
+        typedef _Iter                                                      iterator_type;
+        typedef typename iterator_traits<iterator_type>::iterator_category iterator_category;
+        typedef typename iterator_traits<iterator_type>::value_type        value_type;
+        typedef typename iterator_traits<iterator_type>::difference_type   difference_type;
+        typedef typename iterator_traits<iterator_type>::pointer           pointer;
+        typedef typename iterator_traits<iterator_type>::reference         reference;
 
         // CONSTRUCTOR
         iterator() : ptr_(nullptr) {}
@@ -27,7 +27,6 @@ namespace ft
         // dereferenced as an rvalue
         reference operator*() const { return *ptr_; }
         reference operator->() const { return ptr_; }
-
         // incremented/decremented
         iterator &operator++()
         {
@@ -61,10 +60,10 @@ namespace ft
         iterator operator+(difference_type n) const { return iterator(ptr_ + n);}
         iterator operator-(difference_type n) const { return iterator(ptr_ - n);}
         // compared with inequality relational operators 
-        bool operator<(difference_type n) const { return if (ptr_ < n);}
-        bool operator>(difference_type n) const { return if (ptr_ > n);}
-        bool operator<=(difference_type n) const { return if (ptr_ <= n);}
-        bool operator>=(difference_type n) const { return if (ptr_ >= n);}
+        bool operator<(difference_type n) const { return ptr_ < n;}
+        bool operator>(difference_type n) const { return ptr_ > n;}
+        bool operator<=(difference_type n) const { return ptr_ <= n;}
+        bool operator>=(difference_type n) const { return ptr_ >= n;}
         // compound assignment operations += and -=
         iterator &operator-=(difference_type n)
         {
@@ -76,25 +75,8 @@ namespace ft
             ptr_ += n;
             return *this;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        // iterator operator-(difference_type n) const { return iterator(ptr_ - n); }
-
-        // bool operator<(const iterator &other) const { return ptr_ < other.ptr_; }
-        // bool operator>(const iterator &other) const { return ptr_ > other.ptr_; }
-        // bool operator<=(const iterator &other) const { return ptr_ <= other.ptr_; }
-        // bool operator>=(const iterator &other) const { return ptr_ >= other.ptr_; }
-
+        // the offset dereference operator ([])
+        value_type &operator[](size_t index) {return ptr[index];}
     private:
         pointer ptr_;
     };

@@ -13,7 +13,7 @@ void ft_test()
     std::cout << "v2 size: " << v2.size() << '\n';
     std::cout << "v2 capacity: " << v2.capacity() << '\n';
     std::cout << "v2 empty: " << std::boolalpha << v2.empty() << '\n';
-
+    std::vector<int>::iterator a;
     // Copy constructor
     ft::vector<int> v3(v2);
     std::cout << "v3 size: " << v3.size() << '\n';
