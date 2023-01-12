@@ -192,15 +192,8 @@ namespace ft
 			x.capacity_ = tmp_capacity1;
 			x.data_ = tmp1;
 		}
-
-		iterator begin()
-		{
-			return data_;
-		}
-		iterator end()
-		{
-			return data_ + size_ - 1;
-		}
+		iterator begin(){return data_;}
+		iterator end(){return data_ + size_ - 1;}
 
 	private:
 		pointer data_;

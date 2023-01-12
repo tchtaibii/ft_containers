@@ -7,8 +7,8 @@ int main()
     myVector.push_back(2);
     myVector.push_back(3);
 
-    // ft::vector<int>::iterator it;
-    ft::iterator<int> it;
+    ft::vector<int>::iterator it;
+    // ft::iterator<int> it;
     for (it = myVector.begin(); it != myVector.end(); ++it)
         std::cout << *it << " ";
     std::cout << std::endl;
