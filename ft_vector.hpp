@@ -2,6 +2,7 @@
 #define FT_vector_HPP
 
 #include <iostream>
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -16,6 +17,7 @@ namespace ft
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
 		typedef typename ft::iterator<value_type> iterator;
+		typedef typename ft::iterator<const value_type> const_iterator;
 		typedef typename ft::iterator<value_type>::difference_type difference_type;
 
 	public:
@@ -193,7 +195,11 @@ namespace ft
 
 		iterator begin()
 		{
-			
+			return data_;
+		}
+		iterator end()
+		{
+			return data_ + size_ - 1;
 		}
 
 	private:

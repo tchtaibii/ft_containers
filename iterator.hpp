@@ -39,12 +39,6 @@ namespace ft
             ++ptr_;
             return tmp;
         }
-        iterator &operator++(int)
-        {
-            iterator tmp(*this);
-            ++ptr_;
-            return tmp;
-        }
         iterator &operator--()
         {
             --ptr_;
@@ -76,7 +70,7 @@ namespace ft
             return *this;
         }
         // the offset dereference operator ([])
-        value_type &operator[](size_t index) {return ptr[index];}
+        value_type &operator[](size_t index) {return ptr_[index];}
     private:
         pointer ptr_;
     };
