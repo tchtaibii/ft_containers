@@ -9,6 +9,7 @@ namespace ft
 	template <typename T, typename Alloc = std::allocator<T> >
 	class vector
 	{
+	public:
 		typedef T value_type;
 		typedef T* pointer;
 		typedef const T* const_pointer;
@@ -20,7 +21,6 @@ namespace ft
 		typedef typename ft::iterator<const value_type> const_iterator;
 		typedef typename ft::iterator<value_type>::difference_type difference_type;
 
-	public:
 		// Default constructor
 		vector(const allocator_type &alloc = allocator_type()) : data_(nullptr), size_(0), capacity_(0), alloc(alloc) {}
 		// Constructor that takes an initial size and a value
@@ -81,7 +81,10 @@ namespace ft
 		void push_back(value_type value)
 		{
 			if (size_ == capacity_)
+			{
 				this->resize(size_ + 1);
+				// std::cout << "okaaaay55" << std::endl;
+			}
 			this->alloc.construct(data_ + size_ + 1, value);
 		}
 
@@ -100,6 +103,7 @@ namespace ft
 		{
 			if (n < size_)
 			{
+				
 				while (n < size_)
 				{
 					this->alloc.destroy(data_ + n);
@@ -116,12 +120,17 @@ namespace ft
 						capacity_ *= 2;
 					else
 						capacity_ = n;
+
 				}
 				ft::vector<value_type> new_(capacity_, val);
 				new_.size_ = n;
 				size_type i = -1;
 				while (++i < new_.size_)
+				{
 					new_.alloc.construct(new_.data_ + i, this->data_[i]);
+					std::cout << i << std::endl;
+
+				}
 				*this = new_;
 			}
 		}
