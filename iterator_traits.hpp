@@ -9,7 +9,7 @@ namespace ft
   {
     typedef std::random_access_iterator_tag iterator_category;
     typedef T value_type;
-    typedef T& refrence;
+    typedef T& reference;
     typedef T* pointer;
     typedef typename std::ptrdiff_t difference_type;
   };
@@ -19,7 +19,7 @@ namespace ft
   {
     typedef std::random_access_iterator_tag iterator_category;
     typedef T value_type;
-    typedef T& refrence;
+    typedef T& reference;
     typedef T* pointer;
     typedef typename std::ptrdiff_t difference_type;
   };
@@ -29,17 +29,7 @@ namespace ft
   {
     typedef std::random_access_iterator_tag iterator_category;
     typedef T value_type;
-    typedef const T& refrence;
-    typedef const T* pointer;
-    typedef typename std::ptrdiff_t difference_type;
-  };
-
-  template <typename T>
-  struct iterator_traits<T &>
-  {
-    typedef std::random_access_iterator_tag iterator_category;
-    typedef T value_type;
-    typedef const T& refrence;
+    typedef const T& reference;
     typedef const T* pointer;
     typedef typename std::ptrdiff_t difference_type;
   };
