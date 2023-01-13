@@ -11,10 +11,10 @@ namespace ft
 	{
 	public:
 		typedef T value_type;
-		typedef T* pointer;
-		typedef const T* const_pointer;
-		typedef T& reference;
-		typedef const T& const_reference;
+		typedef T *pointer;
+		typedef const T *const_pointer;
+		typedef T &reference;
+		typedef const T &const_reference;
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
 		typedef typename ft::iterator<value_type> iterator;
@@ -80,12 +80,8 @@ namespace ft
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
-			if (size_ == capacity_)
-			{
-				this->resize(size_ + 1);
-				// std::cout << "okaaaay55" << std::endl;
-			}
-			this->alloc.construct(data_ + size_ + 1, value);
+			this->resize(size_ + 1);
+			this->alloc.construct(data_ + size_ - 1, value);
 		}
 
 		// Removes the last element in the vector, effectively reducing the container size by one.
@@ -103,7 +99,7 @@ namespace ft
 		{
 			if (n < size_)
 			{
-				
+
 				while (n < size_)
 				{
 					this->alloc.destroy(data_ + n);
@@ -112,27 +108,24 @@ namespace ft
 			}
 			else
 			{
-				int tmp_capacity = this->capacity();
-				int tmp_size = this->size();
 				if (n > capacity_)
 				{
 					if (capacity_ * 2 >= n)
 						capacity_ *= 2;
 					else
 						capacity_ = n;
-
 				}
-				ft::vector<value_type> new_(capacity_, val);
-				new_.size_ = n;
-				size_type i = -1;
-				while (++i < new_.size_)
+				pointer data_new = this->alloc.allocate(capacity_);
+				// ft::vector<value_type> new_(capacity_, val);
+				size_ = n;
+				for (size_type i = 0; i < size_; i++)
 				{
-					new_.alloc.construct(new_.data_ + i, this->data_[i]);
-					std::cout << i << std::endl;
-
+					if (nullptr != data_)
+						data_new[i] = data_[i];
 				}
-				*this = new_;
+				data_ = data_new;
 			}
+			// }
 		}
 
 		// Returns a reference to the element at position n in the vector.
@@ -201,8 +194,8 @@ namespace ft
 			x.capacity_ = tmp_capacity1;
 			x.data_ = tmp1;
 		}
-		iterator begin(){return data_;}
-		iterator end(){return data_ + size_ - 1;}
+		iterator begin() { return data_; }
+		iterator end() { return data_ + size_; }
 
 	private:
 		pointer data_;
