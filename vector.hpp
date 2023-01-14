@@ -22,9 +22,9 @@ namespace ft
 		typedef typename ft::iterator<value_type>::difference_type difference_type;
 
 		// Default constructor
-		vector(const allocator_type &alloc = allocator_type()) : data_(nullptr), size_(0), capacity_(0), alloc(alloc) {}
+		explicit vector(const allocator_type &alloc = allocator_type()) : data_(nullptr), size_(0), capacity_(0), alloc(alloc) {}
 		// Constructor that takes an initial size and a value
-		vector(size_type size, value_type value = T(), const allocator_type &alloc = allocator_type()) : alloc(alloc)
+		explicit vector(size_type size, value_type value = T(), const allocator_type &alloc = allocator_type()) : alloc(alloc)
 		{
 			size_ = size;
 			capacity_ = size;
@@ -82,7 +82,7 @@ namespace ft
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
-			this->resize(size_ + 1);
+			this->resize(size_ + 1, value);
 			this->alloc.construct(data_ + size_ - 1, value);
 		}
 
@@ -112,22 +112,28 @@ namespace ft
 			{
 				if (n > capacity_)
 				{
-					if (capacity_ * 2 >= n)
+					if ((capacity_ * 2) >= n)
 						capacity_ *= 2;
 					else
 						capacity_ = n;
 				}
 				pointer data_new = this->alloc.allocate(capacity_);
+				for (size_type i = 0; i < size_; ++i)
+				{
+					this->alloc.construct(data_ + i, val);
+					
+				}
 				// ft::vector<value_type> new_(capacity_, val);
 				size_ = n;
 				for (size_type i = 0; i < size_; i++)
 				{
 					if (nullptr != data_)
 						data_new[i] = data_[i];
+					std::cout << "size = " << size_ << std::endl;
 				}
+				
 				data_ = data_new;
 			}
-			(void) val;
 			// }
 		}
 
