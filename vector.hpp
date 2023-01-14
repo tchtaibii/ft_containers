@@ -118,20 +118,16 @@ namespace ft
 						capacity_ = n;
 				}
 				pointer data_new = this->alloc.allocate(capacity_);
-				for (size_type i = 0; i < size_; ++i)
-				{
-					this->alloc.construct(data_ + i, val);
-					
-				}
-				// ft::vector<value_type> new_(capacity_, val);
+				for (size_type i = 0; i < n; i++)
+					this->alloc.construct(data_new + i, val);
 				size_ = n;
 				for (size_type i = 0; i < size_; i++)
 				{
-					if (nullptr != data_)
-						data_new[i] = data_[i];
+					std::cout << "i = " << i << std::endl;
 					std::cout << "size = " << size_ << std::endl;
+					if(data_ != nullptr)
+						this->alloc.construct(data_new + i, data_[i]);
 				}
-				
 				data_ = data_new;
 			}
 			// }
