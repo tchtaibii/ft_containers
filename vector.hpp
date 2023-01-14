@@ -83,7 +83,6 @@ namespace ft
 		void push_back(value_type value)
 		{
 			this->resize(size_ + 1, value);
-			this->alloc.construct(data_ + size_ - 1, value);
 		}
 
 		// Removes the last element in the vector, effectively reducing the container size by one.
