@@ -11,6 +11,7 @@ namespace ft
     {
     public:
         typedef _Iter iterator_type;
+        typedef size_t size_type;
         typedef typename iterator_traits<iterator_type>::iterator_category iterator_category;
         typedef typename iterator_traits<iterator_type>::value_type value_type;
         typedef typename iterator_traits<iterator_type>::difference_type difference_type;
@@ -75,7 +76,7 @@ namespace ft
             return *this;
         }
         // the offset dereference operator ([])
-        value_type &operator[](size_t index) { return ptr_[index]; }
+        value_type &operator[](size_type index) { return ptr_[index]; }
 
     private:
         pointer ptr_;

@@ -1,5 +1,5 @@
-#ifndef FT_vector_HPP
-#define FT_vector_HPP
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include <iostream>
 #include "iterator.hpp"
@@ -12,9 +12,9 @@ namespace ft
 	public:
 		typedef T value_type;
 		typedef T *pointer;
-		typedef const T *const_pointer;
-		typedef T &reference;
-		typedef const T &const_reference;
+		typedef const T* const_pointer;
+		typedef T& reference;
+		typedef const T& const_reference;
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
 		typedef typename ft::iterator<value_type> iterator;
@@ -24,7 +24,7 @@ namespace ft
 		// Default constructor
 		vector(const allocator_type &alloc = allocator_type()) : data_(nullptr), size_(0), capacity_(0), alloc(alloc) {}
 		// Constructor that takes an initial size and a value
-		vector(size_t size, value_type value = T(), const allocator_type &alloc = allocator_type()) : alloc(alloc)
+		vector(size_type size, value_type value = T(), const allocator_type &alloc = allocator_type()) : alloc(alloc)
 		{
 			size_ = size;
 			capacity_ = size;
@@ -57,12 +57,14 @@ namespace ft
 			}
 			return *this;
 		}
+		
 		// Destructor
 		~vector()
 		{
-			for (size_t i = 0; i < size_; i++)
+			for (size_type i = 0; i < size_; i++)
 				alloc.destroy(data_ + i);
-			alloc.deallocate(data_, size_);
+			if (data_)
+				alloc.deallocate(data_, size_);
 		}
 
 		// Return true if the vector is empty
@@ -125,11 +127,18 @@ namespace ft
 				}
 				data_ = data_new;
 			}
+			(void) val;
 			// }
 		}
 
 		// Returns a reference to the element at position n in the vector.
-		value_type &at(size_t index)
+		reference at(size_type index)
+		{
+			if (index >= size_)
+				throw std::out_of_range("Index out of range");
+			return data_[index];
+		}
+		const_reference at(size_type index) const
 		{
 			if (index >= size_)
 				throw std::out_of_range("Index out of range");
@@ -137,14 +146,15 @@ namespace ft
 		}
 
 		// Return a reference to the element at the given index, without bounds checking
-		value_type &operator[](size_t index) { return data_[index]; }
-
+		reference operator[] (size_type index) { return data_[index];}
+		const_reference operator[] (size_type index) const { return data_[index];}
+		
 		// Returns a reference to the first element in the vector.
-		reference front() { return data_[0]; }
-
+		reference front() { return data_[0];}
+		const_reference front() const { return data_[0];}
 		// Returns a reference to the last element in the vector.
-		reference back() { return data_[size_ - 1]; }
-
+		reference back() { return data_[size_ - 1];}
+		const_reference back() const { return data_[size_ - 1];}
 		// Requests that the vector capacity be at least enough to contain n elements.
 		void reserve(size_type n)
 		{
@@ -157,13 +167,12 @@ namespace ft
 				capacity_ = n;
 			}
 		}
-
 		// Removes all elements from the vector (which are destroyed), leaving the container with a size of 0.
 		void clear()
 		{
 			if (size_ != 0)
 			{
-				for (size_t i = 0; i < size_; i++)
+				for (size_type i = 0; i < size_; i++)
 					alloc.destroy(data_ + i);
 				size_ = 0;
 			}
