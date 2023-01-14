@@ -100,12 +100,13 @@ namespace ft
 		void resize(size_type n, value_type val = value_type())
 		{
 			size_type tmp_size = size_;
+			size_type tmp_capacity = capacity_;
 			if (n < size_)
 			{
 				while (n < size_)
 				{
 					this->alloc.destroy(data_ + size_ - 1);
-					--size_;
+					size_--;
 				}
 			}
 			else
@@ -113,21 +114,28 @@ namespace ft
 				if (n > capacity_)
 				{
 					if ((capacity_ * 2) >= n)
-						capacity_ *= 2;
+						tmp_capacity *= 2;
 					else
-						capacity_ = n;
+						tmp_capacity = n;
 				}
-				pointer data_new = this->alloc.allocate(capacity_);
-				for (size_type i = 0; i < n; i++)
-					this->alloc.construct(data_new + i, val);
-				size_ = n;
-				for (size_type i = 0; i < size_; i++)
+				pointer data_new = this->alloc.allocate(tmp_capacity);
+				size_type i = 0;
+				while(i < tmp_size)
 				{
-					if(data_ != nullptr)
-						this->alloc.construct(data_new + i, data_[i]);
+					this->alloc.construct(data_new + i, data_[i]);
+					i++;
 				}
+				while(i < n)
+				{
+					this->alloc.construct(data_new + i, val);
+					i++;
+				}
+				size_ = n;
 				for (size_type i = 0; i < tmp_size; i++)
 					alloc.destroy(data_ + i);
+				if(data_ != nullptr)
+					this->alloc.deallocate(data_, capacity_);
+				capacity_ = tmp_capacity;
 				data_ = data_new;
 			}
 			// }
