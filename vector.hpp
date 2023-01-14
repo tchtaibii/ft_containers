@@ -64,7 +64,7 @@ namespace ft
 			for (size_type i = 0; i < size_; i++)
 				alloc.destroy(data_ + i);
 			if (data_)
-				alloc.deallocate(data_, size_);
+				alloc.deallocate(data_, capacity_);
 		}
 
 		// Return true if the vector is empty
@@ -99,12 +99,12 @@ namespace ft
 		// Resizes the container so that it contains n elements.
 		void resize(size_type n, value_type val = value_type())
 		{
+			size_type tmp_size = size_;
 			if (n < size_)
 			{
-
 				while (n < size_)
 				{
-					this->alloc.destroy(data_ + n);
+					this->alloc.destroy(data_ + size_ - 1);
 					--size_;
 				}
 			}
@@ -123,11 +123,11 @@ namespace ft
 				size_ = n;
 				for (size_type i = 0; i < size_; i++)
 				{
-					std::cout << "i = " << i << std::endl;
-					std::cout << "size = " << size_ << std::endl;
 					if(data_ != nullptr)
 						this->alloc.construct(data_new + i, data_[i]);
 				}
+				for (size_type i = 0; i < tmp_size; i++)
+					alloc.destroy(data_ + i);
 				data_ = data_new;
 			}
 			// }
