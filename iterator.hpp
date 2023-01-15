@@ -20,7 +20,7 @@ namespace ft
 
         // CONSTRUCTOR
         iterator(pointer ptr_) : ptr_(ptr_) {}
-        iterator() : ptr_(nullptr) {}
+        iterator() : ptr_(NULL) {}
         iterator(const iterator &cp) : ptr_(cp.ptr_) {}
         iterator &operator=(const iterator &cp)
         {
@@ -34,18 +34,18 @@ namespace ft
         reference operator*() const { return *ptr_; }
         reference operator->() const { return ptr_; }
         // incremented/decremented
-        iterator &operator++()
+        iterator operator++()
         {
             ++ptr_;
             return *this;
         }
-        iterator &operator++(int)
+        iterator operator++(int)
         {
             iterator tmp(*this);
             ++ptr_;
             return tmp;
         }
-        iterator &operator--()
+        iterator operator--()
         {
             --ptr_;
             return *this;

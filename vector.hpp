@@ -22,7 +22,7 @@ namespace ft
 		typedef typename ft::iterator<const value_type> const_iterator;
 		typedef typename ft::iterator<value_type>::difference_type difference_type;
 		// Default constructor
-		explicit vector(const allocator_type &alloc = allocator_type()) : data_(nullptr), size_(0), capacity_(0), alloc(alloc) {}
+		explicit vector(const allocator_type &alloc = allocator_type()) : data_(NULL), size_(0), capacity_(0), alloc(alloc) {}
 		// Constructor that takes an initial size and a value
 		explicit vector(size_type size, value_type value = T(), const allocator_type &alloc = allocator_type()) : alloc(alloc)
 		{
@@ -33,40 +33,34 @@ namespace ft
 				this->alloc.construct(data_ + i, value);
 		}
 		// Copy constructor
-		vector(const vector &other) : data_(nullptr), size_(other.size_), capacity_(other.capacity_), alloc(other.alloc)
+		vector(const vector &other) : data_(NULL), size_(other.size_), capacity_(other.capacity_), alloc(other.alloc)
 		{
 			data_ = this->alloc.allocate(size_);
 			for (size_type i = 0; i < size_; i++)
 				this->alloc.construct(data_ + i, other.data_[i]);
 		}
 
-		// template <class T, class Alloc>
-		// bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// bool operator==(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
 		// {
 		// 	return lhs.data_ == rhs.data_ && size_ == rhs.size_ && capacity_ == rhs.capacity && rhs.alloc == lhs.alloc;
 		// }
-		// template <class T, class Alloc>
-		// bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// bool operator!=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
 		// {
 		// 	return lhs.data_ != rhs.data_ && lhs.size_ == rhs.size_ && lhs.capacity_ != rhs.capacity && rhs.alloc != lhs.alloc;
 		// }
-		// template <class T, class Alloc>
-		// bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// bool operator<(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
 		// {
 		// 	return lhs.data_ < rhs.data_ && lhs.size_ < rhs.size_ && lhs.capacity_ < rhs.capacity && rhs.alloc < lhs.alloc;
 		// }
-		// template <class T, class Alloc>
-		// bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// bool operator<=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
 		// {
 		// 	return lhs.data_ <= rhs.data_ && lhs.size_ <= rhs.size_ && lhs.capacity_ <= rhs.capacity && rhs.alloc <= lhs.alloc;
 		// }
-		// template <class T, class Alloc>
 		// bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 		// {
 		// 	return lhs.data_ > rhs.data_ && lhs.size_ > rhs.size_ && lhs.capacity_ > rhs.capacity && rhs.alloc > lhs.alloc;
 		// }
-		// template <class T, class Alloc>
-		// bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// bool operator>=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
 		// {
 		// 	return lhs.data_ >= rhs.data_ && lhs.size_ >= rhs.size_ && lhs.capacity_ >= rhs.capacity && rhs.alloc >= lhs.alloc;
 		// }
@@ -91,8 +85,7 @@ namespace ft
 		// Destructor
 		~vector()
 		{
-			for (size_type i = 0; i < size_; i++)
-				alloc.destroy(data_ + i);
+			this->clear();
 			if (data_)
 				alloc.deallocate(data_, capacity_);
 		}
@@ -155,12 +148,11 @@ namespace ft
 				size_ = n;
 				for (size_type i = 0; i < tmp_size; i++)
 					alloc.destroy(data_ + i);
-				if (data_ != nullptr)
+				if (data_ != NULL)
 					this->alloc.deallocate(data_, capacity_);
 				capacity_ = tmp_capacity;
 				data_ = data_new;
 			}
-			// }
 		}
 		// Returns a reference to the element at position n in the vector.
 		reference at(size_type index)
@@ -257,53 +249,21 @@ namespace ft
 		}
 		void insert(iterator position, size_type n, const value_type &val)
 		{
+			if ((std::size_t)std::numeric_limits<std::ptrdiff_t>::max() == n)
+				throw std::length_error("Length exception");
 			if (n)
 			{
-				pointer data_added = alloc.allocate(n);
-				for (size_type i = 0; i < n; i++)
-					alloc.construct(data_added + i, val);
-				// std::cout << "->>> " << data_added[3] << std::endl;
-				this->resize(n + size_);
-				pointer data_new = alloc.allocate(n + size_);
 				size_type i = 0;
-				if (data_ != nullptr)
-				{	
-					iterator it = this->begin();
-					size_type i = 0;
-					while (it != position)
-					{
-						alloc.construct(data_new + i, data_[i]);
-						i++;
-						it++;
-					}
-				}
-				size_type point = i;
-				size_type k = 0;
-				while (k < n)
+				iterator it;
+				while (i < n)
 				{
-					alloc.construct(data_new + i, data_added[k]);
+					it = this->insert(position, val);
+					position = it;
 					i++;
-					k++;
-					std::cout << "hadi '2'" << std::endl;
 				}
-				while (point < size_)
-				{
-					alloc.construct(data_new + i, data_[point]);
-					point++;
-					i++;
-					std::cout << "hadi '3'" << std::endl;
-				}
-				for (size_t i = 0; i < n; i++)
-				{
-					alloc.destroy(data_added + i);
-					alloc.destroy(data_ + i);
-				}
-				if (data_ != nullptr)
-					this->alloc.deallocate(data_, capacity_);
-				this->alloc.deallocate(data_added, n);
-				data_ = data_new;
 			}
 		}
+
 	private:
 		pointer data_;
 		size_type size_;
