@@ -2,6 +2,7 @@
 #define VECTOR_HPP
 
 #include <iostream>
+#include <unistd.h>
 #include "iterator.hpp"
 
 namespace ft
@@ -214,6 +215,41 @@ namespace ft
 		}
 		iterator begin() { return data_; }
 		iterator end() { return data_ + size_; }
+
+        // The vector is extended by inserting new elements before the element at the specified position
+        iterator insert(iterator position, const value_type& val)
+        {
+            size_type index = (position - this->begin());
+			push_back(val);
+			size_type tmp_size = size_;
+			value_type tmp;
+			while(index < tmp_size - 1)
+			{
+				if (tmp_size - 2 >= 0)
+				{
+					tmp = data_[tmp_size - 1];
+					data_[tmp_size - 1] = data_[tmp_size - 2];
+					data_[tmp_size - 2] = tmp;
+					tmp_size--;
+				}
+				else
+					break;
+			}
+			iterator it = std::find(this->begin() + index, this->end(), val); 
+			return (it);
+        }
+        void insert(iterator position, size_type n, const value_type& val)
+		{
+			std::cout << "n = " << n << std::endl;
+			for (size_t i = 0; i < n; i++)
+			{
+				insert(position,val);
+				// sleep(1);
+			}
+		}
+        // template <class InputIterator>
+        // void insert(iterator position, InputIterator first, InputIterator last);
+
 
 	private:
 		pointer data_;

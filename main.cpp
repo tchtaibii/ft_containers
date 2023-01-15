@@ -1,14 +1,23 @@
 #include "vector.hpp"
-// #include <vector>
+#include <vector>
 int main()
 {
-    ft::vector<std::string> v;
-
-   v.resize(14, "HelloWorld");
-    v.resize(6, "ABC");
-    v.resize(14, b_string[18]);
-    v.resize(15, b_string[57]);
-    v.resize(64, "I-like-vectors");
-
-    return 0;
+    ft::vector<int> myVector;
+    // Insert some initial values into the vector
+    myVector.push_back(1);
+    myVector.push_back(2);
+    myVector.push_back(3);
+    // Print out the current contents of the vector
+    for (ft::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+    // Insert the value 4 at the third position (index 2)
+    myVector.insert(myVector.begin() + 2, 4);
+    myVector.insert(myVector.begin() + 2, 6, 99999);
+    std::cout << "capacity : " << myVector.capacity() << std::endl; 
+    std::cout << "size : " << myVector.size() << std::endl; 
+    // Print out the current contents of the vector
+    for (ft::vector<int>::iterator it = myVector.begin(); it != myVector.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
 }

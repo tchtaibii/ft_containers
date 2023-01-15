@@ -59,6 +59,11 @@ namespace ft
         // arithmetic operators + and -
         iterator operator+(difference_type n) const { return iterator(ptr_ + n); }
         iterator operator-(difference_type n) const { return iterator(ptr_ - n); }
+        difference_type operator-(iterator n)
+        {
+            difference_type i = std::distance(n.ptr_, this->ptr_);
+            return i;
+        }
         // compared with inequality relational operators
         bool operator<(difference_type n) const { return ptr_ < n; }
         bool operator>(difference_type n) const { return ptr_ > n; }
