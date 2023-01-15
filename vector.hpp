@@ -40,36 +40,36 @@ namespace ft
 				this->alloc.construct(data_ + i, other.data_[i]);
 		}
 
-		template <class T, class Alloc>
-		bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ == rhs.data_ && size_ == rhs.size_ && capacity_ == rhs.capacity && rhs.alloc == lhs.alloc;
-		}
-		template <class T, class Alloc>
-		bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ != rhs.data_ && lhs.size_ == rhs.size_ && lhs.capacity_ != rhs.capacity && rhs.alloc != lhs.alloc;
-		}
-		template <class T, class Alloc>
-		bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ < rhs.data_ && lhs.size_ < rhs.size_ && lhs.capacity_ < rhs.capacity && rhs.alloc < lhs.alloc;
-		}
-		template <class T, class Alloc>
-		bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ <= rhs.data_ && lhs.size_ <= rhs.size_ && lhs.capacity_ <= rhs.capacity && rhs.alloc <= lhs.alloc;
-		}
-		template <class T, class Alloc>
-		bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ > rhs.data_ && lhs.size_ > rhs.size_ && lhs.capacity_ > rhs.capacity && rhs.alloc > lhs.alloc;
-		}
-		template <class T, class Alloc>
-		bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		{
-			return lhs.data_ >= rhs.data_ && lhs.size_ >= rhs.size_ && lhs.capacity_ >= rhs.capacity && rhs.alloc >= lhs.alloc;
-		}
+		// template <class T, class Alloc>
+		// bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ == rhs.data_ && size_ == rhs.size_ && capacity_ == rhs.capacity && rhs.alloc == lhs.alloc;
+		// }
+		// template <class T, class Alloc>
+		// bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ != rhs.data_ && lhs.size_ == rhs.size_ && lhs.capacity_ != rhs.capacity && rhs.alloc != lhs.alloc;
+		// }
+		// template <class T, class Alloc>
+		// bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ < rhs.data_ && lhs.size_ < rhs.size_ && lhs.capacity_ < rhs.capacity && rhs.alloc < lhs.alloc;
+		// }
+		// template <class T, class Alloc>
+		// bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ <= rhs.data_ && lhs.size_ <= rhs.size_ && lhs.capacity_ <= rhs.capacity && rhs.alloc <= lhs.alloc;
+		// }
+		// template <class T, class Alloc>
+		// bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ > rhs.data_ && lhs.size_ > rhs.size_ && lhs.capacity_ > rhs.capacity && rhs.alloc > lhs.alloc;
+		// }
+		// template <class T, class Alloc>
+		// bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
+		// {
+		// 	return lhs.data_ >= rhs.data_ && lhs.size_ >= rhs.size_ && lhs.capacity_ >= rhs.capacity && rhs.alloc >= lhs.alloc;
+		// }
 		// Assigment copy
 		vector &operator=(const vector &other)
 		{
@@ -242,7 +242,7 @@ namespace ft
 			value_type tmp;
 			while (index < tmp_size - 1)
 			{
-				if (tmp_size - 2 >= 0)
+				if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
 				{
 					tmp = data_[tmp_size - 1];
 					data_[tmp_size - 1] = data_[tmp_size - 2];
@@ -257,15 +257,53 @@ namespace ft
 		}
 		void insert(iterator position, size_type n, const value_type &val)
 		{
-			std::cout << "n = " << n << std::endl;
-			for (size_t i = 0; i < n; i++)
+			if (n)
 			{
-				insert(position, val);
-				// sleep(1);
+				pointer data_added = alloc.allocate(n);
+				for (size_type i = 0; i < n; i++)
+					alloc.construct(data_added + i, val);
+				// std::cout << "->>> " << data_added[3] << std::endl;
+				this->resize(n + size_);
+				pointer data_new = alloc.allocate(n + size_);
+				size_type i = 0;
+				if (data_ != nullptr)
+				{	
+					iterator it = this->begin();
+					size_type i = 0;
+					while (it != position)
+					{
+						alloc.construct(data_new + i, data_[i]);
+						i++;
+						it++;
+					}
+				}
+				size_type point = i;
+				size_type k = 0;
+				while (k < n)
+				{
+					alloc.construct(data_new + i, data_added[k]);
+					i++;
+					k++;
+					std::cout << "hadi '2'" << std::endl;
+				}
+				while (point < size_)
+				{
+					alloc.construct(data_new + i, data_[point]);
+					point++;
+					i++;
+					std::cout << "hadi '3'" << std::endl;
+				}
+				for (size_t i = 0; i < n; i++)
+				{
+					alloc.destroy(data_added + i);
+					alloc.destroy(data_ + i);
+				}
+				if (data_ != nullptr)
+					this->alloc.deallocate(data_, capacity_);
+				this->alloc.deallocate(data_added, n);
+				data_ = data_new;
 			}
 		}
-		// template <class InputIterator>
-		// void insert(iterator position, InputIterator first, InputIterator last);
 	private:
 		pointer data_;
 		size_type size_;
