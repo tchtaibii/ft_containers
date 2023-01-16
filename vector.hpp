@@ -2,7 +2,6 @@
 #define VECTOR_HPP
 
 #include <iostream>
-#include <unistd.h>
 #include "iterator.hpp"
 
 namespace ft
@@ -39,31 +38,82 @@ namespace ft
 			for (size_type i = 0; i < size_; i++)
 				this->alloc.construct(data_ + i, other.data_[i]);
 		}
+		template <class InputIterator>
+		vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type())
+		{
+			this->alloc = alloc;
+			while (first != last)
+			{
+				this->push_back(*first);
+				first++;
+			}
+		}
+		template <class T, class Alloc>
+		bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (lhs.size_ != rhs.size_)
+				return 0;
+			for (size_type i = 0; i < lhs.size_; i++)
+			{
+				if(rhs.data_[i] != lhs.data_[i])
+					return 0;
+			}
+			return 1;
+		}
+		template <class T, class Alloc>
+		bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (lhs.size_ == rhs.size_)
+				return 0;
+			for (size_type i = 0; i < lhs.size_; i++)
+			{
+				if(rhs.data_[i] == lhs.data_[i])
+					return 0;
+			}
+			return 1;
+		}
+		template <class T, class Alloc>
+		bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (!(lhs.size_ < rhs.size_))
+				return 0;
+			if(!(rhs.data_ < lhs.data_))
+				return 0;
+			return 1;
+		}
+		template <class T, class Alloc>
+		bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (!(lhs.size_ <= rhs.size_))
+				return 0;
+			for (size_type i = 0; i < lhs.size_; i++)
+			{
+				if(!(rhs.data_[i] <= lhs.data_[i]))
+					return 0;
+			}
+			return 1;
+		}
+		template <class T, class Alloc>
+		bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (!(lhs.size_ > rhs.size_))
+				return 0;
+			if(!(rhs.data_ > lhs.data_))
+				return 0;
+			return 1;
+		}
+		template <class T, class Alloc>
+		bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+		{
+			if (!(lhs.size_ >= rhs.size_))
+				return 0;
+			for (size_type i = 0; i < lhs.size_; i++)
+			{
+				if(!(rhs.data_[i] >= lhs.data_[i]))
+					return 0;
+			return 1;
+		}
 
-		// bool operator==(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
-		// {
-		// 	return lhs.data_ == rhs.data_ && size_ == rhs.size_ && capacity_ == rhs.capacity && rhs.alloc == lhs.alloc;
-		// }
-		// bool operator!=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
-		// {
-		// 	return lhs.data_ != rhs.data_ && lhs.size_ == rhs.size_ && lhs.capacity_ != rhs.capacity && rhs.alloc != lhs.alloc;
-		// }
-		// bool operator<(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
-		// {
-		// 	return lhs.data_ < rhs.data_ && lhs.size_ < rhs.size_ && lhs.capacity_ < rhs.capacity && rhs.alloc < lhs.alloc;
-		// }
-		// bool operator<=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
-		// {
-		// 	return lhs.data_ <= rhs.data_ && lhs.size_ <= rhs.size_ && lhs.capacity_ <= rhs.capacity && rhs.alloc <= lhs.alloc;
-		// }
-		// bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
-		// {
-		// 	return lhs.data_ > rhs.data_ && lhs.size_ > rhs.size_ && lhs.capacity_ > rhs.capacity && rhs.alloc > lhs.alloc;
-		// }
-		// bool operator>=(const vector<value_type, alloc> &lhs, const vector<value_type, alloc> &rhs)
-		// {
-		// 	return lhs.data_ >= rhs.data_ && lhs.size_ >= rhs.size_ && lhs.capacity_ >= rhs.capacity && rhs.alloc >= lhs.alloc;
-		// }
 		// Assigment copy
 		vector &operator=(const vector &other)
 		{
@@ -96,7 +146,11 @@ namespace ft
 		// Return size of allocated storage capacity
 		size_type capacity() const { return capacity_; }
 		// Return max size of the vector
-		size_type max_size() const { return alloc.max_size(); }
+		size_type max_size() const
+		{
+
+			return alloc.max_size();
+		}
 		// Add an element to the end of the vector
 		void push_back(value_type value)
 		{
@@ -105,11 +159,8 @@ namespace ft
 		// Removes the last element in the vector, effectively reducing the container size by one.
 		void pop_back()
 		{
-			if (size_ != 0)
-			{
-				this->alloc.destroy(data_[size_ - 1]);
-				--size_;
-			}
+			this->alloc.destroy(data_ + size_ - 1);
+			--size_;
 		}
 		// Resizes the container so that it contains n elements.
 		void resize(size_type n, value_type val = value_type())
@@ -232,6 +283,7 @@ namespace ft
 			push_back(val);
 			size_type tmp_size = size_;
 			value_type tmp;
+			// shift element to the left
 			while (index < tmp_size - 1)
 			{
 				if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
@@ -262,6 +314,34 @@ namespace ft
 					i++;
 				}
 			}
+		}
+		void assign(size_type n, const value_type &val)
+		{
+			this->clear();
+			this->resize(n, val);
+		}
+		iterator erase(iterator position)
+		{
+			if (size_)
+			{
+				iterator it = this->begin();
+				while (position != it)
+					it++;
+				size_type i = it - this->begin();
+
+				value_type tmp = data_[i];
+				// shift all elements to the right
+				for (size_type j = i; j < size_ - 1; j++)
+				{
+					data_[j] = data_[j + 1];
+				}
+				data_[size_ - 1] = tmp;
+				if (position != this->end())
+					position++;
+				else
+					position = this->end();
+			}
+			return (position);
 		}
 
 	private:
