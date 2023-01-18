@@ -217,7 +217,7 @@ namespace ft
 			x.data_ = tmp1;
 		}
 		iterator begin() { return data_; }
-		iterator end() { return data_ + size_; }
+		iterator end() { return data_ + size_;}
 		// The vector is extended by inserting new elements before the element at the specified position
 		iterator insert(iterator position, const value_type &val)
 		{
@@ -282,9 +282,7 @@ namespace ft
 				value_type tmp = data_[i];
 				// shift all elements to the right
 				for (size_type j = i; j < size_ - 1; j++)
-				{
 					data_[j] = data_[j + 1];
-				}
 				data_[size_ - 1] = tmp;
 				this->pop_back();
 			}
@@ -292,15 +290,16 @@ namespace ft
 		}
 		iterator erase (iterator first, iterator last)
 		{
-			iterator it = first;
-			while(it != last)
+			difference_type it = first - last;
+			if (it < 0)
+				it *= -1;
+			for (size_t i = 0; i < (size_type)it; i++)
 			{
-				this->erase(it);
-				it++;
+				first = this->erase(first);
 			}
-			return it;
+			return first;
 		}
-		
+		allocator_type get_allocator() const {return this->alloc;}
 
 	private:
 		pointer data_;

@@ -20,6 +20,8 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "algorithm": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "__node_handle": "cpp",
+        "memory_resource": "cpp"
     }
 }
