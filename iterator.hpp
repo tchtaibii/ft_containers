@@ -10,14 +10,13 @@ namespace ft
     class iterator
     {
     public:
-        typedef _Iter iterator_type;
-        typedef size_t size_type;
-        typedef typename iterator_traits<iterator_type>::iterator_category iterator_category;
-        typedef typename iterator_traits<iterator_type>::value_type value_type;
-        typedef typename iterator_traits<iterator_type>::difference_type difference_type;
-        typedef typename iterator_traits<iterator_type>::pointer pointer;
-        typedef typename iterator_traits<iterator_type>::reference reference;
-
+        typedef T value_type;
+		typedef T *pointer;
+		typedef const T *const_pointer;
+		typedef T &reference;
+		typedef const T &const_reference;
+		typedef size_t size_type;
+        typedef ptrdiff_t difference_type;
         // CONSTRUCTOR
         iterator(pointer ptr_) : ptr_(ptr_) {}
         iterator() : ptr_(NULL) {}
@@ -31,7 +30,7 @@ namespace ft
         bool operator==(const iterator &other) const { return ptr_ == other.ptr_; }
         bool operator!=(const iterator &other) const { return ptr_ != other.ptr_; }
         // dereferenced as an rvalue
-        reference operator*() const { return *ptr_; }
+        reference operator*() const { return *ptr_;}
         reference operator->() const { return ptr_; }
         // incremented/decremented
         iterator operator++()

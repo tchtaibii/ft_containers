@@ -9,4 +9,5 @@ int main()
     // std::cout << v.capacity() << std::endl;
     // for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
     //     std::cout << *it << std::endl;
+    std::vector<int>::reverse_iterator it;
 }

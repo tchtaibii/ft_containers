@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "iterator.hpp"
+#include "reverse_iterator.hpp"
 #include "utils.hpp"
 
 namespace ft
@@ -90,7 +91,7 @@ namespace ft
 		// Return max size of the vector
 		size_type max_size() const
 		{
-
+			
 			return alloc.max_size();
 		}
 		// Add an element to the end of the vector
@@ -162,7 +163,7 @@ namespace ft
 		}
 		// Return a reference to the element at the given index, without bounds checking
 		reference operator[](size_type index) { return data_[index]; }
-		const_reference operator[](size_type index) const { return data_[index]; }
+		const_reference operator[](const size_type index) const { return data_[index]; }
 		// Returns a reference to the first element in the vector.
 		reference front() { return data_[0]; }
 		const_reference front() const { return data_[0]; }
@@ -177,6 +178,10 @@ namespace ft
 				pointer new_data_ = this->alloc.allocate(n);
 				for (size_type i = 0; i < size_; i++)
 					this->alloc.construct(new_data_ + i, this->data_[i]);
+				for (size_type i = 0; i < size_; i++)
+					alloc.destroy(data_ + i);
+				if (data_)
+					this->alloc.deallocate(data_, capacity_);
 				data_ = new_data_;
 				capacity_ = n;
 			}
@@ -194,27 +199,10 @@ namespace ft
 		// Exchanges the content of the container by the content of x, which is another vector object of the same type. Sizes may differ.
 		void swap(vector &x)
 		{
-			pointer tmp1, tmp2;
-			size_type tmp_size1, tmp_size2;
-			size_type tmp_capacity1, tmp_capacity2;
+			vector tmp(*this);
 
-			tmp1 = this->alloc.allocate(size_);
-			tmp_size1 = size_;
-			tmp_capacity1 = capacity_;
-			for (size_type i = 0; i < size_; i++)
-				this->alloc.construct(tmp1 + i, data_[i]);
-
-			tmp2 = x.alloc.allocate(x.size_);
-			tmp_size2 = x.size_;
-			tmp_capacity2 = x.capacity_;
-			for (size_type i = 0; i < x.size_; i++)
-				x.alloc.construct(tmp2 + i, x.data_[i]);
-			size_ = tmp_size2;
-			capacity_ = tmp_capacity2;
-			data_ = tmp2;
-			x.size_ = tmp_size1;
-			x.capacity_ = tmp_capacity1;
-			x.data_ = tmp1;
+			*this = x;
+			x = tmp;
 		}
 		iterator begin() { return data_; }
 		iterator end() { return data_ + size_;}
