@@ -40,14 +40,20 @@ namespace ft
 				this->alloc.construct(data_ + i, other.data_[i]);
 		}
 		template <class InputIterator>
-		vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+		vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			this->alloc = alloc;
+			vector v;
 			while (first != last)
 			{
-				this->push_back(*first);
+				v.push_back(*first);
 				first++;
 			}
+			this->data_ = this->alloc.allocate(v.size_);
+			for (size_type i = 0; i < v.size_; i++)
+				this->alloc.construct(data_ + i, v.data_[i]);
+			size_ = v.size_;
+			capacity_ = v.size_;
 		}
 
 		// Assigment copy
@@ -56,13 +62,13 @@ namespace ft
 			if (this != &other)
 			{
 				// Deallocate the current data array
-				for (size_type i = 0; i < size_; i++)
-					this->alloc.destroy(data_ + i);
-				this->alloc.deallocate(data_, size_);
+				this->clear();
+				if (data_)
+					this->alloc.deallocate(data_, capacity_);
 				// Allocate a new data array and copy the elements from the other vector
 				size_ = other.size_;
 				capacity_ = other.capacity_;
-				data_ = this->alloc.allocate(size_);
+				data_ = this->alloc.allocate(capacity_);
 				for (size_type i = 0; i < size_; i++)
 					this->alloc.construct(data_ + i, other.data_[i]);
 			}
@@ -257,10 +263,13 @@ namespace ft
 			this->resize(n, val);
 		}
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
+			this->clear();
 			vector tmp(first, last);
-			*this = tmp;
+			this->resize(tmp.size_, tmp.data_[0]);
+			for (size_t i = 0; i < tmp.size_; i++)
+				data_[i] = tmp.data_[i];
 		}
 		iterator erase(iterator position)
 		{
@@ -270,7 +279,6 @@ namespace ft
 				while (position != it)
 					it++;
 				size_type i = it - this->begin();
-
 				value_type tmp = data_[i];
 				// shift all elements to the right
 				for (size_type j = i; j < size_ - 1; j++)
@@ -278,14 +286,21 @@ namespace ft
 					data_[j] = data_[j + 1];
 				}
 				data_[size_ - 1] = tmp;
-				if (position != this->end())
-					position++;
-				else
-					position = this->end();
+				this->pop_back();
 			}
 			return (position);
 		}
-		value_type data(size_type i) { return this->data[i]; }
+		iterator erase (iterator first, iterator last)
+		{
+			iterator it = first;
+			while(it != last)
+			{
+				this->erase(it);
+				it++;
+			}
+			return it;
+		}
+		
 
 	private:
 		pointer data_;
@@ -296,20 +311,23 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (!(lhs.size() < rhs.size()))
-			return 0;
-		if (!(rhs.data_ < lhs.data_))
-			return 0;
-		return 1;
+		if (lhs.size() < rhs.size())
+			return 1;
+        for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
+		{
+			if (lhs[i] < rhs[i])
+				return 1;
+		}
+		return 0;
 	}
 	template <class T, class Alloc>
 	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (!(lhs.size() <= rhs.size()))
-			return 0;
-		for (size_t i = 0; i < lhs.size(); i++)
+		if (lhs.size() > rhs.size())
+			return 0;	
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
-			if (!(rhs.data(i) <= lhs.data(i)))
+			if (lhs[i] > rhs[i])
 				return 0;
 		}
 		return 1;
@@ -317,32 +335,35 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (!(lhs.size() > rhs.size()))
-			return 0;
-		if (!(rhs.data_ > lhs.data_))
-			return 0;
-		return 1;
+		if (lhs.size() > rhs.size())
+			return 1;
+        for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
+		{
+			if (lhs[i] > rhs[i])
+				return 1;
+		}
+		return 0;
 	}
 	template <class T, class Alloc>
 	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (!(lhs.size() >= rhs.size()))
-			return 0;
-		for (size_t i = 0; i < lhs.size(); i++)
+		if (lhs.size() < rhs.size())
+			return 0;	
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
-			if (!(rhs.data(i) >= lhs.data(i)))
-				return 0;
-			return 1;
+			if (lhs[i] > rhs[i])
+				return 1;
 		}
+		return 1;
 	}
 	template <class T, class Alloc>
 	bool operator==(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		if (lhs.size() != rhs.size())
 			return 0;
-		for (size_t i = 0; i < lhs.size(); i++)
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
-			if (rhs.data(i) != lhs.data(i))
+			if (lhs[i] != rhs[i])
 				return 0;
 		}
 		return 1;
@@ -350,14 +371,14 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
-		if (lhs.size() == rhs.size())
-			return 0;
-		for (size_t i = 0; i < lhs.size(); i++)
+		if (lhs.size() != rhs.size())
+			return 1;
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
-			if (rhs.data(i) == lhs.data(i))
-				return 0;
+			if (lhs[i] != rhs[i])
+				return 1;
 		}
-		return 1;
+		return 0;
 	}
 }
 #endif
