@@ -5,7 +5,7 @@
 #include "iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "utils.hpp"
-
+#include <vector>
 namespace ft
 {
 	template <typename T, typename Alloc = std::allocator<T> >
@@ -13,15 +13,18 @@ namespace ft
 	{
 	public:
 		typedef T value_type;
-		typedef T *pointer;
-		typedef const T *const_pointer;
+		typedef const T const_value_type;
+		typedef T* pointer;
+		typedef const T* const_pointer;
 		typedef T &reference;
 		typedef const T &const_reference;
 		typedef size_t size_type;
 		typedef Alloc allocator_type;
 		typedef typename ft::iterator<value_type> iterator;
-		typedef typename ft::iterator<const value_type> const_iterator;
-		typedef typename ft::iterator<value_type>::difference_type difference_type;
+		typedef typename ft::iterator<value_type> const_iterator;
+		typedef typename ft::reverse_iterator<iterator> reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef typename std::ptrdiff_t difference_type;
 		// Default constructor
 		explicit vector(const allocator_type &alloc = allocator_type()) : data_(NULL), size_(0), capacity_(0), alloc(alloc) {}
 		// Constructor that takes an initial size and a value
@@ -204,8 +207,18 @@ namespace ft
 			*this = x;
 			x = tmp;
 		}
-		iterator begin() { return data_; }
-		iterator end() { return data_ + size_;}
+		// begin iterator 
+		const_iterator begin() { return iterator(data_);}
+		iterator begin() const { return const_iterator(data_);}
+		// end iterator
+		iterator end() { return iterator(data_ + size_);}
+		const_iterator end() const { return const_iterator(data_ + size_);}
+		// begin iterator
+		reverse_iterator rbegin(){ return reverse_iterator(this->end());}
+		const_reverse_iterator rbegin() const {return const_reverse_iterator(this->end());}
+		// reverse end 
+		reverse_iterator rend() { return reverse_iterator(this->begin());}
+		const_reverse_iterator rend() const {return const_reverse_iterator(this->begin());}
 		// The vector is extended by inserting new elements before the element at the specified position
 		iterator insert(iterator position, const value_type &val)
 		{
@@ -215,6 +228,7 @@ namespace ft
 			value_type tmp;
 			// shift element to the left
 			while (index < tmp_size - 1)
+
 			{
 				if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
 				{
