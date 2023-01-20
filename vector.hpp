@@ -5,7 +5,6 @@
 #include "iterator.hpp"
 #include "reverse_iterator.hpp"
 #include "utils.hpp"
-#include <vector>
 namespace ft
 {
 	template <typename T, typename Alloc = std::allocator<T> >
@@ -202,10 +201,13 @@ namespace ft
 		// Exchanges the content of the container by the content of x, which is another vector object of the same type. Sizes may differ.
 		void swap(vector &x)
 		{
-			vector tmp(*this);
+			std::swap(data_, x.data_);
+			std::swap(size_, x.size_);
+			std::swap(capacity_, x.capacity_);
+			// vector tmp(*this);
 
-			*this = x;
-			x = tmp;
+			// *this = x;
+			// x = tmp;
 		}
 		// begin iterator 
 		const_iterator begin() { return iterator(data_);}
@@ -215,6 +217,7 @@ namespace ft
 		const_iterator end() const { return const_iterator(data_ + size_);}
 		// begin iterator
 		reverse_iterator rbegin(){ return reverse_iterator(this->end());}
+
 		const_reverse_iterator rbegin() const {return const_reverse_iterator(this->end());}
 		// reverse end 
 		reverse_iterator rend() { return reverse_iterator(this->begin());}
@@ -258,6 +261,12 @@ namespace ft
 					i++;
 				}
 			}
+		}
+		
+		template <class InputIterator>
+    	void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
+		{
+			
 		}
 		void assign(size_type n, const value_type &val)
 		{
@@ -321,6 +330,13 @@ namespace ft
 		}
 		return 0;
 	}
+
+	template <class _T>
+	void	swap(_T &v1, _T& v2)
+	{
+		v1.swap(v2);
+	}
+
 	template <class T, class Alloc>
 	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
