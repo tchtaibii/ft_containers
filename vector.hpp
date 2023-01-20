@@ -204,10 +204,6 @@ namespace ft
 			std::swap(data_, x.data_);
 			std::swap(size_, x.size_);
 			std::swap(capacity_, x.capacity_);
-			// vector tmp(*this);
-
-			// *this = x;
-			// x = tmp;
 		}
 		// begin iterator 
 		const_iterator begin() { return iterator(data_);}
@@ -266,7 +262,15 @@ namespace ft
 		template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
-			
+			if (last != first)
+			{
+				while (last != first)
+				{
+					// std::cout << "first " << *first << std::endl;
+					position = this->insert(position, *first++);
+				}
+				// position = this->insert(position, *first);
+			}
 		}
 		void assign(size_type n, const value_type &val)
 		{

@@ -3,12 +3,19 @@
 #include <iostream>
 int main()
 {
-    ft::vector<int> v(4,50);
-    ft::vector<int>::reverse_iterator it = v.rbegin();
-    // std::cout << v.capacity() << std::endl;
-    // v.assign(2, 900);
-    // std::cout << v.capacity() << std::endl;
-    // for(std::vector<int>::iterator it = v.begin(); it != v.end(); ++it) {
-    //     std::cout << *it << std::endl;
-    // std::vector<int>::reverse_iterator it;
+    ft::vector<std::string> v;
+    std::string s_string[32] = {                                                                   \
+        "1", "2", "3",                    \
+        "4", "5", "6",                    \
+        "7", "8", "9",                    \
+        "10", "11", "12",                    \
+        "13", "14", "15",                    \
+        "16", "17", "18",                    \
+        "19", "21", "21",                    \
+        "22", "23", "24",                    \
+        "25", "26", "27",                    \
+        "28", "29", "30",                    \
+        "31", "32"                                             \
+    };
+    v.insert(v.begin(), s_string, s_string + 32);
 }
