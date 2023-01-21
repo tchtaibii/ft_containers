@@ -231,81 +231,123 @@ namespace ft
 		reverse_iterator rend() { return reverse_iterator(this->begin()); }
 		const_reverse_iterator rend() const { return const_reverse_iterator(this->begin()); }
 		// The vector is extended by inserting new elements before the element at the specified position
+
 		iterator insert(iterator position, const value_type &val)
 		{
-			size_type index = (position - this->begin());
-			push_back(val);
-			size_type tmp_size = size_;
-			value_type tmp;
-			// shift element to the left
-			while (index < tmp_size - 1)
-			{
-				if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
-				{
-					tmp = data_[tmp_size - 1];
-					data_[tmp_size - 1] = data_[tmp_size - 2];
-					data_[tmp_size - 2] = tmp;
-					tmp_size--;
-				}
-				else
-					break;
-			}
-			iterator it = std::find(this->begin() + index, this->end(), val);
-			return (it);
+			this->insert(position, 1, val);
+			return (++position);
 		}
-		void insert(iterator position, size_type n, const value_type &val)
+		void insert(iterator position, size_type size, const value_type &val)
 		{
-			if ((size_type)std::numeric_limits<difference_type>::max() == n)
-				throw std::length_error("Length exception");
-			if (n)
+			iterator it = this->begin();
+			if (this->size_ + size >= this->capacity_)
+				this->reserve(this->size_ + size);
+			size_type i = 0;
+			while (it != position)
 			{
-				size_type tmp_capacity = 0;
-				if (n + size_ > capacity_)
-				{
-					if ((capacity_ * 2) >= n + size_)
-						tmp_capacity = 2 * capacity_;
-					else
-						tmp_capacity = n + size_;
-				}
-				else
-					tmp_capacity = capacity_;
-				size_type i = 0;
-				while (i < n)
-				{
-					position = this->insert(position, val);
-					i++;
-				}
-				capacity_ = tmp_capacity;
+				++it;
+				++i;
 			}
+			for (size_type j = this->size_; j >= 1 && j >= i; j--)
+				this->alloc.construct(i + j + size - 1, this->data_[j - 1]);
+			for (size_type j = 0; j < size; j++)
+				this->alloc.construct(i + j, val);
+			this->size_ += size;
+		}
+		void insert(iterator position, iterator first, iterator last)
+		{
+			size_type size = last - first;
+			iterator it = this->begin();
+			if (this->size_ + size >= this->capacity_)
+				this->reserve(this->size_ + size);
+			size_type i = 0;
+			while (it != position)
+			{
+				++it;
+				++i;
+			}
+			for (size_type j = this->size_ - 1; j > i + 1; j++)
+				this->alloc.construct(i + j + size, this->data_[+j - 1]);
+			for (size_type j = 0; j < size; j++)
+				this->alloc.construct(i + j, *first++);
+			this->size_ += size;
 		}
 
-		template <class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
-		{
-			if (last != first)
-			{
-				size_type tmp_size = size_;
-				size_type tmp_capacity = capacity_;
-				vector tmp;
-				while (last != first)
-				{
-					tmp.push_back(*first);
-					first++;
-				}
-				iterator it = tmp.end();
-				while (--it != tmp.begin())
-					position = this->insert(position, *it);
-				position = this->insert(position, *tmp.begin());
-				if (size_> capacity_)
-				{
-					if ((tmp_capacity * 2) >= tmp.size_ + tmp_size)
-						tmp_capacity *= 2;
-					else
-						tmp_capacity = tmp.size_ + tmp_size;
-				}
-				capacity_ = tmp_capacity;
-			}
-		}
+		// iterator insert(iterator position, const value_type &val)
+		// {
+		// 	size_type index = (position - this->begin());
+		// 	push_back(val);
+		// 	size_type tmp_size = size_;
+		// 	value_type tmp;
+		// 	// shift element to the left
+		// 	while (index < tmp_size - 1)
+		// 	{
+		// 		if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
+		// 		{
+		// 			tmp = data_[tmp_size - 1];
+		// 			data_[tmp_size - 1] = data_[tmp_size - 2];
+		// 			data_[tmp_size - 2] = tmp;
+		// 			tmp_size--;
+		// 		}
+		// 		else
+		// 			break;
+		// 	}
+		// 	iterator it = std::find(this->begin() + index, this->end(), val);
+		// 	return (it);
+		// }
+		// void insert(iterator position, size_type n, const value_type &val)
+		// {
+		// 	if ((size_type)std::numeric_limits<difference_type>::max() == n)
+		// 		throw std::length_error("Length exception");
+		// 	if (n)
+		// 	{
+		// 		size_type tmp_capacity = 0;
+		// 		if (n + size_ > capacity_)
+		// 		{
+		// 			if ((capacity_ * 2) >= n + size_)
+		// 				tmp_capacity = 2 * capacity_;
+		// 			else
+		// 				tmp_capacity = n + size_;
+		// 		}
+		// 		else
+		// 			tmp_capacity = capacity_;
+		// 		size_type i = 0;
+		// 		while (i < n)
+		// 		{
+		// 			position = this->insert(position, val);
+		// 			i++;
+		// 		}
+		// 		capacity_ = tmp_capacity;
+		// 	}
+		// }
+
+		// template <class InputIterator>
+		// void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
+		// {
+		// 	if (last != first)
+		// 	{
+		// 		size_type tmp_size = size_;
+		// 		size_type tmp_capacity = capacity_;
+		// 		vector tmp;
+		// 		while (last != first)
+		// 		{
+		// 			tmp.push_back(*first);
+		// 			first++;
+		// 		}
+		// 		iterator it = tmp.end();
+		// 		while (--it != tmp.begin())
+		// 			position = this->insert(position, *it);
+		// 		position = this->insert(position, *tmp.begin());
+		// 		if (size_> capacity_)
+		// 		{
+		// 			if ((tmp_capacity * 2) >= tmp.size_ + tmp_size)
+		// 				tmp_capacity *= 2;
+		// 			else
+		// 				tmp_capacity = tmp.size_ + tmp_size;
+		// 		}
+		// 		capacity_ = tmp_capacity;
+		// 	}
+		// }
 		void assign(size_type n, const value_type &val)
 		{
 			this->clear();
