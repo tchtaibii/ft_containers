@@ -75,7 +75,7 @@ namespace ft
             current += n;
             return *this;
         }
-        reference operator[](difference_type n) const
+        reference operator[](difference_type n) 
         {
             return current[-n - 1];
         }
@@ -123,7 +123,6 @@ namespace ft
     {
         return reverse_iterator<Iterator>(x.base() - n);
     }
-
 }
 
 #endif

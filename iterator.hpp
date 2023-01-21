@@ -31,7 +31,7 @@ namespace ft
         }
         // dereferenced as an rvalue
         reference operator*() const { return *ptr_;}
-        reference operator->() const { return ptr_; }
+        pointer operator->() const { return ptr_; }
         // incremented/decremented
         iterator operator++()
         {

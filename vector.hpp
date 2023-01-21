@@ -93,9 +93,10 @@ namespace ft
 		// Return max size of the vector
 		size_type max_size() const
 		{
-			if (typeid(value_type) == typeid(char) || typeid(value_type) == typeid(unsigned char))
-				return alloc.max_size() / 2;
-			return alloc.max_size();
+			// if (typeid(value_type) == typeid(char) || typeid(value_type) == typeid(unsigned char))
+			// 	return alloc.max_size() / 2;
+			// return alloc.max_size();
+			return alloc.max_size() > PTRDIFF_MAX ? PTRDIFF_MAX : alloc.max_size();
 		}
 		// Add an element to the end of the vector
 		void push_back(value_type value)
@@ -285,10 +286,12 @@ namespace ft
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			this->clear();
-			vector tmp(first, last);
-			this->resize(tmp.size_, tmp.data_[0]);
-			for (size_t i = 0; i < tmp.size_; i++)
-				data_[i] = tmp.data_[i];
+			this->insert(this->begin(), first, last);
+			// vector tmp(first, last);
+			// this->swap(tmp);
+			// this->resize(tmp.size_, tmp.data_[0]);
+			// for (size_t i = 0; i < tmp.size_; i++)
+			// 	data_[i] = tmp.data_[i];
 		}
 		iterator erase(iterator position)
 		{
@@ -339,8 +342,8 @@ namespace ft
 		return 0;
 	}
 
-	template <class _T>
-	void swap(_T &v1, _T &v2)
+	template <class _T, class alloc_>
+	void swap(vector <_T, alloc_> &v1, vector <_T, alloc_> &v2)
 	{
 		v1.swap(v2);
 	}
