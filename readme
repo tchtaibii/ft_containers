@@ -38,3 +38,9 @@ end
 rbegin
 rend
 ******************
+
+
+
+Random
+max_size
+insert_range

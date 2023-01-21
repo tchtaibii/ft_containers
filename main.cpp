@@ -4,6 +4,15 @@
 int main()
 {
     ft::vector<std::string> v;
+    // ft::vector<int>::iterator it = v.begin();
+    // it = v.insert(it + 1, 15);
+    // v.insert(it, 16);
+
+    // for (ft::vector<int>::iterator i = v.begin(); i != v.end(); i++)
+    // {
+    //     std::cout << "element : " << *i << std::endl;
+    // }
+    
     std::string s_string[32] = {                                                                   \
         "1", "2", "3",                    \
         "4", "5", "6",                    \
@@ -18,4 +27,9 @@ int main()
         "31", "32"                                             \
     };
     v.insert(v.begin(), s_string, s_string + 32);
+    
+    // for (ft::vector<std::string>::iterator i = v.begin(); i != v.end(); i++)
+    // {
+    //     std::cout << "element : " << *i << std::endl;
+    // }
 }

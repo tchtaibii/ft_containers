@@ -13,8 +13,8 @@ namespace ft
 	public:
 		typedef T value_type;
 		typedef const T const_value_type;
-		typedef T* pointer;
-		typedef const T* const_pointer;
+		typedef T *pointer;
+		typedef const T *const_pointer;
 		typedef T &reference;
 		typedef const T &const_reference;
 		typedef size_t size_type;
@@ -93,7 +93,8 @@ namespace ft
 		// Return max size of the vector
 		size_type max_size() const
 		{
-			
+			if (typeid(value_type) == typeid(char) || typeid(value_type) == typeid(unsigned char))
+				return alloc.max_size() / 2;
 			return alloc.max_size();
 		}
 		// Add an element to the end of the vector
@@ -205,19 +206,19 @@ namespace ft
 			std::swap(size_, x.size_);
 			std::swap(capacity_, x.capacity_);
 		}
-		// begin iterator 
-		const_iterator begin() { return iterator(data_);}
-		iterator begin() const { return const_iterator(data_);}
-		// end iterator
-		iterator end() { return iterator(data_ + size_);}
-		const_iterator end() const { return const_iterator(data_ + size_);}
 		// begin iterator
-		reverse_iterator rbegin(){ return reverse_iterator(this->end());}
+		const_iterator begin() { return iterator(data_); }
+		iterator begin() const { return const_iterator(data_); }
+		// end iterator
+		iterator end() { return iterator(data_ + size_); }
+		const_iterator end() const { return const_iterator(data_ + size_); }
+		// begin iterator
+		reverse_iterator rbegin() { return reverse_iterator(this->end()); }
 
-		const_reverse_iterator rbegin() const {return const_reverse_iterator(this->end());}
-		// reverse end 
-		reverse_iterator rend() { return reverse_iterator(this->begin());}
-		const_reverse_iterator rend() const {return const_reverse_iterator(this->begin());}
+		const_reverse_iterator rbegin() const { return const_reverse_iterator(this->end()); }
+		// reverse end
+		reverse_iterator rend() { return reverse_iterator(this->begin()); }
+		const_reverse_iterator rend() const { return const_reverse_iterator(this->begin()); }
 		// The vector is extended by inserting new elements before the element at the specified position
 		iterator insert(iterator position, const value_type &val)
 		{
@@ -252,24 +253,27 @@ namespace ft
 				iterator it;
 				while (i < n)
 				{
-					it = this->insert(position, val);
-					position = it;
+					position = this->insert(position, val);
 					i++;
 				}
 			}
 		}
-		
+
 		template <class InputIterator>
-    	void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
+		void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			if (last != first)
 			{
+				vector tmp;
 				while (last != first)
 				{
-					// std::cout << "first " << *first << std::endl;
-					position = this->insert(position, *first++);
+					tmp.push_back(*first);
+					first++;
 				}
-				// position = this->insert(position, *first);
+				iterator it = tmp.end();
+				while (--it != tmp.begin())
+					position = this->insert(position, *it);
+				position = this->insert(position, *tmp.begin());
 			}
 		}
 		void assign(size_type n, const value_type &val)
@@ -303,7 +307,7 @@ namespace ft
 			}
 			return (position);
 		}
-		iterator erase (iterator first, iterator last)
+		iterator erase(iterator first, iterator last)
 		{
 			difference_type it = first - last;
 			if (it < 0)
@@ -314,7 +318,7 @@ namespace ft
 			}
 			return first;
 		}
-		allocator_type get_allocator() const {return this->alloc;}
+		allocator_type get_allocator() const { return this->alloc; }
 
 	private:
 		pointer data_;
@@ -327,7 +331,7 @@ namespace ft
 	{
 		if (lhs.size() < rhs.size())
 			return 1;
-        for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
 			if (lhs[i] < rhs[i])
 				return 1;
@@ -336,7 +340,7 @@ namespace ft
 	}
 
 	template <class _T>
-	void	swap(_T &v1, _T& v2)
+	void swap(_T &v1, _T &v2)
 	{
 		v1.swap(v2);
 	}
@@ -345,7 +349,7 @@ namespace ft
 	bool operator<=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		if (lhs.size() > rhs.size())
-			return 0;	
+			return 0;
 		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
 			if (lhs[i] > rhs[i])
@@ -358,7 +362,7 @@ namespace ft
 	{
 		if (lhs.size() > rhs.size())
 			return 1;
-        for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
+		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
 			if (lhs[i] > rhs[i])
 				return 1;
@@ -369,7 +373,7 @@ namespace ft
 	bool operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	{
 		if (lhs.size() < rhs.size())
-			return 0;	
+			return 0;
 		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
 			if (lhs[i] > rhs[i])
