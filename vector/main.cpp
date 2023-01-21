@@ -19,23 +19,22 @@ int main()
     /*------------------------------- test 1: empty vector ----------------------------------------*/
     // insert at the begin
     {
-       std::vector<std::string> v(20, "string");
-            ft::vector<std::string> ft_v(20, "string");
+        std::vector<std::string> v1(300, "string");
+        std::vector<std::string> v;
+        ft::vector<std::string> ft_v;
+        v.insert(v.begin(), v1.begin(), v1.end());
+        ft_v.insert(ft_v.begin(), v1.begin(), v1.end());
+        ft_v.begin()->length();
 
-            v.insert(v.begin() + 10, 15, "hello");
-            ft_v.insert(ft_v.begin() + 10, 15, "hello");
-
-            str.clear();
-            ft_str.clear();
-            s = v.size();
-            ft_s = ft_v.size();
-            c = v.capacity();
-            ft_c = ft_v.capacity();
-            for (size_t i = 0; i < v.size(); ++i)
-                str += v[i];
-            for (size_t i = 0; i < ft_v.size(); ++i)
-                ft_str += ft_v[i];
-            cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
+        s = v.size();
+        ft_s = ft_v.size();
+        c = v.capacity();
+        ft_c = ft_v.capacity();
+        for (size_t i = 0; i < v.size(); ++i)
+            str += v[i];
+        for (size_t i = 0; i < ft_v.size(); ++i)
+            ft_str += ft_v[i];
+        cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
 
         std::cout << "their capacity : " << c << "\nmy capacity : " << ft_c << std::endl;
         std::cout << "their size : " << s << "\nmy size : " << ft_s << std::endl;

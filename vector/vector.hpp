@@ -278,45 +278,14 @@ namespace ft
 				capacity_ = tmp_capacity;
 			}
 		}
-		// void insert(iterator position, size_type n, const value_type &val)
-		// {
-		// 	if ((std::size_t)std::numeric_limits<std::ptrdiff_t>::max() == n)
-		// 		throw std::length_error("Length exception");
-		// 	if (n)
-		// 	{
-		// 		vector tmp;
-		// 		tmp.resize(size_ + n);
-		// 		tmp.clear();
-		// 		size_type i = 0;
-		// 		iterator it;
-		// 		while (i < n)
-		// 		{
-		// 			position = this->insert(position, val);
-		// 			i++;
-		// 		}
-		// 		for (size_type j = 0; j < size_; j++)
-		// 		{
-		// 			tmp.data_[j] = data_[j];
-		// 			// std::cout << tmp.data_[j] << std::endl;
-		// 		}
-		// 		this->clear();
-		// 		if (data_)
-		// 			this->alloc.deallocate(data_, capacity_);
-		// 		capacity_ = tmp.capacity_;
-		// 		size_ = tmp.size_;
-		// 		data_ = tmp.data_;
-		// 		// for (size_type j = 0; j < size_; j++)
-		// 		// {
-		// 		// 	std::cout << data_[j] << std::endl;
-		// 		// }
-		// 	}
-		// }
 
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			if (last != first)
 			{
+				size_type tmp_size = size_;
+				size_type tmp_capacity = capacity_;
 				vector tmp;
 				while (last != first)
 				{
@@ -327,6 +296,14 @@ namespace ft
 				while (--it != tmp.begin())
 					position = this->insert(position, *it);
 				position = this->insert(position, *tmp.begin());
+				if (size_> capacity_)
+				{
+					if ((tmp_capacity * 2) >= tmp.size_ + tmp_size)
+						tmp_capacity *= 2;
+					else
+						tmp_capacity = tmp.size_ + tmp_size;
+				}
+				capacity_ = tmp_capacity;
 			}
 		}
 		void assign(size_type n, const value_type &val)
