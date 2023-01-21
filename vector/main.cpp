@@ -3,33 +3,50 @@
 #include <iostream>
 int main()
 {
-    ft::vector<std::string> v;
-    // ft::vector<int>::iterator it = v.begin();
-    // it = v.insert(it + 1, 15);
-    // v.insert(it, 16);
+    std::string str, ft_str;
+    /*
+     * var to store the size and the capacity
+     */
+    ft::vector<std::string>::size_type s, ft_s;
+    ft::vector<std::string>::size_type c, ft_c;
+    ft::vector<std::string>::iterator ft_it;
+    std::vector<std::string>::iterator it;
+    /*
+     * bool to store the comparison
+     */
+    bool cond;
 
-    // for (ft::vector<int>::iterator i = v.begin(); i != v.end(); i++)
-    // {
-    //     std::cout << "element : " << *i << std::endl;
-    // }
-    
-    std::string s_string[32] = {                                                                   \
-        "1", "2", "3",                    \
-        "4", "5", "6",                    \
-        "7", "8", "9",                    \
-        "10", "11", "12",                    \
-        "13", "14", "15",                    \
-        "16", "17", "18",                    \
-        "19", "21", "21",                    \
-        "22", "23", "24",                    \
-        "25", "26", "27",                    \
-        "28", "29", "30",                    \
-        "31", "32"                                             \
-    };
-    v.insert(v.begin(), s_string, s_string + 32);
-    
-    // for (ft::vector<std::string>::iterator i = v.begin(); i != v.end(); i++)
-    // {
-    //     std::cout << "element : " << *i << std::endl;
-    // }
+    /*------------------------------- test 1: empty vector ----------------------------------------*/
+    // insert at the begin
+    {
+       std::vector<std::string> v(20, "string");
+            ft::vector<std::string> ft_v(20, "string");
+
+            v.insert(v.begin() + 10, 15, "hello");
+            ft_v.insert(ft_v.begin() + 10, 15, "hello");
+
+            str.clear();
+            ft_str.clear();
+            s = v.size();
+            ft_s = ft_v.size();
+            c = v.capacity();
+            ft_c = ft_v.capacity();
+            for (size_t i = 0; i < v.size(); ++i)
+                str += v[i];
+            for (size_t i = 0; i < ft_v.size(); ++i)
+                ft_str += ft_v[i];
+            cond = ((str == ft_str) && (s == ft_s) && (c == ft_c));
+
+        std::cout << "their capacity : " << c << "\nmy capacity : " << ft_c << std::endl;
+        std::cout << "their size : " << s << "\nmy size : " << ft_s << std::endl;
+        std::cout << cond << std::endl;
+        it = v.begin();
+        ft_it = ft_v.begin();
+        while (it != v.end() || ft_it != ft_v.end())
+        {
+            std::cout << *it << " = = = " << *ft_it << std::endl;
+            it++;
+            ft_it++;
+        }
+    }
 }

@@ -112,44 +112,54 @@ namespace ft
 		// Resizes the container so that it contains n elements.
 		void resize(size_type n, value_type val = value_type())
 		{
-			size_type tmp_size = size_;
-			size_type tmp_capacity = capacity_;
-			if (n < size_)
+			if (n > capacity_)
 			{
-				while (n < size_)
-				{
-					this->alloc.destroy(data_ + size_ - 1);
-					size_--;
-				}
-			}
-			else
-			{
-				if (n > capacity_)
-				{
-					if ((capacity_ * 2) >= n)
-						tmp_capacity *= 2;
-					else
-						tmp_capacity = n;
-				}
+				size_type tmp_size = size_;
+				size_type tmp_capacity = capacity_;
+				if ((capacity_ * 2) >= n)
+					tmp_capacity *= 2;
+				else
+					tmp_capacity = n;
 				pointer data_new = this->alloc.allocate(tmp_capacity);
 				size_type i = 0;
 				while (i < tmp_size)
 				{
-					this->alloc.construct(data_new + i, data_[i]);
+					this->alloc.construct(&data_new[i], data_[i]);
 					i++;
 				}
 				while (i < n)
 				{
-					this->alloc.construct(data_new + i, val);
+					this->alloc.construct(&data_new[i], val);
 					i++;
 				}
 				size_ = n;
 				for (size_type i = 0; i < tmp_size; i++)
-					alloc.destroy(data_ + i);
+					alloc.destroy(&data_[i]);
 				if (data_ != NULL)
 					this->alloc.deallocate(data_, capacity_);
 				capacity_ = tmp_capacity;
-				data_ = data_new;
+				data_ = this->alloc.allocate(capacity_);
+				for (size_type i = 0; i < n; i++)
+					alloc.construct(&data_[i], data_new[i]);
+				for (size_type i = 0; i < n; i++)
+					alloc.destroy(&data_new[i]);
+				if (data_ != NULL)
+					this->alloc.deallocate(data_new, tmp_capacity);
+				// data_ = data_new;
+			}
+			else
+			{
+				if (n < size_)
+				{
+					while (n < size_)
+					{
+						this->alloc.destroy(data_ + size_ - 1);
+						size_--;
+					}
+				}
+				else if (n > size_)
+					while (size_ < n)
+						alloc.construct(&data_[size_++], val);
 			}
 		}
 		// Returns a reference to the element at position n in the vector.
@@ -229,7 +239,6 @@ namespace ft
 			value_type tmp;
 			// shift element to the left
 			while (index < tmp_size - 1)
-
 			{
 				if (tmp_size - 2 >= 0 && tmp_size - 1 >= 0)
 				{
@@ -246,19 +255,62 @@ namespace ft
 		}
 		void insert(iterator position, size_type n, const value_type &val)
 		{
-			if ((std::size_t)std::numeric_limits<std::ptrdiff_t>::max() == n)
+			if ((size_type)std::numeric_limits<difference_type>::max() == n)
 				throw std::length_error("Length exception");
 			if (n)
 			{
+				size_type tmp_capacity = 0;
+				if (n + size_ > capacity_)
+				{
+					if ((capacity_ * 2) >= n + size_)
+						tmp_capacity = 2 * capacity_;
+					else
+						tmp_capacity = n + size_;
+				}
+				else
+					tmp_capacity = capacity_;
 				size_type i = 0;
-				iterator it;
 				while (i < n)
 				{
 					position = this->insert(position, val);
 					i++;
 				}
+				capacity_ = tmp_capacity;
 			}
 		}
+		// void insert(iterator position, size_type n, const value_type &val)
+		// {
+		// 	if ((std::size_t)std::numeric_limits<std::ptrdiff_t>::max() == n)
+		// 		throw std::length_error("Length exception");
+		// 	if (n)
+		// 	{
+		// 		vector tmp;
+		// 		tmp.resize(size_ + n);
+		// 		tmp.clear();
+		// 		size_type i = 0;
+		// 		iterator it;
+		// 		while (i < n)
+		// 		{
+		// 			position = this->insert(position, val);
+		// 			i++;
+		// 		}
+		// 		for (size_type j = 0; j < size_; j++)
+		// 		{
+		// 			tmp.data_[j] = data_[j];
+		// 			// std::cout << tmp.data_[j] << std::endl;
+		// 		}
+		// 		this->clear();
+		// 		if (data_)
+		// 			this->alloc.deallocate(data_, capacity_);
+		// 		capacity_ = tmp.capacity_;
+		// 		size_ = tmp.size_;
+		// 		data_ = tmp.data_;
+		// 		// for (size_type j = 0; j < size_; j++)
+		// 		// {
+		// 		// 	std::cout << data_[j] << std::endl;
+		// 		// }
+		// 	}
+		// }
 
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
@@ -286,12 +338,10 @@ namespace ft
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			this->clear();
-			this->insert(this->begin(), first, last);
-			// vector tmp(first, last);
-			// this->swap(tmp);
-			// this->resize(tmp.size_, tmp.data_[0]);
-			// for (size_t i = 0; i < tmp.size_; i++)
-			// 	data_[i] = tmp.data_[i];
+			vector tmp(first, last);
+			this->resize(tmp.size_, tmp.data_[0]);
+			for (size_t i = 0; i < tmp.size_; i++)
+				data_[i] = tmp.data_[i];
 		}
 		iterator erase(iterator position)
 		{
@@ -343,7 +393,7 @@ namespace ft
 	}
 
 	template <class _T, class alloc_>
-	void swap(vector <_T, alloc_> &v1, vector <_T, alloc_> &v2)
+	void swap(vector<_T, alloc_> &v1, vector<_T, alloc_> &v2)
 	{
 		v1.swap(v2);
 	}
@@ -379,8 +429,8 @@ namespace ft
 			return 0;
 		for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 		{
-			if (lhs[i] > rhs[i])
-				return 1;
+			if (lhs[i] < rhs[i])
+				return 0;
 		}
 		return 1;
 	}

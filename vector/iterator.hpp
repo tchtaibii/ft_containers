@@ -63,7 +63,7 @@ namespace ft
             difference_type i = std::distance(n.ptr_, this->ptr_);
             return i;
         }
-        
+        pointer base() const {return ptr_;}
         // compared for equivalence
         template <class T, class T2>
         friend bool operator==(const iterator<T> &lhs, const iterator<T2> &rhs)  { return lhs.ptr_ == rhs.ptr_; }
@@ -95,6 +95,11 @@ namespace ft
     private:
         pointer ptr_;
     };
+    template <class Iterator>
+    iterator<Iterator> operator+(typename iterator<Iterator>::difference_type n, const iterator<Iterator> &x)
+    {
+        return iterator<Iterator>(x.base() + n);
+    }
 }
 
 #endif

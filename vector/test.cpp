@@ -1,22 +1,12 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include "vector.hpp"
 int main()
 {
-    int* src = new int[5];
-    for (size_t i = 0; i < 5; i++)
-        src[i] = i;
-    
-    int* dest = new int[7];
-    for (size_t i = 0; i < 7; i++)
-    {
-        dest[i] = i + 66;
-    }
-    
-    std::copy(src, src + 5, dest);
+    ft::vector<int> v;
 
-    std::cout << "Elements of destination array: ";
-    for (int i = 0; i < 5; i++) {
-        std::cout << dest[i] << " ";
-}
+    v.insert(v.end(), 10, 64);
+    for(ft::vector<int>::iterator it = v.begin(); it != v.end(); it++)
+        std::cout << *it << std::endl;
 }
