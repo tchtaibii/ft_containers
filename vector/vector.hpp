@@ -425,7 +425,8 @@ namespace ft
 			{
 				if (it == first)
 				{
-					while (it != last){
+					while (it != last)
+					{
 						it++;
 					}
 					last = &tmp[i];
@@ -491,7 +492,7 @@ namespace ft
 	{
 		if (lhs.size() > rhs.size())
 			return 1;
-		if(lhs.size() == rhs.size())
+		if (lhs.size() == rhs.size())
 		{
 			for (size_t i = 0; i < lhs.size() && i < rhs.size(); i++)
 			{
