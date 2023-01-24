@@ -2,6 +2,14 @@
 
 namespace ft
 {
+    template <class K, class V>
+    struct tree{
+        K key;
+        V value;
+        tree *left;
+        tree *right;
+        tree *parent;
+    };
     template <typename T1, typename T2>
     class pair
     {

@@ -46,17 +46,37 @@ namespace ft
 		vector(InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
 			this->alloc = alloc;
-			vector v;
-			while (first != last)
+			this->size_ = 0;
+			this->capacity_ = 0;
+			this->data_ = NULL;
+			typedef typename std::iterator_traits<Iterator>::iterator_category category;
+			if (!std::is_same<category, std::input_iterator_tag>::value)
 			{
-				v.push_back(*first);
-				first++;
+				difference_type n = std::distance(first, last);
+				this->data_ = this->alloc.allocate(n);
+				capacity_ = n;
+				while (size_ < (size_type)n)
+					this->alloc.construct(&data_[size_++], *(first++));
 			}
-			this->data_ = this->alloc.allocate(v.size_);
-			for (size_type i = 0; i < v.size_; i++)
-				this->alloc.construct(data_ + i, v.data_[i]);
-			size_ = v.size_;
-			capacity_ = v.size_;
+			else
+			{
+				while (first != last)
+				{
+					this->push_back(*(first++));
+				}
+			}
+			// this->alloc = alloc;
+			// vector v;
+			// while (first != last)
+			// {
+			// 	v.push_back(*first);
+			// 	first++;
+			// }
+			// this->data_ = this->alloc.allocate(v.size_);
+			// for (size_type i = 0; i < v.size_; i++)
+			// 	this->alloc.construct(data_ + i, v.data_[i]);
+			// size_ = v.size_;
+			// capacity_ = v.size_;
 		}
 
 		// Assigment copy
@@ -67,13 +87,13 @@ namespace ft
 				// Deallocate the current data array
 				this->clear();
 				if (data_)
-					this->alloc.deallocate(data_, capacity_);
+					this->alloc.deallocate(data_, this->capacity_);
 				// Allocate a new data array and copy the elements from the other vector
-				size_ = other.size_;
-				capacity_ = other.capacity_;
-				data_ = this->alloc.allocate(capacity_);
-				for (size_type i = 0; i < size_; i++)
-					this->alloc.construct(data_ + i, other.data_[i]);
+				this->size_ = other.size_;
+				this->capacity_ = other.capacity_;
+				this->data_ = this->alloc.allocate(capacity_);
+				for (size_type i = 0; i < this->size_; i++)
+					this->alloc.construct(&data_[i], other.data_[i]);
 			}
 			return *this;
 		}
@@ -135,7 +155,7 @@ namespace ft
 				size_ = n;
 				for (size_type i = 0; i < tmp_size; i++)
 					alloc.destroy(&data_[i]);
-				if (data_ != NULL)
+				if (data_ != NULL && capacity_)
 					this->alloc.deallocate(data_, capacity_);
 				capacity_ = tmp_capacity;
 				data_ = this->alloc.allocate(capacity_);
@@ -391,11 +411,17 @@ namespace ft
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
+
 			this->clear();
-			vector tmp(first, last);
-			this->resize(tmp.size_, tmp.data_[0]);
-			for (size_t i = 0; i < tmp.size_; i++)
-				data_[i] = tmp.data_[i];
+			if (first != last)
+			{
+				vector tmp(first, last);
+				*this = tmp;
+			}
+			
+			// this->resize(tmp.size_, tmp.data_[0]);
+			// for (size_t i = 0; i < tmp.size_; i++)
+			// 	data_[i] = tmp.data_[i];
 		}
 		iterator erase(iterator position)
 		{
@@ -438,7 +464,7 @@ namespace ft
 					it++;
 				}
 			}
-			clear();
+			this->clear();
 			if (data_)
 				alloc.deallocate(data_, capacity_);
 			size_ = i;
