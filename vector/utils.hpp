@@ -1,6 +1,9 @@
 #ifndef UTILS_CPP
 #define UTILS_CPP
 
+
+#include <iostream>
+
 namespace ft
 {
 
@@ -40,7 +43,6 @@ namespace ft
     {
         static const bool value = false;
     };
-
     template<>
     struct is_integral <remove_cv<bool>::type>
     {
@@ -100,6 +102,19 @@ namespace ft
     {
         static const bool value = true; 
     };
+
+    template<typename T>
+    struct is_input_it
+    {
+        static const bool value = false;
+    };
+
+    template<>
+    struct is_input_it<std::input_iterator_tag>
+    {
+        static const bool value = true;
+    };
+
 }
 
 #endif

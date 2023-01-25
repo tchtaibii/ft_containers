@@ -49,8 +49,7 @@ namespace ft
 			this->size_ = 0;
 			this->capacity_ = 0;
 			this->data_ = NULL;
-			typedef typename std::iterator_traits<Iterator>::iterator_category category;
-			if (!std::is_same<category, std::input_iterator_tag>::value)
+			if (!ft::is_input_it<typename iterator_traits<InputIterator>::iterator_category>::value)
 			{
 				difference_type n = std::distance(first, last);
 				this->data_ = this->alloc.allocate(n);
