@@ -2,14 +2,6 @@
 
 namespace ft
 {
-    template <class K, class V>
-    struct tree{
-        K key;
-        V value;
-        tree *left;
-        tree *right;
-        tree *parent;
-    };
     template <typename T1, typename T2>
     class pair
     {
@@ -18,9 +10,6 @@ namespace ft
         T2 m_second;
 
     public:
-        // Default constructor
-        pair() {}
-
         // Constructor with initial values
         pair(const T1 &first, const T2 &second) : m_first(first), m_second(second){}
 
