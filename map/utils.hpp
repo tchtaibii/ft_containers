@@ -25,4 +25,9 @@ namespace ft
             return m_second;
         }
     };
+    template <typename T, typename U>
+    pair<T, U> make_pair(T key, U value)
+    {
+        return (pair<T, U>(key, value));
+    }
 }
