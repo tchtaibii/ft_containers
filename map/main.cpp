@@ -10,6 +10,6 @@ int main()
     obj.insert(30);
     obj.insert(40);
 
-    std::cout << obj.root->right->right->key << std::endl;
+    std::cout << obj.root->key << std::endl;
 
 }
