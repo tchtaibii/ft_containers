@@ -7,12 +7,14 @@ namespace ft
 	enum Color
 	{
 		RED,
-		BLACK
+		BLACK,
+		NOCOLOR
 	}; // red = 0 , black = 1;
 	enum Node_side
 	{
 		R,
-		L
+		L,
+		NOSIDE
 	}; // right = 0 , left = 1;
 
 	template <class T>
@@ -20,10 +22,10 @@ namespace ft
 	{
 		T key;
 		size_t size_;
-		Node *left, *right, *parent;
+		Node<T> *left, *right, *parent;
 		Color color;
 		Node_side side;
-		Node(T key) : key(key), left(NULL), right(NULL), parent(NULL), color(RED), size_(0)
+		Node(T key) : key(key), left(NULL), right(NULL), parent(NULL), color(RED), size_(0), side(NOSIDE)
 		{
 		}
 	};
@@ -35,64 +37,7 @@ namespace ft
 		typedef T &reference;
 		typedef size_t size_type;
 		// typedef typename std::allocator<Node>::template rebind<value_type>::other alloc;
-
 	private:
-		void insertFix(Node<value_type> *node)
-		{
-			Node<value_type> *tmp;
-
-			while (node->parent->color == RED)
-			{
-				if (node->parent->side == R)
-				{
-					tmp = node->parent->parent->left;
-					if (tmp->color == RED)
-					{
-						tmp->color = BLACK;
-						node->parent->color = BLACK;
-						node->parent->parent->color = RED;
-						node = node->parent->parent;
-					}
-					else
-					{
-						if (node->side == L)
-						{
-							node = node->parent;
-							rightRotate(node);
-						}
-						node->parent->color = BLACK;
-						node->parent->parent->color = RED;
-						leftRotate(node->parent->parent);
-					}
-				}
-				else
-				{
-					tmp = node->parent->parent->right;
-
-					if (tmp->color == RED)
-					{
-						tmp->color = BLACK;
-						node->parent->color = BLACK;
-						node->parent->parent->color = RED;
-						node = node->parent->parent;
-					}
-					else
-					{
-						if (node->side == L)
-						{
-							node = node->parent;
-							leftRotate(node);
-						}
-						node->parent->color = BLACK;
-						node->parent->parent->color = RED;
-						rightRotate(node->parent->parent);
-					}
-				}
-				if (node == root)
-					break;
-			}
-			root->color = BLACK;
-		}
 		void insert_helper(Node<value_type> *parent, Node<value_type> *node)
 		{
 			if (node->key < parent->key)
@@ -115,6 +60,7 @@ namespace ft
 					node->parent = parent;
 					node->side = R;
 					return;
+
 				}
 				else
 					return insert_helper(parent->right, node);
@@ -123,12 +69,17 @@ namespace ft
 		void check_color(Node<value_type> *node)
 		{
 			if (node == root)
+			{
+				node->color = BLACK;
+				node->side = NOSIDE;
 				return;
+			}
 			if (node->color == RED && node->parent->color == RED)
 			{
 				correctTree(node);
 			}
-			check_color(node->parent);
+			if (node->parent != NULL)
+				check_color(node->parent);
 		}
 		void correctTree(Node<value_type> *node)
 		{
@@ -136,30 +87,35 @@ namespace ft
 			if (node->parent->side == L)
 			{
 				// AUNT IS BLACK so we gonna do rotation
-				if (node->parent->parent->right->color == BLACK || node->parent->parent->right == NULL)
+				if (node->parent->parent->right == NULL || node->parent->parent->right->color == BLACK)
 					return rotate(node);
 				if (node->parent->parent->right != NULL)
+				{
 					node->parent->parent->right->color = BLACK;
-				node->parent->parent->color = RED;
-				node->parent->color = RED;
-				return;
+					node->parent->parent->color = RED;
+					node->parent->color = BLACK;
+					return;
+				}
 			}
 			// parent in the right side
 			if (node->parent->side == R)
 			{
 				// AUNT IS BLACK so we gonna do rotation
-				if (node->parent->parent->left->color == BLACK || node->parent->parent->left == NULL)
+				if (node->parent->parent->left == NULL || node->parent->parent->left->color == BLACK)
+				{
 					return rotate(node);
+				}
 				if (node->parent->parent->left != NULL)
+				{
 					node->parent->parent->left->color = BLACK;
-				node->parent->parent->color = RED;
-				node->parent->color = RED;
-				return;
+					node->parent->color = BLACK;
+					node->parent->parent->color = RED;
+					return;
+				}
 			}
 		}
 		void rotate(Node<value_type> *node)
 		{
-			// printf("*********\n");
 			if (node->side == L)
 			{
 				if (node->parent->side == L)
@@ -205,102 +161,65 @@ namespace ft
 				node->right->parent = node;
 				node->right->side = R;
 			}
-			if (tmp->left != NULL)
-				tmp->left->parent = node;
-			tmp->parent = node->parent;
 			if (node->parent == NULL)
-				this->root = tmp;
-			else if (node == node->parent->left)
-				node->parent->left = tmp;
+			{
+				root = tmp;
+				if (root->side == L)
+					root->side = NOSIDE;
+				tmp->parent = NULL;
+			}
 			else
-				node->parent->right = tmp;
+			{
+				tmp->parent = node->parent;
+				if (node->side == L)
+				{
+					tmp->side = L;
+					tmp->parent->left = tmp;
+				}
+				else
+				{
+					tmp->side = R;
+					tmp->parent->right = tmp;
+				}
+			}
 			tmp->left = node;
-			node->parent = tmp;
 			node->side = L;
-
+			node->parent = tmp;
 		}
-		// void leftRotate(Node<value_type> *node)
-		// {
-		// 	Node<value_type> *tmp = node->right;
-		// 	node->right = tmp->left;
-		// 	if (node->right != NULL)
-		// 	{
-		// 		node->right->parent = node;
-		// 		node->right->side = R;
-		// 	}
-		// 	if (node->parent != NULL)
-		// 	{
-		// 		root = tmp;
-		// 		tmp->parent = NULL;
-		// 	}
-		// 	else
-		// 	{
-		// 		tmp->parent = node->parent;
-		// 		if (node->side == L)
-		// 		{
-		// 			tmp->side = L;
-		// 			tmp->parent->left = tmp;
-		// 		}
-		// 		else
-		// 		{
-		// 			tmp->side = R;
-		// 			tmp->parent->right = tmp;
-		// 		}
-		// 		tmp->left = node;
-		// 		node->side = L;
-		// 		node->parent = tmp;
-		// 	}
-		// }
-
 		void rightRotate(Node<value_type> *node)
 		{
 			Node<value_type> *tmp = node->left;
 			node->left = tmp->right;
-			if (tmp->right != NULL)
-				tmp->right->parent = node;
-			tmp->parent = node->parent;
+			if (node->left != NULL)
+			{
+				node->left->parent = node;
+				node->left->side = L;
+			}
 			if (node->parent == NULL)
-				this->root = tmp;
-			else if (node == node->parent->right)
-				node->parent->right = tmp;
+			{
+				root = tmp;
+				if (root->side == L)
+					root->side = NOSIDE;
+				tmp->parent = NULL;
+			}
 			else
-				node->parent->left = tmp;
+			{
+				tmp->parent = node->parent;
+				if (node->side == R)
+				{
+					tmp->side = R;
+					tmp->parent->right = tmp;
+				}
+				else
+				{
+					tmp->side = L;
+					tmp->parent->left = tmp;
+				}
+			}
 			tmp->right = node;
+			node->side = R;
 			node->parent = tmp;
 		}
-
-		// void rightRotate(Node<value_type> *node)
-		// {
-		// 	Node<value_type> *tmp = node->left;
-		// 	node->left = tmp->right;
-		// 	if (node->left != NULL)
-		// 	{
-		// 		node->left->parent = node;
-		// 		node->left->side = L;
-		// 	}
-		// 	if (node->parent != NULL)
-		// 	{
-		// 		root = tmp;
-		// 		tmp->parent = NULL;
-		// 	}
-		// 	else
-		// 	{
-		// 		tmp->parent = node->parent;
-		// 		if (node->side == R)
-		// 		{
-		// 			tmp->side = R;
-		// 			tmp->parent->right = tmp;
-		// 		}
-		// 		else
-		// 		{
-		// 			tmp->side = L;
-		// 			tmp->parent->left = tmp;
-		// 		}
-		// 		tmp->right = node;
-		// 		node->side = R;
-		// 		node->parent = tmp;
-		// 	}
-		// }
 		void leftrightRotate(Node<value_type> *node)
 		{
 			leftRotate(node->left);
@@ -308,7 +227,7 @@ namespace ft
 		}
 		void rightleftRotate(Node<value_type> *node)
 		{
-			rightRotate(node->left);
+			rightRotate(node->right);
 			leftRotate(node);
 		}
 		size_type height()
@@ -345,30 +264,76 @@ namespace ft
 
 	public:
 		Node<value_type> *root;
+		Node<value_type> *tempr;
 		red_black_tree() : root(NULL) {}
 		void insert(value_type value)
 		{
-			std::allocator<Node<value_type> > alloc;
-			Node<value_type> *node = alloc.allocate(1);
-			alloc.construct(node, Node<value_type>(value));
-			if (root == NULL) // root case
+			// if (search(root, value) == NULL)
 			{
-				root = node;
-				root->size_ = 1;
-				node->color = BLACK;
+				std::allocator<Node<value_type> > alloc;
+				Node<value_type> *node = alloc.allocate(1);
+				alloc.construct(node, Node<value_type>(value));
+				if (root == NULL) // root case
+				{
+					root = node;
+					root->size_ = 1;
+					node->color = BLACK;
+					node->parent = NULL;
+					node->side = NOSIDE;
+					return ;
+				}
+				else
+				{
+					insert_helper(root, node);
+					if (node->side == R || node->side == L)
+						check_color(node);
+				}
+			}
+			
+		}
+		Node<value_type> *search(Node<value_type> *node,value_type key)
+		{
+			if (root == NULL)
+				return NULL;
+			if (node != NULL && node->key == key)
+			{
+				printf("equal \n");
+				return node;
+			}
+			if (node != NULL && key > node->key)
+			{
+
+				if (node->right != NULL)
+					search(node->right ,key);
+				else
+					return NULL;
 			}
 			else
-				insert_helper(root, node);
-			insertFix(node);
-			// if (node->parent == NULL)
-			// {
-			// 	node->color = BLACK;
-			// 	return;
-			// }
-			// if (node->parent->parent == NULL) {
-			// 	return;
-			// }
-			// check_color(node);
+			{
+				if (node->left != NULL)
+					search(node->left ,key);
+				return NULL;
+			}
+			return NULL;
+		}
+		Node<value_type> *successor(Node<value_type> *node)
+		{
+			if (root == NULL || node->right == NULL)
+				return NULL;
+			Node<value_type> *tmp = node->right;
+			while (tmp->left != NULL)
+				tmp = tmp->left;
+			return tmp->parent->left;
+		}
+
+		Node<value_type> *predecessor(Node<value_type> *node)
+		{
+			if (root == NULL || node->left == NULL)
+				return NULL;
+			Node<value_type> *tmp = node->left;
+			while (tmp->right != NULL)
+				tmp = tmp->right;
+			return tmp->parent->right;
 		}
 	};
 }
