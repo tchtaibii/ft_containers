@@ -291,30 +291,76 @@ namespace ft
 			}
 			
 		}
-		Node<value_type> *search(Node<value_type> *node,value_type key)
+		void deleteNode(value_type key)
 		{
-			if (root == NULL)
-				return NULL;
-			if (node != NULL && node->key == key)
+			Node<value_type> *tmp = search(root, key);
+			Node<value_type> *replace, *tmp2;
+			std::allocator<Node<value_type> > alloc;
+			if (!tmp)
+				return ;
+			Color color_s = tmp->color;
+			Node_side side_s = tmp->side;
+			value_type key_replace;
+			std::cout << "jnshbbhdhbs" << std::endl;
+			if (!tmp->left)
 			{
-				printf("equal \n");
-				return node;
+				replace = tmp->right;
+				key_replace = replace->key;
+				Transplant(tmp, replace);
 			}
-			if (node != NULL && key > node->key)
+			else if (!tmp->right)
 			{
-
-				if (node->right != NULL)
-					search(node->right ,key);
-				else
-					return NULL;
+				
+				replace = tmp->left;
+				key_replace = replace->key;
+				Transplant(tmp, replace);
 			}
 			else
 			{
-				if (node->left != NULL)
-					search(node->left ,key);
-				return NULL;
+				replace = successor(tmp);
+				tmp->key = replace->key;
+				// tmp->color = replace->color;
+				if (replace->right != NULL)
+				{
+					tmp2 = replace->right;
+					tmp2->parent = replace->parent;
+					replace->parent->left = tmp2;
+					replace->color = tmp2->color;
+				}
+				else
+				{
+					tmp2 = replace->parent;
+					tmp2->left = NULL;
+					
+				}
+				key_replace = replace->key;
+				alloc.destroy(replace);
+    			alloc.deallocate(replace, 1);
 			}
-			return NULL;
+			tmp = search(root, key_replace);
+			tmp->color = color_s;
+			tmp->size_ = side_s;
+		}
+		void Transplant(Node<value_type> *u, Node<value_type> *v)
+		{
+			if (u->parent == NULL)
+				root = v;
+			else if (u->side == L)
+				u->parent->left = v;
+			else
+				u->parent->right = v;
+			if (v)
+				v->parent = u->parent;
+		}
+		Node<value_type> *search(Node<value_type> *node,value_type key)
+		{
+			if (node == NULL)
+				return NULL;
+			if (node != NULL && node->key == key)
+				return node;
+			if (node != NULL && key > node->key)
+				return search(node->right ,key);
+			return search(node->left ,key);
 		}
 		Node<value_type> *successor(Node<value_type> *node)
 		{
