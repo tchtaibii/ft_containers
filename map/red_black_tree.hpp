@@ -39,9 +39,8 @@ namespace ft
 		typedef ft::pair<const key_type, mapped_type>  value_type;
 		typedef Node<value_type> Node_;
 		typedef Alloc allocator_type;
-		typedef typename allocator_type::template rebind<value_type>::other alloc;
+		typedef typename allocator_type::template rebind<Node_>::other alloc;
 	private:
-		value_type val;
 		Node_ *leaf;
 		alloc alloc_;
 		compare_type comp;
@@ -325,14 +324,12 @@ namespace ft
 
 	public:
 		Node_ *root;
-		red_black_tree() : val() {
+		red_black_tree() {
 			leaf = alloc_.allocate(1);
 			leaf->color = BLACK;
 			leaf->left = NULL;
 			leaf->right = NULL;
 			leaf->side = NOSIDE;
-			// val = alloc_.allocate(1);
-			// alloc_.construct(val, value_type);
 			root = leaf;
 
 		}

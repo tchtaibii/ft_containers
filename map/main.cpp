@@ -1,12 +1,12 @@
 #include <iostream>
-#include "red_black_tree.hpp"
-// #include "./fancy_tree.hpp"
+#include "./red_black_tree.hpp"
+#include "./fancy_tree.hpp"
 
 int main()
 {
     ft::red_black_tree<int, int, std::less<int>, std::allocator<ft::pair<const int, int> > > obj;;
 
-    // fancy_tree<int> debug;
+    fancy_tree<int> debug;
 
 
     obj.insert(ft::make_pair(20, 20));
@@ -33,7 +33,9 @@ int main()
     obj.delete_Node(obj.root, 89);
     obj.delete_Node(obj.root, 30);
     // obj.erase(89);
-    // debug.print_tree(obj.root, V_VIEW);
+    debug.print_tree(obj.root, V_VIEW);
+    obj.delete_Node(obj.root, 45);
+    debug.print_tree(obj.root, V_VIEW);
     // obj.deleteNode(40);
     // debug.print_tree(obj.root, V_VIEW);
     // obj.tempr = obj.search(obj.root, 10);

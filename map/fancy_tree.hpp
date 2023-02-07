@@ -6,18 +6,18 @@
 #include <cmath>
 
 //header file that contains Node definition
-#include "./red_black_tree.hpp"
+#include "red_black_tree.hpp"
 
 /*===================Node====================*/
 
 // Node class
-#define NODE ft::Node_
+#define NODE ft::Node <ft::pair<const int, int> >
 
 // Node class attributes
-#define left left				// left attribute
-#define right right			// right attribute
+#define LEFT left		// left attribute
+#define RIGHT right		// right attribute
 #define PARENT parent			// parent attribute (can be ignnored)
-#define CONTENT key			// data attribute + element of pair(if exists)
+#define CONTENT val.first_()	// data attribute + element of pair(if exists)
 
 /*===========================================*/
 
@@ -85,12 +85,12 @@ class fancy_tree
 					childs.push_back(nullptr);
 					continue ;
 				}
-				if (vec[level][i]->left != nullptr)
-					childs.push_back(vec[level][i]->left);
+				if (vec[level][i]->LEFT != nullptr)
+					childs.push_back(vec[level][i]->LEFT);
 				else
 					childs.push_back(nullptr);
-				if (vec[level][i]->right != nullptr)
-					childs.push_back(vec[level][i]->right);
+				if (vec[level][i]->RIGHT != nullptr)
+					childs.push_back(vec[level][i]->RIGHT);
 				else
 					childs.push_back(nullptr);
 			}
@@ -127,8 +127,8 @@ class fancy_tree
 				return 0;
 			else
 			{
-				int l_height = tree_height(root->left);
-				int r_height = tree_height(root->right);
+				int l_height = tree_height(root->LEFT);
+				int r_height = tree_height(root->RIGHT);
 				if (l_height > r_height)
 					return (l_height + 1);
 				else
@@ -160,23 +160,11 @@ class fancy_tree
 		{
 			if (!left_child)
 				PRINT << "│";
-			int len;
-			if (node->CONTENT)
-			{
-				if (node->color == ft::RED)
-					PRINT << "\033[1;31m" << node->CONTENT << "\033[0m";
-				else
-					PRINT << node->CONTENT;
-				len = CONTENT_LEN - int_len(node->CONTENT);
-			}
+			if (node->color == ft::RED)
+				PRINT << "\033[1;31m" << node->CONTENT << "\033[0m";
 			else
-			{
-				PRINT << "leaf";
-				len = CONTENT_LEN - 5;
-			}
-			
-			// PRINT << node->CONTENT;
-			
+				PRINT << node->CONTENT;
+			int len = CONTENT_LEN - int_len(node->CONTENT);
 			set_width(len, " ");
 			if (!right_child)
 				PRINT << "│";
@@ -219,9 +207,11 @@ class fancy_tree
 		{
 			if (root == nullptr)
 				return;
+
 		    std::string	prev_str = BIG_SPAN;
 			Branch *branch = new Branch(prev, prev_str);
-			print_tree_horizontal_view(root->right, branch, true);
+
+			print_tree_horizontal_view(root->RIGHT, branch, true);
 			if (!prev)
 				branch->str = ROOT_TRUNK;
 			else if (is_left)
@@ -235,14 +225,14 @@ class fancy_tree
 				prev->str = prev_str;
 			}
 			showbranches(branch);
-			if (root->color == ft::RED)
-				PRINT << "\033[1;31m" << root->CONTENT << "\033[0m" << std::endl;
+			if (root->color == ft::BLACK)
+				PRINT << root->CONTENT << std::endl;
 			else
-				PRINT << root->CONTENT << "\033[0m" << std::endl;
+				PRINT << "\033[1;31m" << root->CONTENT << "\033[0m" << std::endl;
 			if (prev)
 				prev->str = prev_str;
 			branch->str = BIG_TRUNK;
-			print_tree_horizontal_view(root->left, branch, false);
+			print_tree_horizontal_view(root->LEFT, branch, false);
 		}
 
 		/*===================Vertical view===================*/
@@ -261,12 +251,12 @@ class fancy_tree
 					set_width(level == height ? NODE_WIDTH : NODE_WIDTH + branch_len * 2, " ");
 					continue;
 				}
-				if (vec[i]->left != nullptr)
+				if (vec[i]->LEFT != nullptr)
 					print_left_branch(branch_len);
 				else
 					set_width(level != height ? branch_len : 0, " ");
-				print_node(vec[i], (vec[i]->left != nullptr), (vec[i]->right != nullptr));
-				if (vec[i]->right != nullptr)
+				print_node(vec[i], (vec[i]->LEFT != nullptr), (vec[i]->RIGHT != nullptr));
+				if (vec[i]->RIGHT != nullptr)
 					print_right_branch(branch_len);
 				else
 					set_width(level != height ? branch_len : 0, " ");
@@ -277,12 +267,12 @@ class fancy_tree
 		// print the branches of nodes
 		void	branch_printer(int len, NODE *node)
 		{
-			if (node != nullptr && node->left != nullptr)
+			if (node != nullptr && node->LEFT != nullptr)
 				PRINT << TOP_LEFT_FRAME;
 			else
 				set_width(NODE_WIDTH, " ");
 			set_width(len - CONTENT_LEN, " ");
-			if (node != nullptr && node->right != nullptr)
+			if (node != nullptr && node->RIGHT != nullptr)
 				PRINT << TOP_RIGHT_FRAME;
 			else
 				set_width(NODE_WIDTH, " ");
@@ -291,12 +281,12 @@ class fancy_tree
 		// print the branches of leafs
 		void	branch_printer_before_last(NODE *node)
 		{
-			if (node != nullptr && node->left != nullptr)
+			if (node != nullptr && node->LEFT != nullptr)
 				PRINT << LEFT_LEAF_FRAME;
 			else
 				set_width(NODE_WIDTH, " ");
 			set_width(LEAFS_SPAN, " ");
-			if (node != nullptr && node->right != nullptr)
+			if (node != nullptr && node->RIGHT != nullptr)
 				PRINT << RIGHT_LEAF_FRAME;
 			else
 				set_width(NODE_WIDTH, " ");
@@ -309,9 +299,9 @@ class fancy_tree
 			for (size_t i = 0; i < vec.size(); i++)
 			{
 				set_width(is_first ? pow(2.0, factor) - 1 - branch_len : pow(2.0, factor + 1) - NODE_WIDTH - (branch_len * 2), " ");
-				PRINT << ((vec[i] != nullptr && vec[i]->left != nullptr) ? "│" : " ");
+				PRINT << ((vec[i] != nullptr && vec[i]->LEFT != nullptr) ? "│" : " ");
 				set_width((branch_len * 2) + CONTENT_LEN, " ");
-				PRINT << ((vec[i] != nullptr && vec[i]->right != nullptr) ? "│" : " ");
+				PRINT << ((vec[i] != nullptr && vec[i]->RIGHT != nullptr) ? "│" : " ");
 				if (is_first)
 					is_first = false;
 			}
@@ -342,14 +332,14 @@ class fancy_tree
 			for (size_t i = 0; i < vec.size(); i++)
 			{
 				set_width(is_first ? pow(2.0, factor) - 1 - branch_len : pow(2.0, factor + 1) - NODE_WIDTH - (branch_len * 2), " ");
-				PRINT << ((vec[i] != nullptr && vec[i]->left != nullptr) ? "│" : " ");
+				PRINT << ((vec[i] != nullptr && vec[i]->LEFT != nullptr) ? "│" : " ");
 				set_width(branch_len - 1, " ");
 				if (vec[i] != nullptr && vec[i] != nullptr)
 					PRINT << FRAME_BOTTOM;
 				else
 					set_width(NODE_WIDTH, " ");
 				set_width(branch_len - 1, " ");
-				PRINT << ((vec[i] != nullptr && vec[i]->right != nullptr) ? "│" : " ");
+				PRINT << ((vec[i] != nullptr && vec[i]->RIGHT != nullptr) ? "│" : " ");
 				if (is_first)
 					is_first = false;
 			}
@@ -412,7 +402,6 @@ class fancy_tree
 		//main function to call
 		void print_tree(NODE *root, int flags)
 		{
-			// std::cout << root->left << std::endl;
 			PRINT << NEW_LINE;
 			if (!root)
 			{
