@@ -11,7 +11,7 @@
 /*===================Node====================*/
 
 // Node class
-#define NODE ft::Node<T>
+#define NODE ft::Node_
 
 // Node class attributes
 #define left left				// left attribute
@@ -160,12 +160,23 @@ class fancy_tree
 		{
 			if (!left_child)
 				PRINT << "│";
-			if (node->color == ft::RED)
-				PRINT << "\033[1;31m" << node->CONTENT << "\033[0m";
+			int len;
+			if (node->CONTENT)
+			{
+				if (node->color == ft::RED)
+					PRINT << "\033[1;31m" << node->CONTENT << "\033[0m";
+				else
+					PRINT << node->CONTENT;
+				len = CONTENT_LEN - int_len(node->CONTENT);
+			}
 			else
-				PRINT << node->CONTENT;
+			{
+				PRINT << "leaf";
+				len = CONTENT_LEN - 5;
+			}
+			
 			// PRINT << node->CONTENT;
-			int len = CONTENT_LEN - int_len(node->CONTENT);
+			
 			set_width(len, " ");
 			if (!right_child)
 				PRINT << "│";
