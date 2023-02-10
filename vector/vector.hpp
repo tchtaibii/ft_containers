@@ -64,18 +64,6 @@ namespace ft
 					this->push_back(*(first++));
 				}
 			}
-			// this->alloc = alloc;
-			// vector v;
-			// while (first != last)
-			// {
-			// 	v.push_back(*first);
-			// 	first++;
-			// }
-			// this->data_ = this->alloc.allocate(v.size_);
-			// for (size_type i = 0; i < v.size_; i++)
-			// 	this->alloc.construct(data_ + i, v.data_[i]);
-			// size_ = v.size_;
-			// capacity_ = v.size_;
 		}
 
 		// Assigment copy
@@ -112,9 +100,6 @@ namespace ft
 		// Return max size of the vector
 		size_type max_size() const
 		{
-			// if (typeid(value_type) == typeid(ch                                                                        r) || typeid(value_type) == typeid(unsigned char))
-			// 	return alloc.max_size() / 2;
-			// return alloc.max_size();
 			return alloc.max_size() > PTRDIFF_MAX ? PTRDIFF_MAX : alloc.max_size();
 		}
 		// Add an element to the end of the vector
@@ -417,10 +402,6 @@ namespace ft
 				vector tmp(first, last);
 				*this = tmp;
 			}
-			
-			// this->resize(tmp.size_, tmp.data_[0]);
-			// for (size_t i = 0; i < tmp.size_; i++)
-			// 	data_[i] = tmp.data_[i];
 		}
 		iterator erase(iterator position)
 		{

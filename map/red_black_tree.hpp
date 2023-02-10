@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "utils.hpp"
+#include "../includes/utils.hpp"
 
 namespace ft
 {
@@ -21,11 +21,10 @@ namespace ft
 	struct Node
 	{
 		T val;
-		size_t size_;
 		Node<T> *left, *right, *parent;
 		Color color;
 		Node_side side;
-		Node(T value) : val(value), left(NULL), right(NULL), parent(NULL), color(RED), size_(0), side(NOSIDE)
+		Node(T value) : val(value), left(NULL), right(NULL), parent(NULL), color(RED), side(NOSIDE)
 		{
 		}
 	};
@@ -43,6 +42,7 @@ namespace ft
 	private:
 		Node_ *leaf;
 		alloc alloc_;
+		size_type size_;
 		compare_type comp;
 		
 		void insert_helper(Node_ *parent, Node_ *node)
@@ -54,6 +54,7 @@ namespace ft
 					parent->left = node;
 					node->parent = parent;
 					node->side = L;
+					size_++;
 					return;
 				}
 				else
@@ -66,6 +67,7 @@ namespace ft
 					parent->right = node;
 					node->parent = parent;
 					node->side = R;
+					size_++;
 					return;
 
 				}
@@ -321,6 +323,15 @@ namespace ft
 			}
 			v->parent = u->parent;
 		}
+		void	delete_tree(Node_ *node)
+		{
+			if (node == leaf)
+				return ;
+			delete_tree (node->left);
+			delete_tree (node->right);
+			alloc_.destroy (node);
+			alloc_.deallocate (node, 1);
+		}
 
 	public:
 		Node_ *root;
@@ -332,6 +343,12 @@ namespace ft
 			leaf->side = NOSIDE;
 			root = leaf;
 
+		}
+		void clear()
+		{
+			delete_tree(root);
+			size_ = 0;
+			root = leaf;
 		}
 		void insert(value_type val_)
 		{
@@ -345,7 +362,7 @@ namespace ft
 				node->parent = leaf;
 				node->side = NOSIDE;
 				root = node;
-				root->size_ = 1;
+				size_ = 1;
 				return ;
 			}
 			else
@@ -353,33 +370,22 @@ namespace ft
 				insert_helper(root, node);
 				if (node->side == R || node->side == L)
 					check_color(node);
-				root->size_++;
+				size_++;
 			}
 		}
-		size_t	erase(const value_type &key)
-		{
-			Node_	*search_ = search(root, key.first_());
-			if (search_ == leaf)
-				return 0;
-			if (search_->color == BLACK)
-				deleteNode(search_, true);  // black
-			else
-				deleteNode(search_, false); // red
-			root->size_--;
-			return (1);
-		}
 
-		void delete_Node(Node_ *&root, key_type key)
+		size_type delete_Node(key_type key)
 		{
 			Node_ *z = search(root, key);
-			if (z == leaf) return;
+			if (z == leaf) return 0;
+			size_--;
 			Node_ *y = z;
 			Color originalColor = y->color;
 			Node_ *x;
 			if (z->left == leaf)
 			{
 				x = z->right;
-				transplant(root, z, z->right);		
+				transplant(root, z, z->right);	
 			}
 			else if (z->right == leaf) {
 				x = z->left;
@@ -403,7 +409,9 @@ namespace ft
 				y->color = z->color;
 			}
 			if (originalColor == BLACK) {
-				fixDelete(root, x);			}
+				fixDelete(root, x);
+			}
+			return 1;
 		}
 		
 		Node_ *search(Node_ *node,key_type key)
@@ -454,5 +462,7 @@ namespace ft
 				tmp = tmp->right;
 			return tmp->parent->right;
 		}
+		size_type size() const {return size_;}
+		
 	};
 }
