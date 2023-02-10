@@ -45,7 +45,7 @@ namespace ft
 		size_type size_;
 		compare_type comp;
 		
-		void insert_helper(Node_ *parent, Node_ *node)
+		size_type insert_helper(Node_ *parent, Node_ *node)
 		{
 			if (node->val.first_() < parent->val.first_())
 			{
@@ -55,7 +55,7 @@ namespace ft
 					node->parent = parent;
 					node->side = L;
 					size_++;
-					return;
+					return 1;
 				}
 				else
 					return insert_helper(parent->left, node);
@@ -68,12 +68,13 @@ namespace ft
 					node->parent = parent;
 					node->side = R;
 					size_++;
-					return;
+					return 1;
 
 				}
 				else
 					return insert_helper(parent->right, node);
 			}
+			return 0;
 		}
 		void check_color(Node_ *node)
 		{
@@ -350,7 +351,7 @@ namespace ft
 			size_ = 0;
 			root = leaf;
 		}
-		void insert(value_type val_)
+		size_type insert(value_type val_)
 		{
 			Node_ *node = alloc_.allocate(1);
 			alloc_.construct(node, Node_(val_));
@@ -363,14 +364,16 @@ namespace ft
 				node->side = NOSIDE;
 				root = node;
 				size_ = 1;
-				return ;
+				return 1;
 			}
 			else
 			{
-				insert_helper(root, node);
+				if (!insert_helper(root, node))
+					return 0;
 				if (node->side == R || node->side == L)
 					check_color(node);
 				size_++;
+				return 1;
 			}
 		}
 
@@ -419,7 +422,6 @@ namespace ft
 			if (node == leaf)
 				return leaf;
 			if (node != leaf && node->val.first_() == key)
-			{}
 				return node;
 			if (node != leaf && key > node->val.first_())
 				return search(node->right ,key);

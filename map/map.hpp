@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "../includes/utils.hpp"
+#include "./iterator.hpp"
 #include "./red_black_tree.hpp"
 namespace ft
 {
@@ -48,7 +49,7 @@ namespace ft
 			return (*this);
 		}
 		// deconstructor
-		~map();
+		~map(){}
 		// copy assignment operator
 		map &operator=(const map &x)
 		{
@@ -61,20 +62,29 @@ namespace ft
 			return (*this);
 		}
 		// returns whether the map container is empty (i.e. whether its size is 0).
-		bool empty() const {return !size()};
+		bool empty() const {return !size();}
 		// Returns the number of elements in the map container.
-		size_type size() const { return tree.size()}
+		size_type size() const { return tree.size();}
 		// Returns the maximum number of elements that the map container can hold.
 		size_type max_size() const {return (al.max_size());};
 		// If k matches the key of an element in the container, the function returns a reference to its mapped value.
 		mapped_type &operator[](const key_type &k);
 		// insert single element
-		pair<iterator, bool> insert(const value_type &val);
+		pair<iterator, bool> insert(const value_type &val)
+		{
+			ft::pair<iterator, bool>	P_R;
+			bool						b;
+		
+			b = tree.insert(val);
+			P_R.first = iterator(tree.search(tree.root, val.first), tree.root);
+			P_R.second = b;
+			return (P_R);
+		}
 		// insert element in position
 		iterator insert(iterator position, const value_type &val)
 		{
 			(void) position;
-			return (tree.insert(val))
+			return (tree.insert(val));
 		}
 		// insert a range of elements
 		template <class InputIterator>
@@ -121,7 +131,7 @@ namespace ft
 		// Return key comparison object
 		key_compare key_comp() const {return COM;}
 		// Return value comparison object
-		value_compare value_comp() const;
+		// value_compare value_comp() const;
 		// Get iterator to element
 		iterator find(const key_type &k);
 		// Get iterator to element const

@@ -19,12 +19,12 @@ namespace ft
 		map_iterator() : i(NULL), root_(NULL) {}
 		template <class a1, class a2>
 		map_iterator(const map_iterator<a1, a2> &o) : i(o.i), root_(&(*o.root)){}
-		map_iterator(node p, node const *r) : i(p), root_(r) {}
+		map_iterator(NodePTR p, NodePTR const r) : i(p), root_(r) {}
 		template <class a1, class a2>
-		map_iterator &operator=(map_iterator<a1, a2> &o)
+		map_iterator &operator=(map_iterator<a1, a2> const &o)
 		{
-			i = o.i;
-			root_ = &(*o.root_);
+			this->i = o.i;
+			this->root_ = &(*o.root_);
 			return *this;
 		}
 		reference operator*() const {return(*(i->val));}
@@ -73,16 +73,16 @@ namespace ft
 		template <class a1, class a2, class a3, class a4>
 		friend bool operator==(map_iterator<a1, a2> &p1, map_iterator<a3, a4> &p2)
 		{
-			return (p1.base() == p2.base() ? true : false)
+			return (p1.base() == p2.base() ? true : false);
 		}
 		template <class a1, class a2, class a3, class a4>
 		friend bool operator!=(map_iterator<a1, a2> &p1, map_iterator<a3, a4> &p2)
 		{
-			return (p1.base() != p2.base() ? true : false)
+			return (p1.base() != p2.base() ? true : false);
 		}
 	private:
 		NodePTR i;
-		const NodePRT *root_;.
+		NodePTR root_;
 
 		NodePTR base() const {
 			return this->i;

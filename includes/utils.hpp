@@ -8,10 +8,6 @@ namespace ft
 		typedef	T1	first_type;
 		typedef	T2	second_type;
 
-		private:
-		const first_type	first;
-		second_type	second;
-
 		public:
 		first_type first_() const {return this->first;}
 		second_type second_() const {return this->second;}
@@ -25,6 +21,8 @@ namespace ft
 			this->second = pr.second_();
 			return (*this);
 		}
+		first_type	first;
+		second_type			second;
 	};
 	template <class T1, class T2>
 	bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
