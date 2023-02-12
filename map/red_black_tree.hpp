@@ -45,6 +45,7 @@ namespace ft
 		size_type size_;
 		compare_type comp;
 		
+		
 		size_type insert_helper(Node_ *parent, Node_ *node)
 		{
 			if (node->val.first_() < parent->val.first_())
@@ -336,6 +337,7 @@ namespace ft
 
 	public:
 		Node_ *root;
+		Node_ *g_leaf() const {return this->leaf;}
 		red_black_tree() {
 			leaf = alloc_.allocate(1);
 			leaf->color = BLACK;
@@ -343,7 +345,11 @@ namespace ft
 			leaf->right = NULL;
 			leaf->side = NOSIDE;
 			root = leaf;
-
+			size_ = 0;
+		}
+		~red_black_tree(){
+			clear();
+			alloc_.deallocate (leaf, 1);
 		}
 		void clear()
 		{
@@ -369,10 +375,13 @@ namespace ft
 			else
 			{
 				if (!insert_helper(root, node))
+				{
+					alloc_.destroy(node);
+					alloc_.deallocate(node, 1);
 					return 0;
+				}
 				if (node->side == R || node->side == L)
 					check_color(node);
-				size_++;
 				return 1;
 			}
 		}
@@ -417,17 +426,27 @@ namespace ft
 			return 1;
 		}
 		
-		Node_ *search(Node_ *node,key_type key)
+		Node_ *search(Node_ *node ,const key_type key) const
 		{
 			if (node == leaf)
-				return leaf;
+				return node;
 			if (node != leaf && node->val.first_() == key)
 				return node;
 			if (node != leaf && key > node->val.first_())
 				return search(node->right ,key);
 			return search(node->left ,key);
 		}
-		Node_ *min()
+		bool search_b(Node_ *node ,const key_type key) const
+		{
+			if (node == leaf)
+				return false;
+			if (node != leaf && node->val.first_() == key)
+				return true;
+			if (node != leaf && key > node->val.first_())
+				return search(node->right ,key);
+			return search(node->left ,key);
+		}
+		Node_ *min() const
 		{
 			if (root == leaf)
 				return leaf;
@@ -446,7 +465,7 @@ namespace ft
 			return tmp->parent->left;
 		}
 
-		Node_ *max()
+		Node_ *max() const
 		{
 			if (root == leaf)
 				return leaf;

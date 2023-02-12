@@ -16,59 +16,75 @@ namespace ft
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::difference_type difference_type;
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::pointer pointer;
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::reference reference;
-		map_iterator() : i(NULL), root_(NULL) {}
+		map_iterator() : i(NULL), root_(NULL), leaf_(NULL) {}
 		template <class a1, class a2>
-		map_iterator(const map_iterator<a1, a2> &o) : i(o.i), root_(&(*o.root)){}
-		map_iterator(NodePTR p, NodePTR const r) : i(p), root_(r) {}
+		map_iterator(const map_iterator<a1, a2> &o) : i(o.base()), root_(&(*o.get_root())), leaf_(o.get_leaf()) {}
+		map_iterator(NodePTR p, NodePTR const &r, NodePTR const &l) : i(p), root_(r), leaf_(l) {}
+		map_iterator(const NodePTR p) : i(p) {}
 		template <class a1, class a2>
 		map_iterator &operator=(map_iterator<a1, a2> const &o)
 		{
-			this->i = o.i;
-			this->root_ = &(*o.root_);
+			this->i = o.base();
+			this->root_ = &(*o.get_root());
 			return *this;
 		}
-		reference operator*() const {return(*(i->val));}
-		map_iterator	&operator++()
+		reference operator*() const { return ((i->val)); }
+		map_iterator &operator++()
 		{
 			if (i == NULL)
 			{
-				i = *root_;
-				while (i->left)
+				i = root_;
+				while (i->left != get_leaf())
 					i = i->left;
 			}
 			i = successor(i);
 			return (*this);
 		}
-		map_iterator	operator++(int)
+		map_iterator operator++(int)
 		{
 			map_iterator tmp = *this;
 			++(*this);
-			return (tmp); 
+			return (tmp);
 		}
-		map_iterator	&operator--()
+		map_iterator &operator--()
 		{
-			if (i == NULL)
+			if (i == get_leaf())
 			{
-				i = *root_;
-				while (i->right)
+				i = root_;
+				while (i->right != get_leaf())
 					i = i->right;
 			}
-			i = predecessor(i);
+			else
+			{
+				i = predecessor(i);
+			}
 			return (*this);
 		}
-		map_iterator	operator--(int)
+		map_iterator operator--(int)
 		{
 			map_iterator tmp = *this;
 			--(*this);
 			return (tmp);
 		}
-		pointer	operator->()
+		pointer operator->()
 		{
 			return (&(operator*()));
 		}
-		pointer	operator->()  const
+		pointer operator->() const
 		{
 			return (&(operator*()));
+		}
+		NodePTR base() const
+		{
+			return this->i;
+		}
+		NodePTR get_root() const
+		{
+			return this->root_;
+		}
+		NodePTR get_leaf() const
+		{
+			return this->leaf_;
 		}
 		template <class a1, class a2, class a3, class a4>
 		friend bool operator==(map_iterator<a1, a2> &p1, map_iterator<a3, a4> &p2)
@@ -76,26 +92,25 @@ namespace ft
 			return (p1.base() == p2.base() ? true : false);
 		}
 		template <class a1, class a2, class a3, class a4>
-		friend bool operator!=(map_iterator<a1, a2> &p1, map_iterator<a3, a4> &p2)
+		friend bool operator!=(const map_iterator<a1, a2> &p1, const map_iterator<a3, a4> &p2)
 		{
 			return (p1.base() != p2.base() ? true : false);
 		}
+
 	private:
 		NodePTR i;
 		NodePTR root_;
-
-		NodePTR base() const {
-			return this->i;
-		}
-		NodePTR	successor(NodePTR myNode){
+		NodePTR leaf_;
+		NodePTR successor(NodePTR myNode)
+		{
 			NodePTR tmp = myNode->right;
-			if (tmp)
+			if (tmp != get_leaf())
 			{
-				while (tmp->left != NULL)
-					tmp = tmp->left;	
-				return tmp;			
+				while (tmp->left != get_leaf())
+					tmp = tmp->left;
+				return tmp;
 			}
-			NodePTR	parent = myNode->parent;
+			NodePTR parent = myNode->parent;
 			while (parent != NULL && myNode == parent->right)
 			{
 				myNode = parent;
@@ -104,15 +119,16 @@ namespace ft
 			return (parent);
 		}
 
-		NodePTR	predecessor(NodePTR myNode){
+		NodePTR predecessor(NodePTR myNode)
+		{
 			NodePTR tmp = myNode->left;
-			if (tmp)
+			if (tmp != get_leaf())
 			{
-				while (tmp->right != NULL)
-					tmp = tmp->right;	
-				return tmp;			
+				while (tmp->right != get_leaf())
+					tmp = tmp->right;
+				return tmp;
 			}
-			NodePTR	parent = myNode->parent;
+			NodePTR parent = myNode->parent;
 			while (parent != NULL && myNode == parent->left)
 			{
 				myNode = parent;

@@ -2,17 +2,32 @@
 #include "./red_black_tree.hpp"
 #include "./fancy_tree.hpp"
 #include "./map.hpp"
-
+#include <map>
 int main()
 {
 
     ft::map<int, char> obj;
 
-    obj.insert(ft::make_pair(15, 'a'));
+    obj.insert(ft::make_pair(64, 'a'));
+    obj.insert(ft::make_pair(36, 'a'));
+    obj.insert(ft::make_pair(01, 'a'));
+    obj.insert(ft::make_pair(01, 'a'));
+    obj.insert(ft::make_pair(01, 'a'));
+    obj.insert(ft::make_pair(01, 'a'));
+    obj.insert(ft::make_pair(01, 'a'));
+    ft::map<int, char>::iterator it = obj.begin();
+    // obj.erase(it);
+    std::cout << obj.size() << std::endl;
+    std::cout << it->first << std::endl;
+    it++;
+    std::cout << it->first << std::endl;
+    it++;
+    std::cout << it->first << std::endl;
+    std::cout << obj.end()->first_() <<  std::endl;
+
+    
 
     // ft::red_black_tree<int, int, std::less<int>, std::allocator<ft::pair<const int, int> > > obj;;
-
-    // fancy_tree<int> debug;
 
 
     // obj.insert(ft::make_pair(20, 20));
@@ -41,7 +56,8 @@ int main()
     // // obj.erase(89);
     // debug.print_tree(obj.root, V_VIEW);
     // obj.delete_Node(obj.root, 45);
-    // debug.print_tree(obj.root, V_VIEW);
+    // debug.print_tree(obj.tree.root, V_VIEW);
+    // std::cout << "\n" << "size = " << obj.size() << std::endl;
     // obj.deleteNode(40);
     // debug.print_tree(obj.root, V_VIEW);
     // obj.tempr = obj.search(obj.root, 10);

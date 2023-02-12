@@ -9,11 +9,11 @@ namespace ft
 	class map
 	{
 	private:
-		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		Compare										COM;
 		Alloc										al;
 		
 	public:
+		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		typedef Key 																				key_type;
 		typedef T 																					mapped_type;
 		typedef ft::pair<const key_type, mapped_type> 												value_type;
@@ -21,7 +21,7 @@ namespace ft
 		typedef Compare 																			key_compare;
 		typedef Alloc 																				allocator_type;
 		typedef value_type 																			&reference;
-		typedef const 	value_type 																	&const_reference;
+		typedef const	value_type 																	&const_reference;
 		typedef typename std::allocator_traits<allocator_type>::pointer								pointer;
 		typedef typename std::allocator_traits<allocator_type>::const_pointer						const_pointer;
 		typedef typename std::ptrdiff_t																difference_type;
@@ -36,20 +36,20 @@ namespace ft
 			// should i make iterator 
 			while (first != last)
 			{
-				tree.insert(*first);
+				this->insert(*first);
 				first++;
 			}
 		}
 		// copy constructor
-		map(const map &x) : tree(x.tree), COM(x.COM), al(x.al) {
-			
+		map(const map &x) : COM(x.COM), al(x.al) {
 			// should i make iterator
 			for (iterator it = x.begin(); it != x.end(); it++)
 					tree.insert (*it);
-			return (*this);
 		}
 		// deconstructor
-		~map(){}
+		~map(){
+
+		}
 		// copy assignment operator
 		map &operator=(const map &x)
 		{
@@ -62,7 +62,9 @@ namespace ft
 			return (*this);
 		}
 		// returns whether the map container is empty (i.e. whether its size is 0).
-		bool empty() const {return !size();}
+		bool empty() const {
+			return !size();
+		}
 		// Returns the number of elements in the map container.
 		size_type size() const { return tree.size();}
 		// Returns the maximum number of elements that the map container can hold.
@@ -74,9 +76,9 @@ namespace ft
 		{
 			ft::pair<iterator, bool>	P_R;
 			bool						b;
-		
+
 			b = tree.insert(val);
-			P_R.first = iterator(tree.search(tree.root, val.first), tree.root);
+			P_R.first = iterator(tree.search(tree.root, val.first), tree.root, tree.g_leaf());
 			P_R.second = b;
 			return (P_R);
 		}
@@ -84,7 +86,8 @@ namespace ft
 		iterator insert(iterator position, const value_type &val)
 		{
 			(void) position;
-			return (tree.insert(val));
+			ft::pair<iterator, bool> pr = this->insert(val);
+			return (pr.first_());
 		}
 		// insert a range of elements
 		template <class InputIterator>
@@ -93,7 +96,7 @@ namespace ft
 			// should i make iterator 
 			while (first != last)
 			{
-				tree.insert(*first);
+				this->insert(*first);
 				first++;
 			}
 		}
@@ -101,7 +104,7 @@ namespace ft
 		void erase(iterator position)
 		{
 			if (position != end())
-				tree.erase(position->first);
+				tree.delete_Node(position->first);
 		}
 		// erase element from map use key
 		size_type erase(const key_type &k)
@@ -122,10 +125,10 @@ namespace ft
 		}
 
 		// swap : Exchanges the content of the container by the content of x, which is another map of the same type. Sizes may differ.
-		void swap(map &x)
-		{
+		// void swap(map &x)
+		// {
 
-		}
+		// }
 		// clear content. Removes all elements from the map container (which are destroyed), leaving the container with a size of 0.
 		void clear() {tree.clear();}
 		// Return key comparison object
@@ -133,12 +136,18 @@ namespace ft
 		// Return value comparison object
 		// value_compare value_comp() const;
 		// Get iterator to element
-		iterator find(const key_type &k);
+		iterator find(const key_type &k)
+		{
+			return iterator(tree.search(tree.root, k), tree.root, tree.g_leaf());
+		}
 		// Get iterator to element const
-		const_iterator find(const key_type &k) const;
+		const_iterator find(const key_type &k) const
+		{
+			return iterator(tree.search(tree.root, k), tree.root, tree.g_leaf());
+		}
 		// Count elements with a specific key
 		size_type count(const key_type &k) const{
-			return (!!(tree.search(tree.root, k)));
+			return  tree.search_b(tree.root, k);
 		}
 		// Return iterator to lower bound
 		iterator lower_bound(const key_type &k);
@@ -156,23 +165,23 @@ namespace ft
 		allocator_type get_allocator() const{return al;}
 		iterator	begin ()
 		{
-			Node<value_type>	*mini = tree.minimum();
-			return (iterator (mini, tree.root));
+			Node<value_type>	*mini = tree.min();
+			return (iterator (mini, tree.root, tree.g_leaf()));
 		}
 		iterator	begin () const
 		{
-			Node<value_type>	*mini = tree.minimum();
-			return (iterator (mini, tree.root));
+			Node<value_type>	*mini = tree.min();
+			return (iterator (mini, tree.root, tree.g_leaf()));
 		}
 		iterator	end ()
 		{
-			Node<value_type>	*maxi = tree.maximum();
-			return (iterator (maxi, tree.root));
+			// Node<value_type>	*maxi = tree.max();
+			return (iterator (tree.g_leaf(), tree.root, tree.g_leaf()));
 		}
 		iterator	end () const
 		{
-			Node<value_type>	*maxi = tree.maximum();
-			return (iterator (maxi, tree.root));
+			// Node<value_type>	*maxi = tree.max();
+			return (iterator (tree.g_leaf(), tree.root, tree.g_leaf()));
 		}
 	};
 
