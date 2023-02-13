@@ -6,24 +6,34 @@
 int main()
 {
 
+    fancy_tree<int> debug;
     ft::map<int, char> obj;
 
     obj.insert(ft::make_pair(64, 'a'));
     obj.insert(ft::make_pair(36, 'a'));
     obj.insert(ft::make_pair(01, 'a'));
-    obj.insert(ft::make_pair(01, 'a'));
-    obj.insert(ft::make_pair(01, 'a'));
-    obj.insert(ft::make_pair(01, 'a'));
-    obj.insert(ft::make_pair(01, 'a'));
-    ft::map<int, char>::iterator it = obj.begin();
+    obj.insert(ft::make_pair(06, 'a'));
+    obj.insert(ft::make_pair(80, 'a'));
+    obj.insert(ft::make_pair(81, 'a'));
+    obj.insert(ft::make_pair(11, 'a'));
+    ft::map<int, char>::iterator it = obj.end();
+    // std::advance(it, -3);
     // obj.erase(it);
-    std::cout << obj.size() << std::endl;
+    // it = obj.end();
+    // std::advance(it, -1);
+    // obj.erase(it);
+    it = obj.begin();
+    std::advance(it, 1);
     std::cout << it->first << std::endl;
-    it++;
-    std::cout << it->first << std::endl;
-    it++;
-    std::cout << it->first << std::endl;
-    std::cout << obj.end()->first_() <<  std::endl;
+    obj.erase(it);
+
+    // std::cout << obj.size() << std::endl;
+    // std::cout << it->first << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
+    // it++;
+    // std::cout << it->first << std::endl;
+    // std::cout << obj.end()->first_() <<  std::endl;
 
     
 
@@ -59,8 +69,10 @@ int main()
     // debug.print_tree(obj.tree.root, V_VIEW);
     // std::cout << "\n" << "size = " << obj.size() << std::endl;
     // obj.deleteNode(40);
-    // debug.print_tree(obj.root, V_VIEW);
+    std::cout <<  std::endl;
+    debug.print_tree(obj.tree.root, V_VIEW);
     // obj.tempr = obj.search(obj.root, 10);
     // std::cout << obj.tempr->key << std::endl;
+    std::cout <<  std::endl;
     // std::cout << "\033[1;31m" << "hhhah" << "\033[0m";
 }

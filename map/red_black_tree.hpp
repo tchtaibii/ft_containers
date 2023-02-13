@@ -241,22 +241,22 @@ namespace ft
 			rightRotate(node->right);
 			leftRotate(node);
 		}
-		size_type height()
-		{
-			if (root == leaf)
-				return 0;
-			return height(root) - 1;
-		}
-		size_type height(Node_ *node)
-		{
-			if (root == leaf)
-				return 0;
-			size_type leftHeight = height(node->left) + 1;
-			size_type rightHeight = height(node->right) + 1;
-			if (leftHeight > rightHeight)
-				return leftHeight;
-			return rightHeight;
-		}
+		// size_type height()
+		// {
+		// 	if (root == leaf)
+		// 		return 0;
+		// 	return height(root) - 1;
+		// }
+		// size_type height(Node_ *node)
+		// {
+		// 	if (root == leaf)
+		// 		return 0;
+		// 	size_type leftHeight = height(node->left) + 1;
+		// 	size_type rightHeight = height(node->right) + 1;
+		// 	if (leftHeight > rightHeight)
+		// 		return leftHeight;
+		// 	return rightHeight;
+		// }
 		void fixDelete(Node_ *root, Node_ *x)
 		{
 			while (x != root && x->color == BLACK)
@@ -292,6 +292,7 @@ namespace ft
 						x->parent->color = RED;
 						rightRotate(x->parent);
 						w = x->parent->left;
+						std::cout << "hnaaaaaaaa" << std::endl;
 					}
 					if (w->right->color == BLACK && w->left->color == BLACK) {
 						w->color = RED;
@@ -321,18 +322,23 @@ namespace ft
 			} else if (u == u->parent->left) {
 				u->parent->left = v;
 			} else {
+				std::cout << "vss" << std::endl;
 				u->parent->right = v;
 			}
 			v->parent = u->parent;
 		}
 		void	delete_tree(Node_ *node)
 		{
-			if (node == leaf)
+			if (node == leaf || !node )
 				return ;
 			delete_tree (node->left);
 			delete_tree (node->right);
-			alloc_.destroy (node);
-			alloc_.deallocate (node, 1);
+			if (node != leaf)
+			{
+				alloc_.destroy (node);
+				alloc_.deallocate (node, 1);
+				// node = leaf;
+			}
 		}
 
 	public:
@@ -389,7 +395,8 @@ namespace ft
 		size_type delete_Node(key_type key)
 		{
 			Node_ *z = search(root, key);
-			if (z == leaf) return 0;
+			if (z == leaf)
+				return 0;
 			size_--;
 			Node_ *y = z;
 			Color originalColor = y->color;
@@ -397,11 +404,11 @@ namespace ft
 			if (z->left == leaf)
 			{
 				x = z->right;
-				transplant(root, z, z->right);	
+				transplant(root, z, x);
 			}
 			else if (z->right == leaf) {
 				x = z->left;
-				transplant(root, z, z->left);
+				transplant(root, z, x);
 			}
 			else {
 				y = successor(z);
@@ -423,6 +430,13 @@ namespace ft
 			if (originalColor == BLACK) {
 				fixDelete(root, x);
 			}
+			if (z != leaf)
+			{
+				alloc_.destroy(z);
+				alloc_.deallocate(z, 1);
+				z = leaf;
+			}
+			// std::cout	<< "i'm here" << std::endl;
 			return 1;
 		}
 		
@@ -432,16 +446,6 @@ namespace ft
 				return node;
 			if (node != leaf && node->val.first_() == key)
 				return node;
-			if (node != leaf && key > node->val.first_())
-				return search(node->right ,key);
-			return search(node->left ,key);
-		}
-		bool search_b(Node_ *node ,const key_type key) const
-		{
-			if (node == leaf)
-				return false;
-			if (node != leaf && node->val.first_() == key)
-				return true;
 			if (node != leaf && key > node->val.first_())
 				return search(node->right ,key);
 			return search(node->left ,key);

@@ -70,7 +70,10 @@ namespace ft
 		// Returns the maximum number of elements that the map container can hold.
 		size_type max_size() const {return (al.max_size());};
 		// If k matches the key of an element in the container, the function returns a reference to its mapped value.
-		mapped_type &operator[](const key_type &k);
+		mapped_type&		operator[] (const key_type& k)
+		{
+			return ((this->insert(ft::make_pair(k, mapped_type())).first)->second);
+		}
 		// insert single element
 		pair<iterator, bool> insert(const value_type &val)
 		{
@@ -104,7 +107,10 @@ namespace ft
 		void erase(iterator position)
 		{
 			if (position != end())
+			{
+				// std::cout << position->first << std::endl;
 				tree.delete_Node(position->first);
+			}
 		}
 		// erase element from map use key
 		size_type erase(const key_type &k)
@@ -147,7 +153,9 @@ namespace ft
 		}
 		// Count elements with a specific key
 		size_type count(const key_type &k) const{
-			return  tree.search_b(tree.root, k);
+			if (tree.search(tree.root, k) != tree.g_leaf())
+				return 1;
+			return  0;
 		}
 		// Return iterator to lower bound
 		iterator lower_bound(const key_type &k);
