@@ -1,0 +1,3 @@
+#!/bin/bash
+
+FT_CONTAINERS="../$FT_CONTAINERS"

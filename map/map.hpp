@@ -4,7 +4,7 @@
 #include "../includes/utils.hpp"
 #include "./iterator.hpp"
 #include "../includes/red_black_tree.hpp"
-#include "./includes/reverse_iterator.hpp"
+#include "../includes/reverse_iterator.hpp"
 namespace ft
 {
 	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
@@ -13,7 +13,6 @@ namespace ft
 	private:
 		Compare										COM;
 		Alloc										al;
-		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		
 	public:
 		typedef Key 																				key_type;
@@ -76,6 +75,7 @@ namespace ft
 					tree.insert (*it);
 			return (*this);
 		}
+		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		// returns whether the map container is empty (i.e. whether its size is 0).
 		bool empty() const {
 			return !size();

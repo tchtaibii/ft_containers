@@ -6,8 +6,8 @@
 int main()
 {
 
-    // fancy_tree<int> debug;
-    ft::map<int, char> m;
+    // fancy_tree<char *> debug;
+    ft::map<std::string, std::string> m;
 
     // obj.insert(ft::make_pair(64, 'a'));
     // obj.insert(ft::make_pair(90, 'a'));
@@ -70,50 +70,27 @@ int main()
 
     // }
 
-    strmap::size_type size = m.erase("");
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
+    //  m.erase("");
 
-    m.insert(NAMESPACE::make_pair("", ""));
-    m.insert(NAMESPACE::make_pair("123", "kjhgfdsdffghsfghdfgh"));
-    m.insert(NAMESPACE::make_pair("1234", "gfdsadgg"));
-    m.insert(NAMESPACE::make_pair("123456789123456789123456789", "49857459898674568464"));
-    m.insert(NAMESPACE::make_pair("0", "2345456456456456"));
-    m.insert(NAMESPACE::make_pair("", ""));
-    m.insert(NAMESPACE::make_pair("", "9459845984598498"));
-    m.insert(NAMESPACE::make_pair("000000000000000000000000", "1111111111111111111111111111"));
+    m.insert(ft::make_pair("", ""));
+    m.insert(ft::make_pair("123", "kjhgfdsdffghsfghdfgh"));
+    m.insert(ft::make_pair("1234", "gfdsadgg"));
+    m.insert(ft::make_pair("123456789123456789123456789", "49857459898674568464"));
+    m.insert(ft::make_pair("", ""));
+    m.insert(ft::make_pair("", "9459845984598498"));
+    // m.insert(ft::make_pair("000000000000000000000000", "1111111111111111111111111111"));
+    m.insert(ft::make_pair("-1", "2345456456456456"));
+    m.insert(ft::make_pair("-0", "2345456456456456"));
+    m.erase("1");
+    m.erase("123");
+    m.erase("123");
+    m.erase("");
+    m.erase("1234");
+    m.erase("123456789123456789123456789");
+    // std::cout << " *****" << std::endl;
+    m.erase("-1");
+    // m.erase("-0");
+    m.tree.printTree();
+    // std::cout << m.size();
 
-    size = m.erase("1");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("123");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("123");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("1234");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("123456789123456789123456789");
-
-    PRINT_LINE("Erased?:", size);
-    PRINT_ALL(m);
-
-    size = m.erase("000000000000000000000000");
-
-    PRINT_LINE("Erased?:", size);
 }

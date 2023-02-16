@@ -11,13 +11,13 @@
 /*===================Node====================*/
 
 // Node class
-#define NODE ft::Node <ft::pair<const int, char> >
+#define NODE ft::Node <ft::pair<char *, char *> >
 
 // Node class attributes
 #define LEFT left		// left attribute
 #define RIGHT right		// right attribute
 #define PARENT parent			// parent attribute (can be ignnored)
-#define CONTENT val.first_()	// data attribute + element of pair(if exists)
+#define CONTENT val.first	// data attribute + element of pair(if exists)
 
 /*===========================================*/
 
@@ -137,22 +137,25 @@ class fancy_tree
 		}
 
 		// calculate value length
-		int		int_len(int n)
+		int		int_len(const char * n)
 		{
-			int count = 0;
-			if (!n)
-				return 1;
-			if (n < 0)
-			{
-				count++;
-				n = -n;
-			}
-			while (n != 0)
-			{
-				n /= 10;
-				count++;
-			}
-			return count;
+			int i = -1;
+			while(n[++i]);
+			return i;
+			// int count = 0;
+			// if (!n)
+			// 	return 1;
+			// if (n < 0)
+			// {
+			// 	count++;
+			// 	n = -n;
+			// }
+			// while (n != 0)
+			// {
+			// 	n /= 10;
+			// 	count++;
+			// }
+			// return count;
 		}
 
 		// print the content of a node

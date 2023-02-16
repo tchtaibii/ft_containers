@@ -44,9 +44,23 @@ namespace ft
 		alloc alloc_;
 		size_type size_;
 		compare_type comp;
-		Node_ *root;
 		
-		
+		void printHelper(Node_ *root, std::string indent, bool last) {
+		if (root != leaf) {
+		std::cout << indent;
+		if (last) {
+			std::cout << "R----";
+			indent += "   ";
+		} else {
+			std::cout << "L----";
+			indent += "|  ";
+		}
+		std::string sColor = root->color == RED ? "RED" : "BLACK";
+		std::cout << root->val.first << "(" << sColor << ")" << std::endl;
+		printHelper(root->left, indent, false);
+		printHelper(root->right, indent, true);
+		}
+	}
 		size_type insert_helper(Node_ *parent, Node_ *node)
 		{
 			if (comp (node->val.first_(), parent->val.first_()))
@@ -336,7 +350,6 @@ namespace ft
 
 	public:
 		Node_ *g_leaf() const {return this->leaf;}
-		Node_ *g_root() const {return this->root;}
 		red_black_tree() {
 			leaf = alloc_.allocate(1);
 			leaf->color = BLACK;
@@ -396,6 +409,15 @@ namespace ft
 			Node_ *x;
 			if (nodeDelete->left == leaf)
 			{
+				if (nodeDelete->parent == root && nodeDelete->parent->left == leaf && nodeDelete->right == leaf  )
+				{
+					x = nodeDelete->parent;
+					x->right = leaf;
+					alloc_.destroy(nodeDelete);
+					alloc_.deallocate(nodeDelete, 1);
+					// nodeDelete = leaf;
+					return 1;
+				}
 				x = nodeDelete->right;
 				transplant(root, nodeDelete, x);
 			}
@@ -424,7 +446,7 @@ namespace ft
 			if (originalColor == BLACK) {
 				fixDelete(root, x);
 			}
-			// if (nodeDelete != leaf)
+			if (nodeDelete != leaf)
 			{
 				alloc_.destroy(nodeDelete);
 				alloc_.deallocate(nodeDelete, 1);
@@ -432,14 +454,15 @@ namespace ft
 			}
 			return 1;
 		}
+		Node_ *g_root() const {return this->root;}
 		
 		Node_ *search(Node_ *node ,const key_type key) const
 		{
-			if (node == leaf)
+			if (node == leaf && node->left == NULL && node->left == NULL)
 				return node;
-			if (node != leaf && node->val.first_() == key)
+			if (node != leaf && comp(node->val.first_(),key) == false && comp(key, node->val.first_()) == false)
 				return node;
-			if (node != leaf && key > node->val.first_())
+			if (node != leaf && comp(node->val.first_(),key))
 				return search(node->right ,key);
 			return search(node->left ,key);
 		}
@@ -505,6 +528,7 @@ namespace ft
 			}
 			return (ret);
 		}
+		
 		Node_	*lower_bound(const Key &k) const
 		{
 			Node_	*tmp = root;
@@ -592,5 +616,11 @@ namespace ft
 			root_tmp = NULL;
 			leaf_tmp = NULL;
 		}
+		void printTree()
+		{
+			if (root != leaf)
+				printHelper(this->root, "", true);
+		}
+		Node_ *root;
 	};
 }
