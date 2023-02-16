@@ -44,11 +44,12 @@ namespace ft
 		alloc alloc_;
 		size_type size_;
 		compare_type comp;
+		Node_ *root;
 		
 		
 		size_type insert_helper(Node_ *parent, Node_ *node)
 		{
-			if (node->val.first_() < parent->val.first_())
+			if (comp (node->val.first_(), parent->val.first_()))
 			{
 				if (parent->left == leaf)
 				{
@@ -61,7 +62,7 @@ namespace ft
 				else
 					return insert_helper(parent->left, node);
 			}
-			else if (node->val.first_() > parent->val.first_())
+			else if (comp(parent->val.first_(), node->val.first_()))
 			{
 				if (parent->right == leaf)
 				{
@@ -95,41 +96,43 @@ namespace ft
 		void correctTree(Node_ *node)
 		{
 			// parent in the left side
-			if (node->parent->side == L)
-			{
-				// AUNT IS BLACK so we gonna do rotation
-				if (node->parent->parent->right == leaf || node->parent->parent->right->color == BLACK)
-					return rotate(node);
-				if (node->parent->parent->right != leaf)
+			if (node->parent->parent != leaf)
+				if (node->parent->parent->left == node->parent)
 				{
-					node->parent->parent->right->color = BLACK;
-					node->parent->parent->color = RED;
-					node->parent->color = BLACK;
-					return;
+					// AUNT IS BLACK so we gonna do rotation
+					if (node->parent->parent->right == leaf || node->parent->parent->right->color == BLACK)
+						return rotate(node);
+					if (node->parent->parent->right != leaf)
+					{
+						node->parent->parent->right->color = BLACK;
+						node->parent->parent->color = RED;
+						node->parent->color = BLACK;
+						return;
+					}
 				}
-			}
 			// parent in the right side
-			if (node->parent->side == R)
-			{
-				// AUNT IS BLACK so we gonna do rotation
-				if (node->parent->parent->left == leaf || node->parent->parent->left->color == BLACK)
+			if (node->parent->parent != leaf)
+				if (node->parent->parent->right == node->parent)
 				{
-					return rotate(node);
+					// AUNT IS BLACK so we gonna do rotation
+					if (node->parent->parent->left == leaf || node->parent->parent->left->color == BLACK)
+					{
+						return rotate(node);
+					}
+					if (node->parent->parent->left != leaf)
+					{
+						node->parent->parent->left->color = BLACK;
+						node->parent->color = BLACK;
+						node->parent->parent->color = RED;
+						return;
+					}
 				}
-				if (node->parent->parent->left != leaf)
-				{
-					node->parent->parent->left->color = BLACK;
-					node->parent->color = BLACK;
-					node->parent->parent->color = RED;
-					return;
-				}
-			}
 		}
 		void rotate(Node_ *node)
 		{
-			if (node->side == L)
+			if (node->parent->left == node)
 			{
-				if (node->parent->side == L)
+				if (node->parent->parent->left == node->parent)
 				{
 					rightRotate(node->parent->parent);
 					node->color = RED;
@@ -144,17 +147,18 @@ namespace ft
 				node->left->color = RED;
 				return;
 			}
-			if (node->side == R)
+			if (node->parent->right == node)
 			{
-				if (node->parent->side == R)
-				{
-					leftRotate(node->parent->parent);
-					node->color = RED;
-					node->parent->color = BLACK;
-					if (node->parent->left != leaf)
-						node->parent->left->color = RED;
-					return;
-				}
+				if (node->parent->parent != leaf)
+					if (node->parent->parent->right == node->parent)
+					{
+						leftRotate(node->parent->parent);
+						node->color = RED;
+						node->parent->color = BLACK;
+						if (node->parent->left != leaf)
+							node->parent->left->color = RED;
+						return;
+					}
 				leftrightRotate(node->parent->parent);
 				node->color = BLACK;
 				node->right->color = RED;
@@ -162,11 +166,17 @@ namespace ft
 				return;
 			}
 		}
-
+		Node_ *minimum(Node_ *node)
+		{
+			while (node->left != leaf)
+				node = node->left;
+			return node;
+		}
 		void leftRotate(Node_ *node)
 		{
 			Node_ *tmp = node->right;
-			node->right = tmp->left;
+			if (node->right != leaf)
+				node->right = tmp->left;
 			if (node->right != leaf)
 			{
 				node->right->parent = node;
@@ -182,7 +192,7 @@ namespace ft
 			else
 			{
 				tmp->parent = node->parent;
-				if (node->side == L)
+				if (node->parent->left == node)
 				{
 					tmp->side = L;
 					tmp->parent->left = tmp;
@@ -216,7 +226,7 @@ namespace ft
 			else
 			{
 				tmp->parent = node->parent;
-				if (node->side == R)
+				if (node->parent->right == node)
 				{
 					tmp->side = R;
 					tmp->parent->right = tmp;
@@ -241,24 +251,9 @@ namespace ft
 			rightRotate(node->right);
 			leftRotate(node);
 		}
-		// size_type height()
-		// {
-		// 	if (root == leaf)
-		// 		return 0;
-		// 	return height(root) - 1;
-		// }
-		// size_type height(Node_ *node)
-		// {
-		// 	if (root == leaf)
-		// 		return 0;
-		// 	size_type leftHeight = height(node->left) + 1;
-		// 	size_type rightHeight = height(node->right) + 1;
-		// 	if (leftHeight > rightHeight)
-		// 		return leftHeight;
-		// 	return rightHeight;
-		// }
 		void fixDelete(Node_ *root, Node_ *x)
 		{
+
 			while (x != root && x->color == BLACK)
 			{
 				if (x->parent->left == x) {
@@ -269,11 +264,11 @@ namespace ft
 						leftRotate(x->parent);
 						w = x->parent->right;
 					}
-					if (w->left->color == BLACK && w->right->color == BLACK) {
+					if (w != leaf && w->left->color == BLACK && w->right->color == BLACK) {
 						w->color = RED;
 						x = x->parent;
 					} else {
-						if (w->right->color == BLACK) {
+						if (w != leaf && w->right->color == BLACK) {
 							w->left->color = BLACK;
 							w->color = RED;
 							rightRotate(w);
@@ -281,7 +276,8 @@ namespace ft
 						}
 						w->color = x->parent->color;
 						x->parent->color = BLACK;
-						w->right->color = BLACK;
+						if (w->right)
+							w->right->color = BLACK;
 						leftRotate(x->parent);
 						x = root;
 					}
@@ -292,7 +288,6 @@ namespace ft
 						x->parent->color = RED;
 						rightRotate(x->parent);
 						w = x->parent->left;
-						std::cout << "hnaaaaaaaa" << std::endl;
 					}
 					if (w->right->color == BLACK && w->left->color == BLACK) {
 						w->color = RED;
@@ -322,7 +317,6 @@ namespace ft
 			} else if (u == u->parent->left) {
 				u->parent->left = v;
 			} else {
-				std::cout << "vss" << std::endl;
 				u->parent->right = v;
 			}
 			v->parent = u->parent;
@@ -333,17 +327,16 @@ namespace ft
 				return ;
 			delete_tree (node->left);
 			delete_tree (node->right);
-			if (node != leaf)
+			if (node != leaf || !node )
 			{
 				alloc_.destroy (node);
 				alloc_.deallocate (node, 1);
-				// node = leaf;
 			}
 		}
 
 	public:
-		Node_ *root;
 		Node_ *g_leaf() const {return this->leaf;}
+		Node_ *g_root() const {return this->root;}
 		red_black_tree() {
 			leaf = alloc_.allocate(1);
 			leaf->color = BLACK;
@@ -386,7 +379,7 @@ namespace ft
 					alloc_.deallocate(node, 1);
 					return 0;
 				}
-				if (node->side == R || node->side == L)
+				if (node->parent->right == node || node->parent->left == node)
 					check_color(node);
 				return 1;
 			}
@@ -394,49 +387,49 @@ namespace ft
 
 		size_type delete_Node(key_type key)
 		{
-			Node_ *z = search(root, key);
-			if (z == leaf)
+			Node_ *nodeDelete = search(root, key);
+			if (nodeDelete == leaf)
 				return 0;
 			size_--;
-			Node_ *y = z;
-			Color originalColor = y->color;
+			Node_ *tmp = nodeDelete;
+			Color originalColor = tmp->color;
 			Node_ *x;
-			if (z->left == leaf)
+			if (nodeDelete->left == leaf)
 			{
-				x = z->right;
-				transplant(root, z, x);
+				x = nodeDelete->right;
+				transplant(root, nodeDelete, x);
 			}
-			else if (z->right == leaf) {
-				x = z->left;
-				transplant(root, z, x);
+			else if (nodeDelete->right == leaf) {
+				x = nodeDelete->left;
+				transplant(root, nodeDelete, x);
 			}
 			else {
-				y = successor(z);
-				originalColor = y->color;
-				x = y->right;
-				if (y->parent == z)
-					x->parent = y;
+				tmp = minimum(nodeDelete->right);
+				originalColor = tmp->color;
+				x = tmp->right;
+				if (tmp->parent == nodeDelete)
+					x->parent = tmp;
 				else
 				{
-					transplant(root, y, y->right);
-					y->right = z->right;
-					y->right->parent = y;
+					transplant(root, tmp, tmp->right);
+					tmp->right = nodeDelete->right;
+					tmp->right->parent = tmp;
 				}
-				transplant(root, z, y);
-				y->left = z->left;
-				y->left->parent = y;
-				y->color = z->color;
+					
+				transplant(root, nodeDelete, tmp);
+				tmp->left = nodeDelete->left;
+				tmp->left->parent = tmp;
+				tmp->color = nodeDelete->color;
 			}
 			if (originalColor == BLACK) {
 				fixDelete(root, x);
 			}
-			if (z != leaf)
+			// if (nodeDelete != leaf)
 			{
-				alloc_.destroy(z);
-				alloc_.deallocate(z, 1);
-				z = leaf;
+				alloc_.destroy(nodeDelete);
+				alloc_.deallocate(nodeDelete, 1);
+				nodeDelete = leaf;
 			}
-			// std::cout	<< "i'm here" << std::endl;
 			return 1;
 		}
 		
@@ -454,6 +447,8 @@ namespace ft
 		{
 			if (root == leaf)
 				return leaf;
+			if (root->left == leaf)
+				return root;
 			Node_ *tmp = root;
 			while (tmp->left != leaf)
 				tmp = tmp->left;
@@ -488,6 +483,114 @@ namespace ft
 			return tmp->parent->right;
 		}
 		size_type size() const {return size_;}
-		
+		Node_	*lower_bound(const Key &k)
+		{
+			Node_	*tmp = root;
+			Node_	*ret = leaf;
+
+			while (tmp != leaf)
+			{
+				if (!comp(tmp->val.first,k) && !comp(k, tmp->val.first))
+				{
+					ret = tmp;
+					break ;
+				}
+				if (comp(k, tmp->val.first))
+				{
+					ret = tmp;
+					tmp = tmp->left;
+				}
+				else
+					tmp = tmp->right;
+			}
+			return (ret);
+		}
+		Node_	*lower_bound(const Key &k) const
+		{
+			Node_	*tmp = root;
+			Node_	*ret = leaf;
+
+			while (tmp != leaf)
+			{
+				if (!comp(tmp->val.first,k) && !comp(k, tmp->val.first))
+				{
+					ret = tmp;
+					break ;
+				}
+				if (comp(k, tmp->val.first))
+				{
+					ret = tmp;
+					tmp = tmp->left;
+				}
+				else
+					tmp = tmp->right;
+			}
+			return (ret);
+		}
+		Node_	*upper_bound(const Key &k)
+		{
+			Node_	*tmp = root;
+			Node_	*ret = leaf;
+
+			while (tmp != leaf)
+			{
+				Node_	*tmp = root;
+				Node_	*ret = leaf;
+
+				while (tmp != leaf)
+				{
+					if (comp(k, tmp->val.first))
+					{
+						ret = tmp;
+						tmp = tmp->left;
+					}
+					else
+						tmp = tmp->right;
+			}
+			return (ret);
+			}
+			return (ret);
+		}
+		Node_	*upper_bound(const Key &k) const
+		{
+			Node_	*tmp = root;
+			Node_	*ret = leaf;
+
+			while (tmp != leaf)
+			{
+				if (comp(k, tmp->val.first))
+				{
+					ret = tmp;
+					tmp = tmp->left;
+				}
+				else
+					tmp = tmp->right;
+			}
+			return (ret);
+		}
+		void RBswap(red_black_tree &x)
+		{
+			// myObj to tmp
+			alloc alloc_tmp = alloc_;
+			size_type size_tmp = size_;
+			compare_type comp_tmp = comp;
+			Node_ *root_tmp = root;
+			Node_ *leaf_tmp = leaf;
+			// x to myObj
+			alloc_ = x.alloc_;
+			size_ = x.size_;
+			comp = x.comp;
+			root = x.root;
+			leaf = x.leaf;
+			// tmp to x
+			x.alloc_ = alloc_tmp;
+			x.size_ = size_tmp;
+			x.comp = comp_tmp;
+			x.root = root_tmp;
+			x.leaf = leaf_tmp;
+			// tmp to NULL
+			root_tmp = NULL;
+			leaf_tmp = NULL;
+		}
 	};
 }

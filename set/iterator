@@ -7,7 +7,7 @@
 namespace ft
 {
 	template <class type, class NodePTR>
-	class map_iterator
+	class set_iterator
 	{
 	public:
 		typedef type iterator_type;
@@ -16,20 +16,20 @@ namespace ft
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::difference_type difference_type;
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::pointer pointer;
 		typedef typename ft::iterator_traits<iterator_type, std::bidirectional_iterator_tag>::reference reference;
-		map_iterator() : i(NULL), root_(NULL), leaf_(NULL) {}
+		set_iterator() : i(NULL), root_(NULL), leaf_(NULL) {}
 		template <class a1, class a2>
-		map_iterator(const map_iterator<a1, a2> &o) : i(o.base()), root_(&(*o.get_root())), leaf_(o.get_leaf()) {}
-		map_iterator(NodePTR p, NodePTR const &r, NodePTR const &l) : i(p), root_(r), leaf_(l) {}
-		map_iterator(const NodePTR p) : i(p) {}
+		set_iterator(const set_iterator<a1, a2> &o) : i(o.base()), root_(&(*o.get_root())), leaf_(o.get_leaf()) {}
+		set_iterator(NodePTR p, NodePTR const &r, NodePTR const &l) : i(p), root_(r), leaf_(l) {}
+		set_iterator(const NodePTR p) : i(p) {}
 		template <class a1, class a2>
-		map_iterator &operator=(map_iterator<a1, a2> const &o)
+		set_iterator &operator=(set_iterator<a1, a2> const &o)
 		{
 			this->i = o.base();
 			this->root_ = &(*o.get_root());
 			return *this;
 		}
 		reference operator*() const { return ((i->val)); }
-		map_iterator &operator++()
+		set_iterator &operator++()
 		{
 			if (i == NULL)
 			{
@@ -40,13 +40,13 @@ namespace ft
 			i = successor(i);
 			return (*this);
 		}
-		map_iterator operator++(int)
+		set_iterator operator++(int)
 		{
-			map_iterator tmp = *this;
+			set_iterator tmp = *this;
 			++(*this);
 			return (tmp);
 		}
-		map_iterator &operator--()
+		set_iterator &operator--()
 		{
 			if (i == get_leaf())
 			{
@@ -60,9 +60,9 @@ namespace ft
 			}
 			return (*this);
 		}
-		map_iterator operator--(int)
+		set_iterator operator--(int)
 		{
-			map_iterator tmp = *this;
+			set_iterator tmp = *this;
 			--(*this);
 			return (tmp);
 		}
@@ -87,12 +87,12 @@ namespace ft
 			return this->leaf_;
 		}
 		template <class a1, class a2, class a3, class a4>
-		friend bool operator==(const map_iterator<a1, a2> &p1, const map_iterator<a3, a4> &p2)
+		friend bool operator==(const set_iterator<a1, a2> &p1, const set_iterator<a3, a4> &p2)
 		{
 			return (p1.base() == p2.base() ? true : false);
 		}
 		template <class a1, class a2, class a3, class a4>
-		friend bool operator!=(const map_iterator<a1, a2> &p1, const map_iterator<a3, a4> &p2)
+		friend bool operator!=(const set_iterator<a1, a2> &p1, const set_iterator<a3, a4> &p2)
 		{
 			return (p1.base() != p2.base() ? true : false);
 		}
