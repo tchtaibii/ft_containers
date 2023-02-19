@@ -12,9 +12,9 @@
 
 // you should include your path to this files
 
-#include "../set/set.hpp"       // your Map path.
-#include "../vector/vector.hpp" // your Vector path.
-#include "../includes/utils.hpp"  // path to ft::pair.
+#include "../../set/set.hpp"       // your Map path.
+#include "../../vector/vector.hpp" // your Vector path.
+#include "../../includes/utils.hpp"  // path to ft::pair.
 // #include "map-test-helper.hpp"
 #include <set>
 
