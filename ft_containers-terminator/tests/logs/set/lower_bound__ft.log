@@ -1,0 +1,54 @@
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 39)
+
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 43)
+
+Value: 19458942 (file: tests/set/lower_bound.cpp, line: 47)
+
+Value: 19458942 (file: tests/set/lower_bound.cpp, line: 51)
+
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 55)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 59)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 63)
+
+Value: 4 (file: tests/set/lower_bound.cpp, line: 67)
+
+Value: 34 (file: tests/set/lower_bound.cpp, line: 71)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 75)
+
+End iterator (file: tests/set/lower_bound.cpp, line: 79)
+
+Value: 2147483647 (file: tests/set/lower_bound.cpp, line: 85)
+
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 109)
+
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 113)
+
+Value: 19458942 (file: tests/set/lower_bound.cpp, line: 117)
+
+Value: 19458942 (file: tests/set/lower_bound.cpp, line: 121)
+
+Value: 453834782 (file: tests/set/lower_bound.cpp, line: 125)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 129)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 133)
+
+Value: 4 (file: tests/set/lower_bound.cpp, line: 137)
+
+Value: 34 (file: tests/set/lower_bound.cpp, line: 141)
+
+Value: 3 (file: tests/set/lower_bound.cpp, line: 145)
+
+End iterator (file: tests/set/lower_bound.cpp, line: 149)
+
+End iterator (file: tests/set/lower_bound.cpp, line: 157)
+
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

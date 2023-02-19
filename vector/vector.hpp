@@ -138,7 +138,7 @@ namespace ft
 				size_ = n;
 				for (size_type i = 0; i < tmp_size; i++)
 					alloc.destroy(&data_[i]);
-				if (data_ != NULL && capacity_)
+				if (data_ != NULL)
 					this->alloc.deallocate(data_, capacity_);
 				capacity_ = tmp_capacity;
 				data_ = this->alloc.allocate(capacity_);

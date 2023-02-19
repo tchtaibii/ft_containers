@@ -12,9 +12,9 @@
 
 // you should include your path to this files
 
-#include "../set/Set.hpp"       // your Map path.
-#include "../vector/Vector.hpp" // your Vector path.
-#include "../utility/pair.hpp"  // path to ft::pair.
+#include "../set/set.hpp"       // your Map path.
+#include "../vector/vector.hpp" // your Vector path.
+#include "../includes/utils.hpp"  // path to ft::pair.
 // #include "map-test-helper.hpp"
 #include <set>
 
@@ -36,10 +36,10 @@
 #define RESET "\e[0m"
 
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
-#define TIME_FAC 4 // the ft::Set methods can be slower up to std::set methods * TIME_FAC (MAX 20)
+#define TIME_FAC 4 // the ft::set methods can be slower up to std::set methods * TIME_FAC (MAX 20)
 
 typedef std::pair<std::set<int>::iterator, std::set<int>::iterator> iter_def;
-typedef ft::pair<ft::Set<int>::iterator, ft::Set<int>::iterator> ft_iter_def;
+typedef ft::pair<ft::set<int>::iterator, ft::set<int>::iterator> ft_iter_def;
 
 #define TEST_CASE(fn)                                                                                                             \
     cout << GREEN << "\t======================================================================================" << RESET << endl; \
@@ -82,7 +82,7 @@ bool testMapConstructors()
 {
     bool cond;
     std::set<int> first;
-    ft::Set<int> m_first;
+    ft::set<int> m_first;
 
     for (size_t i = 97; i < 110; i++)
 	{
@@ -91,33 +91,33 @@ bool testMapConstructors()
 	}
 
     std::set<int> copy(first);
-    ft::Set<int> m_copy(m_first);
+    ft::set<int> m_copy(m_first);
 
     cond = first.size() == m_first.size() && compareMaps(first.begin(), first.end(), m_first.begin(), m_first.end());
 
     std::set<int> second(first.begin(), first.end());
-    ft::Set<int> m_second(m_first.begin(), m_first.end());
+    ft::set<int> m_second(m_first.begin(), m_first.end());
 
     cond = cond && second.size() == m_second.size() && compareMaps(second.begin(), second.end(), m_second.begin(), m_second.end());
 
     std::set<int> third(second);
-    ft::Set<int> m_third(m_second);
+    ft::set<int> m_third(m_second);
 
     cond = cond && third.size() == m_third.size() && compareMaps(third.begin(), third.end(), m_third.begin(), m_third.end());
 
     std::set<int, classcomp> fourth;  // class as Compare
-    ft::Set<int, classcomp> m_fourth; // class as Compare
+    ft::set<int, classcomp> m_fourth; // class as Compare
 
     cond = fourth.size() == m_fourth.size() && cond && compareMaps(fourth.begin(), fourth.end(), m_fourth.begin(), m_fourth.end());
 
     bool (*fn_pt)(char, char) = fncomp;
     std::set<int, bool (*)(char, char)> fifth(fn_pt);  // function pointer as Compare
-    ft::Set<int, bool (*)(char, char)> m_fifth(fn_pt); // function pointer as Compare
+    ft::set<int, bool (*)(char, char)> m_fifth(fn_pt); // function pointer as Compare
 
     cond = fifth.size() == m_fifth.size() && cond && compareMaps(fifth.begin(), fifth.end(), m_fifth.begin(), m_fifth.end());
 
     first = std::set<int>();
-    m_first = ft::Set<int>();
+    m_first = ft::set<int>();
 
     cond = copy.size() == m_copy.size() && cond && compareMaps(copy.begin(), copy.end(), m_copy.begin(), m_copy.end());
 
@@ -130,8 +130,8 @@ void iterator_tests(void)
     std::set<char> m;
     std::set<char>::iterator it, it1;
 
-    ft::Set<char> my_m;
-    ft::Set<char>::iterator my_it, my_it1, tmp;
+    ft::set<char> my_m;
+    ft::set<char>::iterator my_it, my_it1, tmp;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -147,13 +147,13 @@ void iterator_tests(void)
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
               << "] --------------------]\t\t\033[0m";
     {
-        ft::Set<char>::iterator ob(my_it);
+        ft::set<char>::iterator ob(my_it);
         EQUAL(&(*my_it) == &(*ob));
     }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " iterator to const_iterator "
               << "] --------------------]\t\t\033[0m";
     {
-        ft::Set<char>::const_iterator c_it, c_ob(my_it);
+        ft::set<char>::const_iterator c_it, c_ob(my_it);
         c_it = my_it;
         EQUAL(&(*my_it) == &(*c_it) && (&(*my_it) == &(*c_ob)));
     }
@@ -171,12 +171,12 @@ void iterator_tests(void)
     {
         /*--------------- std::set-------------------- */
         std::set<std::string> m;
-        ft::Set<std::string> my_m;
+        ft::set<std::string> my_m;
         m.insert("HELLO");
         my_m.insert("HELLO");
 
 
-        ft::Set<std::string>::iterator my_it = my_m.begin();
+        ft::set<std::string>::iterator my_it = my_m.begin();
         std::set<std::string>::iterator it = m.begin();
         /*---------------------------------------------- */
         EQUAL(it->length() == my_it->length());
@@ -189,7 +189,7 @@ void iterator_tests(void)
             time_t start, end, diff;
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -203,7 +203,7 @@ void iterator_tests(void)
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
             ualarm(diff * 1e3, 0);
-            for (ft::Set<int>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
+            for (ft::set<int>::iterator it = ft_m.begin(); it != ft_m.end(); ++it)
                 ;
             ualarm(0, 0);
         }
@@ -211,20 +211,20 @@ void iterator_tests(void)
         {
             int res(0);
             int myints[] = {12, 82, 37, 64, 15};
-            ft::Set<int32_t> m;
+            ft::set<int32_t> m;
             for (size_t i = 0; i < 5; ++i)
                 m.insert(myints[i]);
-            for (ft::Set<int>::iterator it = m.begin(); it != m.end(); ++it)
+            for (ft::set<int>::iterator it = m.begin(); it != m.end(); ++it)
                 res += *(it);
             cond = res == 210;
         }
         {
             int res(0), tmp;
             int myints[] = {12, 82, 37, 64, 15};
-            ft::Set<int> m;
+            ft::set<int> m;
             for (size_t i = 0; i < 5; ++i)
                 m.insert(myints[i]);
-            ft::Set<int>::iterator it = m.begin(), eit = --m.end();
+            ft::set<int>::iterator it = m.begin(), eit = --m.end();
             tmp = *(eit);
             m.erase(eit);
             for (; it != m.end(); ++it)
@@ -242,7 +242,7 @@ void iterator_tests(void)
             time_t start, end, diff;
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -257,7 +257,7 @@ void iterator_tests(void)
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
             ualarm(diff * 1e3, 0);
-            ft::Set<int>::iterator ft_it = --ft_m.end();
+            ft::set<int>::iterator ft_it = --ft_m.end();
             for (; ft_it != ft_m.begin(); --ft_it)
                 ;
             ualarm(0, 0);
@@ -265,10 +265,10 @@ void iterator_tests(void)
         int res(0);
         {
             int myints[] = {12, 82, 37, 64, 15};
-            ft::Set<int> m;
+            ft::set<int> m;
             for (size_t i = 0; i < 5; ++i)
                 m.insert(myints[i]);
-            ft::Set<int>::iterator it = --m.end();
+            ft::set<int>::iterator it = --m.end();
             for (;; --it)
             {
                 if (it == m.begin())
@@ -298,8 +298,8 @@ void const_iterator_tests(void)
     std::set<char> m;
     std::set<char>::const_iterator it, it1;
 
-    ft::Set<char> my_m;
-    ft::Set<char>::const_iterator my_it, my_it1, tmp;
+    ft::set<char> my_m;
+    ft::set<char>::const_iterator my_it, my_it1, tmp;
 
     for (int i = 0; i < 10; ++i)
     {
@@ -316,7 +316,7 @@ void const_iterator_tests(void)
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " copy constructor "
               << "] --------------------]\t\t\033[0m";
     {
-        ft::Set<char>::const_iterator ob(my_it);
+        ft::set<char>::const_iterator ob(my_it);
         EQUAL(*my_it == *ob);
     }
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " == operator "
@@ -333,12 +333,12 @@ void const_iterator_tests(void)
     {
         /*--------------- std::set-------------------- */
         std::set<std::string> m;
-        ft::Set<std::string> my_m;
+        ft::set<std::string> my_m;
 
         m.insert("HELLO");
         my_m.insert("HELLO");
 
-        ft::Set<std::string>::iterator my_it = my_m.begin();
+        ft::set<std::string>::iterator my_it = my_m.begin();
         std::set<std::string>::iterator it = m.begin();
         /*---------------------------------------------- */
         EQUAL(it->length() == my_it->length());
@@ -381,12 +381,12 @@ void reverse_iterator_tests(void)
     std::cout << "\t\033[1;37m[-------------------- [" << std::setw(40) << std::left << " riterator to const_riterator "
               << "] --------------------]\t\t\033[0m";
     {
-        ft::Set<int> my_m;
+        ft::set<int> my_m;
         for (int i = 0; i < 1e2; i++)
             my_m.insert(i);
 
-        ft::Set<int>::reverse_iterator my_rit2(my_m.end());
-        ft::Set<int>::const_reverse_iterator c_it, c_ob(my_m.end());
+        ft::set<int>::reverse_iterator my_rit2(my_m.end());
+        ft::set<int>::const_reverse_iterator c_it, c_ob(my_m.end());
         c_it = my_rit2;
         EQUAL(*my_rit == *c_it && *my_rit2 == *c_ob);
     }
@@ -403,7 +403,7 @@ void reverse_iterator_tests(void)
               << "] --------------------]\t\t\033[0m";
     {
         std::set<std::string> s;
-        ft::Set<std::string> mys;
+        ft::set<std::string> mys;
         s.insert("hello");
         mys.insert("hello");
         EQUAL(s.rbegin()->length() == mys.rbegin()->length());
@@ -446,7 +446,7 @@ void testConstructors()
               << "] --------------------]\t\t\033[0m";
     {
         /*--------------- fill tow vectors with a 10 strings ------*/
-        ft::Set<int> my_m;
+        ft::set<int> my_m;
         std::set<int> m;
         for (int i = 0; i < 10; i++)
         {
@@ -460,7 +460,7 @@ void testConstructors()
         /*---------------------------------------------------------*/
         for (std::set<int>::iterator it = m.begin(); it != m.end(); ++it) // fill res from std::set
             res += *it;
-        for (ft::Set<int>::iterator it = my_m.begin(); it != my_m.end(); ++it) // fill res from std::set
+        for (ft::set<int>::iterator it = my_m.begin(); it != my_m.end(); ++it) // fill res from std::set
             my_res += *it;
         EQUAL(res == my_res);
     }
@@ -471,7 +471,7 @@ void testConstructors()
         {
             time_t start, end, diff;
             std::set<int> m;
-            ft::Set<int> my_m;
+            ft::set<int> my_m;
 
             for (size_t i = 0; i < 1e6; i++)
             {
@@ -486,20 +486,20 @@ void testConstructors()
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
             ualarm(diff * 1e3, 0);
-            ft::Set<int> my_m1(my_m.begin(), my_m.end());
+            ft::set<int> my_m1(my_m.begin(), my_m.end());
             ualarm(0, 0);
         }
         /*-----------------------------------------------------------------------------------------------*/
-        /*--------------- fill std::set with 10 strings and ft::Set with range of iterators ------*/
+        /*--------------- fill std::set with 10 strings and ft::set with range of iterators ------*/
         std::set<int> m;
-        ft::Set<int> my_m;
+        ft::set<int> my_m;
         for (size_t i = 0; i < 10; i++)
         {
             m.insert(i);
             my_m.insert(i);
         }
 
-        ft::Set<int> my_m1(my_m.begin(), my_m.end()); // this one is to check if the range works with ft::Set
+        ft::set<int> my_m1(my_m.begin(), my_m.end()); // this one is to check if the range works with ft::set
         /*----------------------------------------------------------------------------------------------*/
         /*--------------- declare tow strings to store the results ------*/
         int sum(0), my_sum(0), my_sum1(0);
@@ -507,10 +507,10 @@ void testConstructors()
         for (std::set<int>::iterator it = m.begin(); it != m.end(); ++it)
             sum += *it;
 
-        for (ft::Set<int>::iterator it = my_m.begin(); it != my_m.end(); ++it)
+        for (ft::set<int>::iterator it = my_m.begin(); it != my_m.end(); ++it)
             my_sum += *it;
 
-        for (ft::Set<int>::iterator it = my_m1.begin(); it != my_m1.end(); ++it)
+        for (ft::set<int>::iterator it = my_m1.begin(); it != my_m1.end(); ++it)
             my_sum1 += *it;
         EQUAL(my_sum == sum && my_sum == my_sum1);
     }
@@ -521,7 +521,7 @@ void testConstructors()
         {
             time_t start, end, diff;
             std::set<int> m;
-            ft::Set<int> my_m;
+            ft::set<int> my_m;
 
             for (size_t i = 0; i < 1e3; i++)
             {
@@ -536,23 +536,23 @@ void testConstructors()
             diff = (diff) ? (diff * 20) : 20;
 
             alarm(diff);
-            ft::Set<int> my_copy_m(my_m);
+            ft::set<int> my_copy_m(my_m);
             alarm(0);
         }
         /*---------------------------------------------------------------------------------------------*/
         /*---------------------------- declare a vector and fill with 'a', and create a copy of it ------------------*/
-        ft::Set<int> m1;
+        ft::set<int> m1;
         for (int i = 0; i < 10; i++)
             m1.insert(i);
-        ft::Set<int> copy_m(m1);
+        ft::set<int> copy_m(m1);
         /*-----------------------------------------------------------------------------------------------------------*/
         /*--------------- declare tow strings to store the results ------*/
         int res(0), res1(0);
         /*--------------------------------------------------------*/
-        for (ft::Set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
+        for (ft::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = copy_m.begin(); it != copy_m.end(); ++it) // fill res from copy_m
+        for (ft::set<int>::iterator it = copy_m.begin(); it != copy_m.end(); ++it) // fill res from copy_m
             res1 += *it;
         EQUAL(res == res1);
     }
@@ -567,8 +567,8 @@ void testConstructors()
             time_t start, end, diff;
             std::set<int> m1;
             std::set<int> m2;
-            ft::Set<int> ft_m1;
-            ft::Set<int> ft_m2;
+            ft::set<int> ft_m1;
+            ft::set<int> ft_m2;
             for (int i = 0; i < 1e6; ++i)
             {
                 m1.insert(i);
@@ -583,7 +583,7 @@ void testConstructors()
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
-            /*------------------ ft::Set ---------------------*/
+            /*------------------ ft::set ---------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
@@ -593,8 +593,8 @@ void testConstructors()
         /*------------------ std::set ---------------------*/
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
         for (int i = 0; i < 10; ++i)
         {
             m1.insert(i);
@@ -612,7 +612,7 @@ void testConstructors()
         for (std::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
 
         EQUAL(res == ft_res);
@@ -629,8 +629,8 @@ void testConstructors()
             /*------------------ std::set ---------------------*/
             std::set<int> m1;
             std::set<int> m2;
-            ft::Set<int> ft_m1;
-            ft::Set<int> ft_m2;
+            ft::set<int> ft_m1;
+            ft::set<int> ft_m2;
 
             for (int i = 0; i < 1e4; ++i)
             {
@@ -650,7 +650,7 @@ void testConstructors()
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
-            /*------------------ ft::Set ---------------------*/
+            /*------------------ ft::set ---------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
@@ -660,8 +660,8 @@ void testConstructors()
         /*------------------ std::set ---------------------*/
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
 		for(size_t i = 0; i < 1000; ++i)
 		{
 			m2.insert(i);
@@ -674,7 +674,7 @@ void testConstructors()
 		}
         m1 = m2;
         /*-----------------------------------------------------*/
-        /*------------------ ft::Set ---------------------*/
+        /*------------------ ft::set ---------------------*/
         ft_m1 = ft_m2;
         /*----------------------------------------------------*/
         /*------------------ strings to store the results ----*/
@@ -683,7 +683,7 @@ void testConstructors()
         for (std::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
 
         EQUAL(res == ft_res);
@@ -699,8 +699,8 @@ void testConstructors()
             /*------------------ std::set ---------------------*/
             std::set<int> m1;
             std::set<int> m2;
-            ft::Set<int> ft_m1;
-            ft::Set<int> ft_m2;
+            ft::set<int> ft_m1;
+            ft::set<int> ft_m2;
 
             for (int i = 0; i < 1e4; ++i)
             {
@@ -719,7 +719,7 @@ void testConstructors()
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
-            /*------------------ ft::Set ---------------------*/
+            /*------------------ ft::set ---------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
@@ -729,8 +729,8 @@ void testConstructors()
         /*------------------ std::set ---------------------*/
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
 
         for (int i = 0; i < 20; ++i)
         {
@@ -745,7 +745,7 @@ void testConstructors()
         }
         m1 = m2;
         /*-----------------------------------------------------*/
-        /*------------------ ft::Set ---------------------*/
+        /*------------------ ft::set ---------------------*/
         ft_m1 = ft_m2;
         /*----------------------------------------------------*/
         /*------------------ ints to store the results ----*/
@@ -754,7 +754,7 @@ void testConstructors()
         for (std::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
 
         EQUAL(res == ft_res);
@@ -769,8 +769,8 @@ void testConstructors()
             time_t start, end, diff;
             std::set<int> m1;
             std::set<int> m2;
-            ft::Set<int> ft_m1;
-            ft::Set<int> ft_m2;
+            ft::set<int> ft_m1;
+            ft::set<int> ft_m2;
 
             for (int i = 0; i < 1e6; ++i)
             {
@@ -784,7 +784,7 @@ void testConstructors()
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
-            /*------------------ ft::Set ---------------------*/
+            /*------------------ ft::set ---------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
@@ -794,8 +794,8 @@ void testConstructors()
         /*------------------ std::set ---------------------*/
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
 
         for (int i = 0; i < 10; ++i)
         {
@@ -804,7 +804,7 @@ void testConstructors()
         }
         m1 = m2;
         /*-----------------------------------------------------*/
-        /*------------------ ft::Set ---------------------*/
+        /*------------------ ft::set ---------------------*/
 
         ft_m1 = ft_m2;
         /*----------------------------------------------------*/
@@ -814,7 +814,7 @@ void testConstructors()
         for (std::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
 
         EQUAL(res == ft_res);
@@ -830,8 +830,8 @@ void testConstructors()
             /*------------------ std::nap ---------------------*/
             std::set<int> m1;
             std::set<int> m2;
-            ft::Set<int> ft_m1;
-            ft::Set<int> ft_m2;
+            ft::set<int> ft_m1;
+            ft::set<int> ft_m2;
 
             for (int i = 0; i < 1e6; ++i)
             {
@@ -844,7 +844,7 @@ void testConstructors()
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
-            /*------------------ ft::Set ---------------------*/
+            /*------------------ ft::set ---------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1 = ft_m2;
             ualarm(0, 0);
@@ -854,8 +854,8 @@ void testConstructors()
         /*------------------ std::set ---------------------*/
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
 
         for (int i = 0; i < 10; ++i)
         {
@@ -864,7 +864,7 @@ void testConstructors()
         }
         m1 = m2;
         /*-----------------------------------------------------*/
-        /*------------------ ft::Set ---------------------*/
+        /*------------------ ft::set ---------------------*/
         ft_m1 = ft_m2;
         /*----------------------------------------------------*/
         /*------------------ ints to store the results ----*/
@@ -873,7 +873,7 @@ void testConstructors()
         for (std::set<int>::iterator it = m1.begin(); it != m1.end(); ++it) // fill res from m1
             res += *it;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
 
         EQUAL(res == ft_res);
@@ -890,7 +890,7 @@ void testIterators()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -914,7 +914,7 @@ void testIterators()
         /*------------------------------------------------------------------------------------------*/
         /*------------------ std::sets ---------------------*/
         std::set<int> m1;
-        ft::Set<int> ft_m1;
+        ft::set<int> ft_m1;
 
         for (size_t i = 0; i < 10; i++)
         {
@@ -923,7 +923,7 @@ void testIterators()
         }
 
         std::set<int> const m2(m1.begin(), m1.end());
-        ft::Set<int> const ft_m2(ft_m1.begin(), ft_m1.end());
+        ft::set<int> const ft_m2(ft_m1.begin(), ft_m1.end());
 
         /*-----------------------------------------------------*/
         /*------------------ ft::Sets ---------------------*/
@@ -936,15 +936,15 @@ void testIterators()
         for (std::set<int>::const_iterator rit = m2.begin(); rit != m2.end(); ++rit) // fill c_res from const m1
             c_res += *rit;
 
-        for (ft::Set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::iterator it = ft_m1.begin(); it != ft_m1.end(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
-        for (ft::Set<int>::const_iterator rit = ft_m2.begin(); rit != ft_m2.end(); ++rit) // fill c_ft_res from const ft_m1
+        for (ft::set<int>::const_iterator rit = ft_m2.begin(); rit != ft_m2.end(); ++rit) // fill c_ft_res from const ft_m1
             c_ft_res += *rit;
         int arr[] = {12, 82, 37, 64, 15};
-        ft::Set<int> end_test;
+        ft::set<int> end_test;
         for(size_t i = 0; i < 5; ++i)
             end_test.insert(arr[i]);
-        ft::Set<int>::iterator eit = end_test.end();
+        ft::set<int>::iterator eit = end_test.end();
         eit--;
         EQUAL(res == ft_res && c_res == c_ft_res && *eit == 82);
     }
@@ -956,7 +956,7 @@ void testIterators()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -980,7 +980,7 @@ void testIterators()
         /*------------------------------------------------------------------------------------------*/
         /*------------------ std::sets ---------------------*/
         std::set<int> m1;
-        ft::Set<int> ft_m1;
+        ft::set<int> ft_m1;
 
         for (size_t i = 0; i < 10; i++)
         {
@@ -989,7 +989,7 @@ void testIterators()
         }
 
         std::set<int> const m2(m1.rbegin(), m1.rend());
-        ft::Set<int> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
+        ft::set<int> const ft_m2(ft_m1.rbegin(), ft_m1.rend());
 
         /*-----------------------------------------------------*/
         /*------------------ ft::Sets ---------------------*/
@@ -1002,15 +1002,15 @@ void testIterators()
         for (std::set<int>::const_reverse_iterator rit = m2.rbegin(); rit != m2.rend(); ++rit) // fill c_res from const m1
             c_res += *rit;
 
-        for (ft::Set<int>::reverse_iterator it = ft_m1.rbegin(); it != ft_m1.rend(); ++it) // fill ft_res from ft_m1
+        for (ft::set<int>::reverse_iterator it = ft_m1.rbegin(); it != ft_m1.rend(); ++it) // fill ft_res from ft_m1
             ft_res += *it;
-        for (ft::Set<int>::const_reverse_iterator rit = ft_m2.rbegin(); rit != ft_m2.rend(); ++rit) // fill c_ft_res from const ft_m1
+        for (ft::set<int>::const_reverse_iterator rit = ft_m2.rbegin(); rit != ft_m2.rend(); ++rit) // fill c_ft_res from const ft_m1
             c_ft_res += *rit;
         int arr[] = {12, 82, 37, 64, 15};
-        ft::Set<int> end_test;
+        ft::set<int> end_test;
         for(size_t i = 0; i < 5; ++i)
             end_test.insert(arr[i]);
-        ft::Set<int>::reverse_iterator rit = end_test.rend();
+        ft::set<int>::reverse_iterator rit = end_test.rend();
         rit--;
         EQUAL(res == ft_res && c_res == c_ft_res && *rit == 12);
     }
@@ -1026,7 +1026,7 @@ void testCapacityMethods()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -1048,7 +1048,7 @@ void testCapacityMethods()
         /*------------------------------------------------------------------------------------------*/
         /*------------------ std::sets ---------------------*/
         std::set<std::string> m1; // fill constructor
-        ft::Set<std::string> ft_m1;
+        ft::set<std::string> ft_m1;
         std::string s[5] = {"hello", "string", "value", "size", "test"};
         for (size_t i = 0; i < 5; i++)
         {
@@ -1062,10 +1062,10 @@ void testCapacityMethods()
         std::set<std::string> m5(m1.rbegin(), m1.rend()); // range constructor with reverse iterators
         /*-----------------------------------------------------*/
         /*------------------ ft::Sets ---------------------*/
-        ft::Set<std::string> ft_m2;
-        ft::Set<std::string> ft_m3(ft_m1.begin(), ft_m1.end());
-        ft::Set<std::string> ft_m4(ft_m3);
-        ft::Set<std::string> ft_m5(ft_m1.rbegin(), ft_m1.rend());
+        ft::set<std::string> ft_m2;
+        ft::set<std::string> ft_m3(ft_m1.begin(), ft_m1.end());
+        ft::set<std::string> ft_m4(ft_m3);
+        ft::set<std::string> ft_m5(ft_m1.rbegin(), ft_m1.rend());
         /*----------------------------------------------------*/
         bool cond = (m1.begin()->size() == ft_m1.begin()->size()) && (m3.begin()->size() == ft_m3.begin()->size())
         && (m4.begin()->size() == ft_m4.begin()->size()) && (m5.begin()->size() == ft_m5.begin()->size());
@@ -1077,8 +1077,8 @@ void testCapacityMethods()
     {
         std::set<int> m1;
         std::set<int> m2;
-        ft::Set<int> ft_m1;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m1;
+        ft::set<int> ft_m2;
         m1.insert(145);
         ft_m1.insert(145);
         EQUAL(m1.empty() == ft_m1.empty() && m2.empty() == ft_m2.empty());
@@ -1095,7 +1095,7 @@ void testModifiers()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
 
             start = get_time();
             for (size_t i = 0; i < 1e6; i++)
@@ -1112,7 +1112,7 @@ void testModifiers()
             /*----------------------------------------------------*/
             /*------------------ std::sets ---------------------*/
             std::set<int> m_range;
-            ft::Set<int> ft_m_range;
+            ft::set<int> ft_m_range;
 
             start = get_time();
             m_range.insert(m1.begin(), m1.end());
@@ -1131,7 +1131,7 @@ void testModifiers()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
 
             start = get_time();
             m1.insert(1e9);
@@ -1147,7 +1147,7 @@ void testModifiers()
         }
 
         std::set<float> m;
-        ft::Set<float> ft_m;
+        ft::set<float> ft_m;
 
         cond = m.size() == ft_m.size() && m.empty() == ft_m.empty();
 
@@ -1161,7 +1161,7 @@ void testModifiers()
         cond = cond && (m.size() == ft_m.size() && m.empty() == ft_m.empty());
 
         std::pair<std::set<float>::iterator, bool> ret;
-        ft::pair<ft::Set<float>::iterator, bool> ft_ret;
+        ft::pair<ft::set<float>::iterator, bool> ft_ret;
 
         ret = m.insert(500.6f);
         ft_ret = ft_m.insert(500.6f);
@@ -1170,7 +1170,7 @@ void testModifiers()
 
         // second insert function version (with hint position):
         std::set<float>::iterator it = m.begin();
-        ft::Set<float>::iterator ft_it = ft_m.begin();
+        ft::set<float>::iterator ft_it = ft_m.begin();
         m.insert(it, 300.8f);
         m.insert(it, 400.8f);
 
@@ -1181,7 +1181,7 @@ void testModifiers()
 
         // third insert function version (range insertion):
         std::set<float> anothermap;
-        ft::Set<float> ft_anothermap;
+        ft::set<float> ft_anothermap;
         anothermap.insert(m.begin(), m.find(300.8f));
         ft_anothermap.insert(ft_m.begin(), ft_m.find(300.8f));
         cond = cond && (anothermap.size() == ft_anothermap.size() && anothermap.empty() == ft_anothermap.empty());
@@ -1200,7 +1200,7 @@ void testModifiers()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -1249,9 +1249,9 @@ void testModifiers()
             /*----------------------------------------------------*/
         }
         std::set<char> m;
-        ft::Set<char> ft_m;
+        ft::set<char> ft_m;
         std::set<char>::iterator it;
-        ft::Set<char>::iterator ft_it;
+        ft::set<char>::iterator ft_it;
 
         // insert some values:
         ft_m.insert('a');
@@ -1297,7 +1297,7 @@ void testModifiers()
         /* ---------- Testing some edge cases ---------- */
 
         std::set<int> m2;
-        ft::Set<int> ft_m2;
+        ft::set<int> ft_m2;
 
         for (size_t i = 0; i < 1e5; i++)
         {
@@ -1306,7 +1306,7 @@ void testModifiers()
         }
 
         std::set<int>::reverse_iterator it2 = m2.rbegin();
-        ft::Set<int>::reverse_iterator ft_it2 = ft_m2.rbegin();
+        ft::set<int>::reverse_iterator ft_it2 = ft_m2.rbegin();
 
         m2.erase(m2.begin());
         ft_m2.erase(ft_m2.begin());
@@ -1319,7 +1319,7 @@ void testModifiers()
         cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
 
         std::set<int> m3;
-        ft::Set<int> ft_m3;
+        ft::set<int> ft_m3;
         std::vector<int> vec;
         std::vector<int> ft_vec;
         std::random_device randDev;
@@ -1370,7 +1370,7 @@ void testModifiers()
 
             /* ------------------ a > b ------------------ */
             std::set<int> m1, m2;
-            ft::Set<int> ft_m1, ft_m2;
+            ft::set<int> ft_m1, ft_m2;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -1423,7 +1423,7 @@ void testModifiers()
         }
         bool cond = false;
         std::set<char> foo, bar;
-        ft::Set<char> ft_foo, ft_bar;
+        ft::set<char> ft_foo, ft_bar;
 
         foo.insert('x');
         foo.insert('y');
@@ -1449,7 +1449,7 @@ void testModifiers()
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
         std::set<std::string, std::greater<std::string> > m1, m2;
-        ft::Set<std::string, std::greater<std::string> > ft_m1, ft_m2;
+        ft::set<std::string, std::greater<std::string> > ft_m1, ft_m2;
 
         m1.insert("γ");
         m1.insert("β");
@@ -1472,7 +1472,7 @@ void testModifiers()
         const std::string &ref = *(m1.begin());
         const std::set<std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
         const std::string &ft_ref = *(ft_m1.begin());
-        const ft::Set<std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
+        const ft::set<std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
 
         // std::cout << "──────── before swap ────────\n"
         //           << "m1: " << m1 << "m2: " << m2 << "ref: " << ref
@@ -1497,7 +1497,7 @@ void testModifiers()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -1518,7 +1518,7 @@ void testModifiers()
         }
         bool cond(false);
         std::set<char> m;
-        ft::Set<char> ft_m;
+        ft::set<char> ft_m;
 
         m.insert('x');
         m.insert('y');
@@ -1543,7 +1543,7 @@ void testModifiers()
         cond = cond && m.size() == ft_m.size() && compareMaps(m.begin(), m.end(), ft_m.begin(), ft_m.end());
 
         m = std::set<char>();
-        ft_m = ft::Set<char>();
+        ft_m = ft::set<char>();
 
         m.clear();
         ft_m.clear();
@@ -1569,9 +1569,9 @@ void testObservers()
     {
         bool cond(true);
         std::set<int> m;
-        ft::Set<int> ft_m;
+        ft::set<int> ft_m;
         std::set<int>::key_compare comp = m.key_comp();
-        ft::Set<int>::key_compare mycomp = ft_m.key_comp();
+        ft::set<int>::key_compare mycomp = ft_m.key_comp();
 
         for (size_t i = 0; i < 1e2; i++)
         {
@@ -1583,7 +1583,7 @@ void testObservers()
         int ft_highest = *ft_m.rbegin(); // key value of last element
 
         std::set<int>::iterator it = m.begin();
-        ft::Set<int>::iterator ft_it = ft_m.begin();
+        ft::set<int>::iterator ft_it = ft_m.begin();
         do
         {
             if (!(*it == *ft_it && *it == *ft_it))
@@ -1600,7 +1600,7 @@ void testObservers()
               << "] --------------------]\t\t\033[0m";
     {
         int sum(0);
-        ft::Set<int> mymap;
+        ft::set<int> mymap;
 
         mymap.insert(1001);
         mymap.insert(2002);
@@ -1608,7 +1608,7 @@ void testObservers()
 
         int highest = *mymap.rbegin(); // last element
 
-        ft::Set<int>::iterator it = mymap.begin();
+        ft::set<int>::iterator it = mymap.begin();
         do
         {
             sum += *it;
@@ -1623,7 +1623,7 @@ void testNonMemberSwap()
               << "] --------------------]\t\t\033[0m";
     {
         int res(0), ft_res(0);
-        ft::Set<char> foo, bar;
+        ft::set<char> foo, bar;
 
         foo.insert('x');
         foo.insert('y');
@@ -1634,10 +1634,10 @@ void testNonMemberSwap()
 
         swap(foo, bar);
 
-        for (ft::Set<char>::iterator it = foo.begin(); it != foo.end(); ++it)
+        for (ft::set<char>::iterator it = foo.begin(); it != foo.end(); ++it)
             res += *it;
 
-        for (ft::Set<char>::iterator it = bar.begin(); it != bar.end(); ++it)
+        for (ft::set<char>::iterator it = bar.begin(); it != bar.end(); ++it)
             ft_res += *it;
         EQUAL((res == ('a' + 'b' + 'c')) && (ft_res == ('x' + 'y')));
     }
@@ -1653,7 +1653,7 @@ void testOperations()
             time_t start, end, diff;
             /*------------------ std::sets ---------------------*/
             std::set<int> m1;
-            ft::Set<int> ft_m1;
+            ft::set<int> ft_m1;
             for (size_t i = 0; i < 1e6; i++)
             {
                 m1.insert(i);
@@ -1684,9 +1684,9 @@ void testOperations()
         std::uniform_int_distribution<int> distr(0, 1e8);
 
         std::set<int> m1;
-        ft::Set<int> ft_m1;
+        ft::set<int> ft_m1;
         std::set<int>::iterator it;
-        ft::Set<int>::iterator ft_it;
+        ft::set<int>::iterator ft_it;
 
         for (size_t i = 0; i < 1e6; i++)
         {
@@ -1714,9 +1714,9 @@ void testOperations()
         }
 
         std::set<char> m;
-        ft::Set<char> ft_m;
+        ft::set<char> ft_m;
         std::set<char>::iterator it2;
-        ft::Set<char>::iterator ft_it2;
+        ft::set<char>::iterator ft_it2;
 
         m.insert('a');
         m.insert('b');
@@ -1752,7 +1752,7 @@ void testOperations()
             bool res(0), ft_res(0);
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -1770,7 +1770,7 @@ void testOperations()
             cond = ft_res == res;
         }
         std::set<int> m;
-        ft::Set<int> ft_m;
+        ft::set<int> ft_m;
         int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
         for (size_t i = 0; i < 9; ++i)
         {
@@ -1790,7 +1790,7 @@ void testOperations()
             int res(0), ft_res(0);
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -1808,7 +1808,7 @@ void testOperations()
             cond = ft_res == res;
         }
         std::set<int> m;
-        ft::Set<int> ft_m;
+        ft::set<int> ft_m;
         int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
         for (size_t i = 0; i < 9; ++i)
         {
@@ -1816,7 +1816,7 @@ void testOperations()
             ft_m.insert(arr[i]);
         }
         std::set<int> const c_m(m.begin(), m.end());
-        ft::Set<int> const c_ft_m(ft_m.begin(), ft_m.end());
+        ft::set<int> const c_ft_m(ft_m.begin(), ft_m.end());
         cond = (cond && (*m.lower_bound(15) == *ft_m.lower_bound(15)));
         cond = (cond && (*m.lower_bound(65) == *ft_m.lower_bound(65)));
         cond = (cond && (*m.lower_bound(63) == *ft_m.lower_bound(63)));
@@ -1840,7 +1840,7 @@ void testOperations()
             int res(0), ft_res(0);
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -1858,7 +1858,7 @@ void testOperations()
             cond = ft_res == res;
         }
         std::set<int> m;
-        ft::Set<int> ft_m;
+        ft::set<int> ft_m;
         int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
         for (size_t i = 0; i < 9; ++i)
         {
@@ -1866,7 +1866,7 @@ void testOperations()
             ft_m.insert(arr[i]);
         }
         std::set<int> const c_m(m.begin(), m.end());
-        ft::Set<int> const c_ft_m(ft_m.begin(), ft_m.end());
+        ft::set<int> const c_ft_m(ft_m.begin(), ft_m.end());
         cond = (cond && (*m.upper_bound(15) == *ft_m.upper_bound(15)));
         cond = (cond && (*m.upper_bound(65) == *ft_m.upper_bound(65)));
         cond = (cond && (*m.upper_bound(63) == *ft_m.upper_bound(63)));
@@ -1893,7 +1893,7 @@ void testOperations()
             ft_iter_def ft_res;
 
             std::set<int> m;
-            ft::Set<int> ft_m;
+            ft::set<int> ft_m;
             for (size_t i = 0; i < 1e6; ++i)
             {
                 m.insert(i);
@@ -1913,7 +1913,7 @@ void testOperations()
         iter_def res;
         ft_iter_def ft_res;
         std::set<int> m;
-        ft::Set<int> ft_m;
+        ft::set<int> ft_m;
         int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
         for (size_t i = 0; i < 9; ++i)
         {
@@ -1921,7 +1921,7 @@ void testOperations()
             ft_m.insert(arr[i]);
         }
         std::set<int> const c_m(m.begin(), m.end());
-        ft::Set<int> const c_ft_m(ft_m.begin(), ft_m.end());
+        ft::set<int> const c_ft_m(ft_m.begin(), ft_m.end());
 
         res = m.equal_range(15);
         ft_res = ft_m.equal_range(15);
@@ -1970,13 +1970,13 @@ void testAllocatorMethodes()
               << "] --------------------]\t\t\033[0m";
     {
         int psize;
-        ft::Set<char> mymap;
+        ft::set<char> mymap;
         char *p;
 
         // allocate an array of 5 elements using mymap's allocator:
         p = mymap.get_allocator().allocate(5);
 
-        psize = sizeof(ft::Set<char>::value_type) * 5;
+        psize = sizeof(ft::set<char>::value_type) * 5;
         EQUAL(psize == 5);
         mymap.get_allocator().deallocate(p, 5);
     }
@@ -1986,7 +1986,7 @@ void testRetionalOperators()
 
     /* ---------------  pretty simple tests --------------- */
     std::set<char> foo, bar;
-    ft::Set<char> ft_foo, ft_bar;
+    ft::set<char> ft_foo, ft_bar;
     bool res(false);
     bool ft_res(false);
     foo.insert('a');
@@ -2000,7 +2000,7 @@ void testRetionalOperators()
     ft_bar.insert('z');
 
     std::set<int> m, m1;
-    ft::Set<int> ft_m, ft_m1;
+    ft::set<int> ft_m, ft_m1;
     for (size_t i = 0; i < 1e6; ++i)
     {
         m.insert(i);

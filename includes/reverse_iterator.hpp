@@ -32,7 +32,7 @@ namespace ft
         template <class T>
         reverse_iterator &operator=(const reverse_iterator<T> &other)
         {
-            this->current = other.current;
+            this->current = other.base();
             return *this;
         }
         pointer operator->() const { return &(operator*()); }
@@ -114,13 +114,13 @@ namespace ft
     {
         return x.base() >= y.base();
     }
-    template <class Iterator, class Iterator2>
-    typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator> &x, const reverse_iterator<Iterator2> &y)
+    template <class Iterator>
+    typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator> &x, const reverse_iterator<Iterator> &y)
     {
         return y.base() - x.base();
     }
-    template <class Iterator, class Iterator2>
-    reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator2> &x)
+    template <class Iterator>
+    reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator> &x)
     {
         return reverse_iterator<Iterator>(x.base() - n);
     }

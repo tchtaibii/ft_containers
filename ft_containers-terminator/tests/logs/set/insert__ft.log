@@ -1,0 +1,26 @@
+It: 64 (file: tests/set/insert.cpp, line: 32)
+Inserted: true (file: tests/set/insert.cpp, line: 32)
+It: 64 (file: tests/set/insert.cpp, line: 36)
+Inserted: false (file: tests/set/insert.cpp, line: 36)
+It: 0 (file: tests/set/insert.cpp, line: 40)
+Inserted: true (file: tests/set/insert.cpp, line: 40)
+It: -23 (file: tests/set/insert.cpp, line: 44)
+Inserted: true (file: tests/set/insert.cpp, line: 44)
+It: 64 (file: tests/set/insert.cpp, line: 48)
+Inserted: false (file: tests/set/insert.cpp, line: 48)
+It: 64 (file: tests/set/insert.cpp, line: 57)
+Inserted: true (file: tests/set/insert.cpp, line: 57)
+It: 64n (file: tests/set/insert.cpp, line: 61)
+Inserted: true (file: tests/set/insert.cpp, line: 61)
+It: 0n (file: tests/set/insert.cpp, line: 65)
+Inserted: true (file: tests/set/insert.cpp, line: 65)
+It: -23n (file: tests/set/insert.cpp, line: 69)
+Inserted: true (file: tests/set/insert.cpp, line: 69)
+It: 64n (file: tests/set/insert.cpp, line: 73)
+Inserted: false (file: tests/set/insert.cpp, line: 73)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

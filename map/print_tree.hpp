@@ -6,7 +6,7 @@
 #include <cmath>
 
 //header file that contains Node definition
-#include "../includes/red_black_tree.hpp"
+#include "./red_black_tree.hpp"
 
 /*===================Node====================*/
 

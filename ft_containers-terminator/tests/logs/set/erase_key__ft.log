@@ -1,0 +1,158 @@
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 12)
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 20)
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 37)
+Size: 10 (file: tests/set/erase_key.cpp, line: 38)
+
+Set content:
+ V: -23  V: -22  V: 0  V: 1  V: 2  V: 3  V: 23  V: 25  V: 30  V: 75 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 42)
+Size: 9 (file: tests/set/erase_key.cpp, line: 43)
+
+Set content:
+ V: -23  V: -22  V: 1  V: 2  V: 3  V: 23  V: 25  V: 30  V: 75 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 47)
+Size: 8 (file: tests/set/erase_key.cpp, line: 48)
+
+Set content:
+ V: -23  V: -22  V: 1  V: 2  V: 3  V: 23  V: 25  V: 30 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 52)
+Size: 7 (file: tests/set/erase_key.cpp, line: 53)
+
+Set content:
+ V: -23  V: -22  V: 2  V: 3  V: 23  V: 25  V: 30 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 57)
+Size: 6 (file: tests/set/erase_key.cpp, line: 58)
+
+Set content:
+ V: -23  V: -22  V: 3  V: 23  V: 25  V: 30 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 62)
+Size: 5 (file: tests/set/erase_key.cpp, line: 63)
+
+Set content:
+ V: -23  V: -22  V: 23  V: 25  V: 30 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 67)
+Size: 4 (file: tests/set/erase_key.cpp, line: 68)
+
+Set content:
+ V: -23  V: -22  V: 25  V: 30 
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 72)
+Size: 4 (file: tests/set/erase_key.cpp, line: 73)
+
+Set content:
+ V: -23  V: -22  V: 25  V: 30 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 77)
+Size: 3 (file: tests/set/erase_key.cpp, line: 78)
+
+Set content:
+ V: -23  V: -22  V: 25 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 82)
+Size: 2 (file: tests/set/erase_key.cpp, line: 83)
+
+Set content:
+ V: -23  V: 25 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 87)
+Size: 1 (file: tests/set/erase_key.cpp, line: 88)
+
+Set content:
+ V: 25 
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 92)
+Size: 1 (file: tests/set/erase_key.cpp, line: 93)
+
+Set content:
+ V: 25 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 97)
+Size: 0 (file: tests/set/erase_key.cpp, line: 98)
+
+Set content:
+
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 102)
+Size: 0 (file: tests/set/erase_key.cpp, line: 103)
+
+Set content:
+
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 107)
+Size: 0 (file: tests/set/erase_key.cpp, line: 108)
+
+Set content:
+
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 115)
+Size: 0 (file: tests/set/erase_key.cpp, line: 116)
+
+Set content:
+
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 129)
+Size: 6 (file: tests/set/erase_key.cpp, line: 130)
+
+Set content:
+ V:   V: 0  V: 000000000000000000000000  V: 123  V: 1234  V: 123456789123456789123456789 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 134)
+Size: 5 (file: tests/set/erase_key.cpp, line: 135)
+
+Set content:
+ V:   V: 0  V: 000000000000000000000000  V: 1234  V: 123456789123456789123456789 
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 139)
+Size: 5 (file: tests/set/erase_key.cpp, line: 140)
+
+Set content:
+ V:   V: 0  V: 000000000000000000000000  V: 1234  V: 123456789123456789123456789 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 144)
+Size: 4 (file: tests/set/erase_key.cpp, line: 145)
+
+Set content:
+ V: 0  V: 000000000000000000000000  V: 1234  V: 123456789123456789123456789 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 149)
+Size: 3 (file: tests/set/erase_key.cpp, line: 150)
+
+Set content:
+ V: 0  V: 000000000000000000000000  V: 123456789123456789123456789 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 154)
+Size: 2 (file: tests/set/erase_key.cpp, line: 155)
+
+Set content:
+ V: 0  V: 000000000000000000000000 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 159)
+Size: 1 (file: tests/set/erase_key.cpp, line: 160)
+
+Set content:
+ V: 0 
+
+Erased?: 1 (file: tests/set/erase_key.cpp, line: 164)
+Size: 0 (file: tests/set/erase_key.cpp, line: 165)
+
+Set content:
+
+
+Erased?: 0 (file: tests/set/erase_key.cpp, line: 169)
+Size: 0 (file: tests/set/erase_key.cpp, line: 170)
+
+Set content:
+
+
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

@@ -1,0 +1,16 @@
+Size: 0 (file: tests/set/ctor.cpp, line: 21)
+
+Set content:
+
+
+Size: 0 (file: tests/set/ctor.cpp, line: 29)
+
+Set content:
+
+
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

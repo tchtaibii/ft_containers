@@ -1,0 +1,26 @@
+Size: 0 (file: tests/set/clear.cpp, line: 22)
+
+Set content:
+
+
+Size: 0 (file: tests/set/clear.cpp, line: 26)
+
+Set content:
+
+
+Size: 16 (file: tests/set/clear.cpp, line: 30)
+
+Set content:
+ V: 25ZTtB6wbptfbxM8AvHB  V: 5sq1aoT8zP0HaHj3nFOK  V: 61Dv31GYZhkgjKCErpng  V: 7Z3kf1Qec0NnsLSEpbOt  V: 8vlxlFRRgW7yYj4GO7dt  V: QExoqp0nICr0sXsHqty2  V: TFsQP1dz8VVos9KzUpY0  V: WhkSNrKJC966fvjZ2Or1  V: b3wYQR7An193gjgYuRj3  V: bE1RYclskwXlhCm46YFs  V: guAIP2Wq43Gf8VhHsyu5  V: kXeoi5qz94JYPqSDTs79  V: l0IIcWWHhOcPzoxEamQM  V: naax9QcpJhvaL7DezsNQ  V: tShYNtc0MkdjqLrOatgz  V: xSmyNsnSJ47jLqrvbpyr 
+
+Size: 0 (file: tests/set/clear.cpp, line: 34)
+
+Set content:
+
+
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

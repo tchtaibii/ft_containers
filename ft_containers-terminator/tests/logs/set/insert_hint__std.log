@@ -1,0 +1,11 @@
+It: 64 (file: tests/set/insert_hint.cpp, line: 24)
+It: 64 (file: tests/set/insert_hint.cpp, line: 28)
+It: 100 (file: tests/set/insert_hint.cpp, line: 32)
+It: 100 (file: tests/set/insert_hint.cpp, line: 39)
+It: 69 (file: tests/set/insert_hint.cpp, line: 43)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================
