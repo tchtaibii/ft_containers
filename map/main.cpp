@@ -5,92 +5,60 @@
 #include <map>
 int main()
 {
+    fancy_tree<int> debug;
+    bool cond;
 
-    // fancy_tree<char *> debug;
-    ft::map<std::string, std::string> m;
+    std::map<int, std::string> m2;
+    ft::map<int, std::string> ft_m2;
 
-    // obj.insert(ft::make_pair(64, 'a'));
-    // obj.insert(ft::make_pair(90, 'a'));
-    // obj.insert(ft::make_pair(1, 'a'));
-    // obj.insert(ft::make_pair(2, 'a'));
-    // obj.insert(ft::make_pair(92, 'a'));
-    // obj.insert(ft::make_pair(3, 'a'));
-    // obj.insert(ft::make_pair(98, 'a'));
-    // obj.insert(ft::make_pair(78, 'a'));
-    // obj.insert(ft::make_pair(8, 'a'));
-    // obj.insert(ft::make_pair(6, 'a'));
-    // obj.insert(ft::make_pair(23, 'a'));
-    // obj.insert(ft::make_pair(5, 'a'));
-    // obj.insert(ft::make_pair(4, 'a'));
-    // obj.insert(ft::make_pair(96, 'a'));
-    // obj.insert(ft::make_pair(88, 'a'));
-    // obj.insert(ft::make_pair(101, 'a'));
-    // obj.insert(ft::make_pair(103, 'a'));
-    // obj.insert(ft::make_pair(100, 'a'));
-    // obj.insert(ft::make_pair(-1, 'a'));
-    // // obj.insert(ft::make_pair(-6, 'a'));
-    // obj.insert(ft::make_pair(97, 'a'));
-    // obj.insert(ft::make_pair(920, 'a'));
-    // obj.insert(ft::make_pair(30, 'a'));
-    // obj.insert(ft::make_pair(980, 'a'));
-    // obj.insert(ft::make_pair(780, 'a'));
-    // // std::cout << obj.size() << std::endl;
-    // ft::map<int, char>::iterator it = obj.begin();
-    // obj.erase(it);
-    // it = obj.begin();
-    // std::advance(it, 21);
-    // obj.erase(it);
-    // it = obj.end();
-    // it = obj.end();
-    // std::advance(it, -3);
-    // obj.erase(it);        
-    // it = obj.end();
-    // std::advance(it, -1);        
-    // obj.erase(it);
-    // it = obj.begin();
-    // std::advance(it, 1);
-    // obj.erase(it);
-    // std::cout << "it = " << it->first << std::endl;
-    // debug.print_tree(obj.tree.root, V_VIEW);
-    // std::cout << "****************************************************" << std::endl;
-    // for (it = obj.begin(); it != obj.end(); it = obj.begin()) {
-    //     std::cout << it->first << std::endl;
-    //     debug.print_tree(obj.tree.root, V_VIEW);
-    //     if (it->first == 100)
-    //     {
-    //         obj.erase(it);
-    //         std::cout << "my seg point ********" << std::endl;
-    //         std::cout << obj.tree.root->val.first << std::endl;
-    //     }
-    //     else
-    //     {
-    //         obj.erase(it);
-    //         std::cout << "deleted complet " << std::endl;
-    //     }
-
+    for (size_t i = 0; i < 10; i++)
+    {
+        m2.insert(std::make_pair(i, "string1"));
+        ft_m2.insert(ft::make_pair(i, "string1"));
+    }
+    std::map<int, std::string>::reverse_iterator it2 = m2.rbegin();
+    ft::map<int, std::string>::reverse_iterator ft_it2 = ft_m2.rbegin();
+    std::cout << "dyalhum  " << &it2 << " value = " << &(it2->first) << std::endl;
+    std::cout << "dyali :" << &ft_it2 << " value = " << &(ft_it2->first) << std::endl;
+    // std::cout << "dyalhum  " << &it2 << " value = " << m2.begin()->first << std::endl;
+    // std::cout << "dyali :" << &ft_it2 << " value = " << ft_m2.begin()->first << std::endl;
+    // std::cout << "****" << std::endl;
+    // // debug.print_tree(ft_m2.tree.root, V_VIEW);
+    // m2.erase(m2.begin());
+    // ft_m2.erase(ft_m2.begin());
+    // std::cout << "dyalhum  " << &it2 << " value = " << &(it2->first) << std::endl;
+    // std::cout << "dyali :" << &ft_it2 << " value = " << &(ft_it2->first) << std::endl;
+    // // ft_m2.tree.printTree();
+    //  std::cout << "dyalhum  " << &it2 << " value = " << m2.begin()->first << std::endl;
+    // std::cout << "dyali :" << &ft_it2 << " value = " << ft_m2.begin()->first << std::endl;
+    // // debug.print_tree(ft_m2.tree.root, V_VIEW);
+    // std::cout << ft_m2.tree.g_leaf()->parent->val.first << std::endl;
+    // // std::cout << ft_m2.tree.g_root()->left->val.first << std::endl;
+    // // std::cout << "here " << std::endl;
+    // // std::cout << ft_m2.tree.root->val.first << std::endl;
+    // // cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+    // std::cout << "after ***\ndyalhum  " << &it2 << " value = " << &(it2->first) << std::endl;
+    // std::cout << "dyali :" << &ft_it2 << " value = " <<&(ft_it2->first )<< std::endl;
+    // ft_it2 = ft_m2.rbegin();
+    // std::cout << &ft_it2->first << std::endl;
+    // m2.erase(it2->first);
+    // ft_m2.erase(ft_it2->first);
+    // it2 = m2.rbegin();
+    // ft_it2 = ft_m2.rbegin();
+    //  ft::map<int, std::string>::iterator ft_it = ft_m2.begin();
+    // for (std::map<int, std::string>::iterator it = m2.begin(); it != m2.end(); it++)
+    // {
+    //     std::cout << "dyalhum  " << it->first << std::endl;
+    //     std::cout << "dyali :" << ft_it->first << std::endl;
+    //     ft_it++;
     // }
+        
 
-    //  m.erase("");
+    // cond = cond && m2.size() == ft_m2.size() && compareMaps(m2.begin(), m2.end(), ft_m2.begin(), ft_m2.end());
+    // std::cout << "\n" << m2.size() << "<------- dyyalo \n" <<  ft_m2.size() << " <----- dyali" << std::endl;
 
-    m.insert(ft::make_pair("", ""));
-    m.insert(ft::make_pair("123", "kjhgfdsdffghsfghdfgh"));
-    m.insert(ft::make_pair("1234", "gfdsadgg"));
-    m.insert(ft::make_pair("123456789123456789123456789", "49857459898674568464"));
-    m.insert(ft::make_pair("", ""));
-    m.insert(ft::make_pair("", "9459845984598498"));
-    // m.insert(ft::make_pair("000000000000000000000000", "1111111111111111111111111111"));
-    m.insert(ft::make_pair("-1", "2345456456456456"));
-    m.insert(ft::make_pair("-0", "2345456456456456"));
-    m.erase("1");
-    m.erase("123");
-    m.erase("123");
-    m.erase("");
-    m.erase("1234");
-    m.erase("123456789123456789123456789");
-    // std::cout << " *****" << std::endl;
-    m.erase("-1");
     // m.erase("-0");
-    m.tree.printTree();
+    // m.tree.printTree();
     // std::cout << m.size();
 
 }

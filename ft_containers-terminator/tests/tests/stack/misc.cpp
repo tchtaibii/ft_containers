@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   misc.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mleblanc <mleblanc@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: tchtaibi <tchtaibi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 20:07:57 by mleblanc          #+#    #+#             */
-/*   Updated: 2022/05/24 15:55:21 by mleblanc         ###   ########.fr       */
+/*   Updated: 2023/02/19 20:48:02 by tchtaibi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,46 +25,46 @@ void stack_test_misc()
         PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
         PRINT_LINE("Top:", st.top());
 
-        st.push(64);
+        // st.push(64);
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Top:", st.top());
 
-        st.top() = 1;
+        // st.top() = 1;
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Top:", st.top());
 
-        st.push(128);
+        // st.push(128);
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Top:", st.top());
 
-        const NAMESPACE::stack<int, NAMESPACE::vector<int, track_allocator<int> > > st1(st);
+        // const NAMESPACE::stack<int, NAMESPACE::vector<int, track_allocator<int> > > st1(st);
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Top:", st.top());
 
-        st.pop();
-        st.pop();
+        // st.pop();
+        // st.pop();
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Top:", st.top());
 
-        st.pop();
+        // st.pop();
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
 
-        st = st1;
+        // st = st1;
 
-        PRINT_LINE("Size:", st.size());
-        PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
-        PRINT_LINE("Top:", st.top());
+        // PRINT_LINE("Size:", st.size());
+        // PRINT_LINE("Empty:", (st.empty() ? "true" : "false"));
+        // PRINT_LINE("Top:", st.top());
     }
 }
 

@@ -27,7 +27,7 @@ namespace ft
 		typedef typename std::allocator_traits<allocator_type>::const_pointer						const_pointer;
 		typedef typename std::ptrdiff_t																difference_type;
 		typedef ft::map_iterator<value_type *, ft::Node<value_type> *>								iterator;
-		typedef ft::map_iterator<const value_type *, ft::Node<value_type> *>						const_iterator;
+		typedef ft::map_iterator<value_type *, ft::Node<value_type> *>								const_iterator;
 		typedef typename ft::reverse_iterator<iterator>												reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator>										const_reverse_iterator;
 		typedef class value_compare : std::binary_function<value_type, value_type, bool>{   
@@ -225,7 +225,7 @@ namespace ft
 			Node<value_type>	*mini = tree.min();
 			return (iterator (mini, tree.g_root(), tree.g_leaf()));
 		}
-		iterator	begin () const
+		const_iterator	begin () const
 		{
 			Node<value_type>	*mini = tree.min();
 			return (iterator (mini, tree.g_root(), tree.g_leaf()));
@@ -235,7 +235,7 @@ namespace ft
 			// Node<value_type>	*maxi = tree.max();
 			return (iterator (tree.g_leaf(), tree.g_root(), tree.g_leaf()));
 		}
-		iterator	end () const
+		const_iterator	end () const
 		{
 			// Node<value_type>	*maxi = tree.max();
 			return (iterator (tree.g_leaf(), tree.g_root(), tree.g_leaf()));
@@ -248,11 +248,11 @@ namespace ft
 		{
 			return reverse_iterator(this->begin());
 		}
-		reverse_iterator	rbegin () const
+		const_reverse_iterator	rbegin () const
 		{
 			return reverse_iterator (this->end());
 		}
-		reverse_iterator	rend () const
+		const_reverse_iterator	rend () const
 		{
 			return reverse_iterator(this->begin());
 		}

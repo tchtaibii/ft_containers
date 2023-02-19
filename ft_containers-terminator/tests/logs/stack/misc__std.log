@@ -1,13 +1,7 @@
-Size: 0 (file: tests/map/ctor.cpp, line: 21)
-
-Map content:
-
-
-Size: 0 (file: tests/map/ctor.cpp, line: 29)
-
-Map content:
-
-
+Empty: true (file: tests/stack/misc.cpp, line: 20)
+Size: 1 (file: tests/stack/misc.cpp, line: 24)
+Empty: false (file: tests/stack/misc.cpp, line: 25)
+Top: 34 (file: tests/stack/misc.cpp, line: 26)
 ========================================
 No leak detected
 ========================================

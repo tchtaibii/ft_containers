@@ -382,6 +382,7 @@ namespace ft
 				node->side = NOSIDE;
 				root = node;
 				size_ = 1;
+				leaf->parent = root;
 				return 1;
 			}
 			else
@@ -390,10 +391,12 @@ namespace ft
 				{
 					alloc_.destroy(node);
 					alloc_.deallocate(node, 1);
+					leaf->parent = max();
 					return 0;
 				}
 				if (node->parent->right == node || node->parent->left == node)
 					check_color(node);
+				leaf->parent = max();
 				return 1;
 			}
 		}
@@ -402,19 +405,23 @@ namespace ft
 		{
 			Node_ *nodeDelete = search(root, key);
 			if (nodeDelete == leaf)
+			{
+				leaf->parent = max();
 				return 0;
+			}
 			size_--;
 			Node_ *tmp = nodeDelete;
 			Color originalColor = tmp->color;
 			Node_ *x;
 			if (nodeDelete->left == leaf)
 			{
-				if (nodeDelete->parent == root && nodeDelete->parent->left == leaf && nodeDelete->right == leaf  )
+				if (nodeDelete->parent == root && nodeDelete->parent->left == leaf && nodeDelete->right == leaf )
 				{
 					x = nodeDelete->parent;
 					x->right = leaf;
 					alloc_.destroy(nodeDelete);
 					alloc_.deallocate(nodeDelete, 1);
+					leaf->parent = root;
 					// nodeDelete = leaf;
 					return 1;
 				}
@@ -452,6 +459,7 @@ namespace ft
 				alloc_.deallocate(nodeDelete, 1);
 				nodeDelete = leaf;
 			}
+			leaf->parent = max();
 			return 1;
 		}
 		Node_ *g_root() const {return this->root;}

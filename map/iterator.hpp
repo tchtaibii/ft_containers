@@ -42,22 +42,18 @@ namespace ft
 		}
 		map_iterator operator++(int)
 		{
+
 			map_iterator tmp = *this;
 			++(*this);
 			return (tmp);
 		}
 		map_iterator &operator--()
 		{
-			if (i == get_leaf())
-			{
-				i = root_;
-				while (i->right != get_leaf())
-					i = i->right;
-			}
+			NodePTR tmp = get_leaf();
+			if (i == tmp)
+				i = tmp->parent;
 			else
-			{
 				i = predecessor(i);
-			}
 			return (*this);
 		}
 		map_iterator operator--(int)

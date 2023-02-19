@@ -1,0 +1,10 @@
+Empty: true (file: tests/stack/misc.cpp, line: 20)
+Size: 1 (file: tests/stack/misc.cpp, line: 24)
+Empty: false (file: tests/stack/misc.cpp, line: 25)
+Top: 34 (file: tests/stack/misc.cpp, line: 26)
+========================================
+1 Leak(s) detected
+========================================
+========================================
+Every objects destroyed
+========================================

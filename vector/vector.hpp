@@ -1,9 +1,8 @@
-#ifndef VECTOR_HPP
-#define VECTOR_HPP
+#pragma once
 
 #include <iostream>
-#include "iterator.hpp"
-#include "./includes/reverse_iterator.hpp"
+#include "./iterator.hpp"
+#include "../includes/reverse_iterator.hpp"
 #include "utils.hpp"
 namespace ft
 {
@@ -545,4 +544,3 @@ namespace ft
 		return 0;
 	}
 }
-#endif

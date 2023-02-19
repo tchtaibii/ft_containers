@@ -21,7 +21,7 @@ namespace ft
 			this->second = pr.second_();
 			return (*this);
 		}
-		first_type	first;
+		first_type			first;
 		second_type			second;
 	};
 	template <class T1, class T2>

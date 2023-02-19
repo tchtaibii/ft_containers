@@ -1,5 +1,4 @@
-#ifndef ITERATOR_HPP
-#define ITERATOR_HPP
+#pragma once
 
 #include <iostream>
 #include "../includes/iterator_traits.hpp"
@@ -101,5 +100,3 @@ namespace ft
         return iterator<Iterator>(x.base() + n);
     }
 }
-
-#endif
