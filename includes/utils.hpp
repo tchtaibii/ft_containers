@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace ft
 {
@@ -62,14 +63,122 @@ namespace ft
 		return (pair<T1, T2> (x, y));
 	}
 	template <typename InputIterator1, typename InputIterator2>
-	bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2) {
-    while (first1 != last1) {
-        if (*first1 != *first2) {
-            return false;
-        }
-        ++first1;
-        ++first2;
-    }
-    return true;
-}
+	bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
+	{
+		while (first1 != last1)
+		{
+			if (*first1 != *first2)
+				return false;
+			++first1;
+			++first2;
+		}
+		return true;
+	}
+	template <bool B, class T = void>
+    struct enable_if
+    {
+    };
+
+    template <class T>
+    struct enable_if<true, T>
+    {
+        typedef T type;
+    };
+
+    template <typename T>
+    struct remove_cv{
+        typedef T type;
+    };
+
+    template <typename T>
+    struct remove_cv<const T> {
+        typedef T type;
+    };
+
+    template <typename T>
+    struct remove_cv<volatile T> {
+        typedef T type;
+    };
+
+    template <typename T>
+    struct remove_cv<const volatile T> {
+        typedef T type;
+    };
+
+    template<typename T>
+    struct is_integral
+    {
+        static const bool value = false;
+    };
+    template<>
+    struct is_integral <remove_cv<bool>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<char>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<signed char>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<short int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<long int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<unsigned char>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<unsigned short int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<unsigned int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<>
+    struct is_integral <remove_cv<unsigned long int>::type>
+    {
+        static const bool value = true; 
+    };
+
+    template<typename T>
+    struct is_input_it
+    {
+        static const bool value = false;
+    };
+
+    template<>
+    struct is_input_it<std::input_iterator_tag>
+    {
+        static const bool value = true;
+    };
 }

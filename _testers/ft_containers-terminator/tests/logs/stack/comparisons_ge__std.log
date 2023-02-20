@@ -1,0 +1,12 @@
+Greater Eq (file: tests/stack/comparisons_ge.cpp, line: 22)
+Greater Eq. (file: tests/stack/comparisons_ge.cpp, line: 32)
+Greater Eq... (file: tests/stack/comparisons_ge.cpp, line: 53)
+Greater Eq..... (file: tests/stack/comparisons_ge.cpp, line: 75)
+Greater Eq....... (file: tests/stack/comparisons_ge.cpp, line: 99)
+Greater Eq........ (file: tests/stack/comparisons_ge.cpp, line: 110)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

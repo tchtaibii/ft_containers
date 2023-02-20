@@ -6,7 +6,7 @@
 #include <cmath>
 
 //header file that contains Node definition
-#include "./red_black_tree.hpp"
+#include "./red_black_tree_set.hpp"
 
 /*===================Node====================*/
 
@@ -17,7 +17,7 @@
 #define LEFT left		// left attribute
 #define RIGHT right		// right attribute
 #define PARENT parent			// parent attribute (can be ignnored)
-#define CONTENT val.first_()	// data attribute + element of pair(if exists)
+#define CONTENT val	// data attribute + element of pair(if exists)
 
 /*===========================================*/
 

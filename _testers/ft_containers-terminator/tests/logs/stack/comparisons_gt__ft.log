@@ -1,0 +1,8 @@
+Greater. (file: tests/stack/comparisons_gt.cpp, line: 32)
+Greater... (file: tests/stack/comparisons_gt.cpp, line: 53)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

@@ -1,0 +1,8 @@
+Less. (file: tests/stack/comparisons_lt.cpp, line: 32)
+Less... (file: tests/stack/comparisons_lt.cpp, line: 53)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

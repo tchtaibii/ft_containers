@@ -11,7 +11,7 @@
 /*===================Node====================*/
 
 // Node class
-#define NODE ft::Node <ft::pair<const int, std::string> >
+#define NODE ft::Node <ft::pair<const int, int> >
 
 // Node class attributes
 #define LEFT left		// left attribute

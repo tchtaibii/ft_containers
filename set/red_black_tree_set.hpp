@@ -28,23 +28,21 @@ namespace ft
 		{
 		}
 	};
-	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
+	template <class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> >
 	class red_black_tree
 	{
-		typedef Key key_type;
-		typedef T mapped_type;
+		typedef Key value_type;
 		typedef size_t size_type;
 		typedef Compare compare_type;
-		typedef ft::pair<const key_type, mapped_type>  value_type;
 		typedef Node<value_type> Node_;
 		typedef Alloc allocator_type;
 		typedef typename allocator_type::template rebind<Node_>::other alloc;
 	private:
 		Node_ *leaf;
+		Node_ *root;
 		alloc alloc_;
 		size_type size_;
 		compare_type comp;
-		Node_ *root;
 		
 		void printHelper(Node_ *root, std::string indent, bool last) {
 		if (root != leaf) {
@@ -57,14 +55,14 @@ namespace ft
 			indent += "|  ";
 		}
 		std::string sColor = root->color == RED ? "RED" : "BLACK";
-		std::cout << root->val.first << "(" << sColor << ")" << std::endl;
+		std::cout << root->val << "(" << sColor << ")" << std::endl;
 		printHelper(root->left, indent, false);
 		printHelper(root->right, indent, true);
 		}
 	}
 		size_type insert_helper(Node_ *parent, Node_ *node)
 		{
-			if (comp (node->val.first_(), parent->val.first_()))
+			if (comp (node->val, parent->val))
 			{
 				if (parent->left == leaf)
 				{
@@ -77,7 +75,7 @@ namespace ft
 				else
 					return insert_helper(parent->left, node);
 			}
-			else if (comp(parent->val.first_(), node->val.first_()))
+			else if (comp(parent->val, node->val))
 			{
 				if (parent->right == leaf)
 				{
@@ -402,7 +400,7 @@ namespace ft
 			}
 		}
 
-		size_type delete_Node(key_type key)
+		size_type delete_Node(value_type key)
 		{
 			Node_ *nodeDelete = search(root, key);
 			if (nodeDelete == leaf)
@@ -465,13 +463,13 @@ namespace ft
 		}
 		Node_ *g_root() const {return this->root;}
 		
-		Node_ *search(Node_ *node ,const key_type key) const
+		Node_ *search(Node_ *node ,const value_type key) const
 		{
 			if (node == leaf && node->left == NULL && node->left == NULL)
 				return node;
-			if (node != leaf && comp(node->val.first_(),key) == false && comp(key, node->val.first_()) == false)
+			if (node != leaf && comp(node->val, key) == false && comp(key, node->val) == false)
 				return node;
-			if (node != leaf && comp(node->val.first_(),key))
+			if (node != leaf && comp(node->val, key))
 				return search(node->right ,key);
 			return search(node->left ,key);
 		}
@@ -522,12 +520,12 @@ namespace ft
 
 			while (tmp != leaf)
 			{
-				if (!comp(tmp->val.first,k) && !comp(k, tmp->val.first))
+				if (!comp(tmp->val,k) && !comp(k, tmp->val))
 				{
 					ret = tmp;
 					break ;
 				}
-				if (comp(k, tmp->val.first))
+				if (comp(k, tmp->val))
 				{
 					ret = tmp;
 					tmp = tmp->left;
@@ -545,12 +543,12 @@ namespace ft
 
 			while (tmp != leaf)
 			{
-				if (!comp(tmp->val.first,k) && !comp(k, tmp->val.first))
+				if (!comp(tmp->val,k) && !comp(k, tmp->val))
 				{
 					ret = tmp;
 					break ;
 				}
-				if (comp(k, tmp->val.first))
+				if (comp(k, tmp->val))
 				{
 					ret = tmp;
 					tmp = tmp->left;
@@ -572,7 +570,7 @@ namespace ft
 
 				while (tmp != leaf)
 				{
-					if (comp(k, tmp->val.first))
+					if (comp(k, tmp->val))
 					{
 						ret = tmp;
 						tmp = tmp->left;
@@ -591,7 +589,7 @@ namespace ft
 
 			while (tmp != leaf)
 			{
-				if (comp(k, tmp->val.first))
+				if (comp(k, tmp->val))
 				{
 					ret = tmp;
 					tmp = tmp->left;

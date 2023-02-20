@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "../includes/utils.hpp"
 #include "./iterator.hpp"
-#include "./red_black_tree.hpp"
+#include "./red_black_tree_set.hpp"
 #include "../includes/reverse_iterator.hpp"
 namespace ft
 {
@@ -13,14 +13,14 @@ namespace ft
 	private:
 		Compare										COM;
 		Alloc										al;
-		ft::red_black_tree<Key, Compare, Alloc>	tree;
+		ft::red_black_tree<Key, Compare, Alloc>		tree;
 		
 	public:
 		typedef Key 																				value_type;
 		typedef Key 																				key_type;
 		typedef size_t 																				size_type;
 		typedef Compare 																			key_compare;
-		typedef Compare 																			value_compare;
+		typedef Compare																				value_compare;
 		typedef Alloc 																				allocator_type;
 		typedef value_type 																			&reference;
 		typedef const	value_type 																	&const_reference;
@@ -68,6 +68,7 @@ namespace ft
 		bool empty() const {
 			return !size();
 		}
+		Node<value_type> *get_tree() const {return tree.g_root();}
 		// Returns the number of elements in the set container.
 		size_type size() const { return tree.size();}
 		// Returns the maximum number of elements that the set container can hold.

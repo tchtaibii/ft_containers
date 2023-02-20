@@ -1,0 +1,8 @@
+Equal (file: tests/stack/comparisons_eq.cpp, line: 22)
+Equal.... (file: tests/stack/comparisons_eq.cpp, line: 65)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

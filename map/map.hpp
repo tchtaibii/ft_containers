@@ -13,6 +13,7 @@ namespace ft
 	private:
 		Compare										COM;
 		Alloc										al;
+		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		
 	public:
 		typedef Key 																				key_type;
@@ -75,11 +76,11 @@ namespace ft
 					tree.insert (*it);
 			return (*this);
 		}
-		ft::red_black_tree<Key, T, Compare, Alloc>	tree;
 		// returns whether the map container is empty (i.e. whether its size is 0).
 		bool empty() const {
 			return !size();
 		}
+		Node<value_type> *get_tree() const {return tree.g_root();}
 		// Returns the number of elements in the map container.
 		size_type size() const { return tree.size();}
 		// Returns the maximum number of elements that the map container can hold.

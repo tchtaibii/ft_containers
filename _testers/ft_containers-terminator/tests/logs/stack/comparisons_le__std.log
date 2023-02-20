@@ -1,0 +1,12 @@
+Less Eq (file: tests/stack/comparisons_le.cpp, line: 22)
+Less Eq. (file: tests/stack/comparisons_le.cpp, line: 32)
+Less Eq... (file: tests/stack/comparisons_le.cpp, line: 53)
+Less Eq..... (file: tests/stack/comparisons_le.cpp, line: 75)
+Less Eq....... (file: tests/stack/comparisons_le.cpp, line: 99)
+Less Eq........ (file: tests/stack/comparisons_le.cpp, line: 110)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================
