@@ -22,7 +22,7 @@ namespace ft
         void pop() {c.pop_back();}
         ~stack(){}
 
-    private:
+    protected:
         container_type c;
     };
     template <class T, class Container>
